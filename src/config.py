@@ -2,6 +2,7 @@ from src.algorithms.boudary_fixing import BoundaryFixing
 from src.enums.optimization import OptimizationType
 from src.functions.fun_main import FUNCTIONS, FunctionObject
 from src.enums.algorithm import AlgorithmType
+from src.enums.strategies import Strategies
 
 
 class Config:
@@ -17,6 +18,7 @@ class Config:
         self.mode = OptimizationType.MINIMIZATION
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
+        self.mutation_strategy = Strategies.RAND_1
 
         self.run_all_functions = False
         self.run_all_args = False
@@ -31,7 +33,8 @@ class DatabaseConfig:
 class MultipleDatabaseConfig:
     def __init__(self):
         self.prefix = "xyz_databases/Differential_evolution_"
-        self.databases_postfixes = ["Default", "BestWorst", "RandomLocations", "EMDE", "AdaptiveParams", "NovelModified", "ScalingParams"]
+        self.databases_postfixes = ["Default", "BestWorst", "RandomLocations", "EMDE", "AdaptiveParams",
+                                    "NovelModified", "ScalingParams"]
         self.databases = [f"{self.prefix}{postfix}.db" for postfix in self.databases_postfixes]
 
         self.optima = [i * 100.0 for i in range(1, 31)]

@@ -74,4 +74,3 @@ if __name__ == "__main__":
                 run_de(config, fun)
         else:
             run_de(config)
-

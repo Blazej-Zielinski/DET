@@ -3,7 +3,7 @@ from src.models.chromosome import Chromosome
 
 
 class Member:
-    def __init__(self, interval, args_num):
+    def __init__(self, interval: list, args_num: int):
         self.chromosomes = np.array([Chromosome(interval) for _ in range(args_num)])
         self.fitness_value = None
         self.interval = interval

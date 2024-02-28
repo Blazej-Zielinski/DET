@@ -4,7 +4,7 @@ from src.algorithms.boudary_fixing import fix_boundary_constraints
 from src.algorithms.methods.default_de import mutation, binomial_crossing, selection
 from src.algorithms.methods.best_worst import best_worst_mutation, calculate_cr
 from src.algorithms.methods.random_locations import rl_mutation
-from src.algorithms.methods.novel_modified import nm_mutation, nm_binomial_crossing, nm_selection,\
+from src.algorithms.methods.novel_modified import nm_mutation, nm_binomial_crossing, nm_selection, \
     nm_calculate_fm_crm, nm_update_f_cr
 from src.algorithms.methods.parent_centric import parent_centric_mutation
 from src.algorithms.methods.pbx import pbx_mutation, p_best_crossover, calculate_crm, calculate_fm
@@ -14,6 +14,7 @@ from src.algorithms.methods.bidirectional import bi_mutation, bi_binomial_crossi
 from src.algorithms.methods.adaptive_params import ad_mutation, ad_binomial_crossing, ad_selection
 from src.algorithms.methods.em_de import em_mutation
 from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
+from src.algorithms.methods.self_adaptive import sa_mutation
 
 
 def default_alg(pop, config):
@@ -328,3 +329,27 @@ def scaling_params_de(pop, config, curr_gen):
     new_pop = selection(pop, u_pop)
 
     return new_pop
+
+
+def self_adaptive_de(pop, config):
+    """
+    Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1554904&tag=1
+    :param curr_gen:
+    :param pop:
+    :param config:
+    :return:
+    """
+    v_pop = sa_mutation(pop, f=config.mutation_function, mut_strategy=config.mutation_strategy, optimization=config.mode)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # boundary constrains
+    fix_boundary_constraints(u_pop, config.boundary_constraints_fun)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = selection(pop, u_pop)
+
+    return new_pop, ()
