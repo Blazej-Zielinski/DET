@@ -57,9 +57,8 @@ def sa_mutation_rand_2(member1: Member, member2: Member, member3: Member, member
     return new_member
 
 
-def sa_mutation(population: Population, f, mut_strategy, optimization) -> Population:
+def sa_mutation(population: Population, f, mut_strategy) -> Population:
     new_members = []
-    is_descending = False if optimization == OptimizationType.MINIMIZATION else True
 
     if mut_strategy == Strategies.RAND_1:
         for _ in range(population.size):
