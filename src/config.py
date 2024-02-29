@@ -18,7 +18,7 @@ class Config:
         self.mode = OptimizationType.MINIMIZATION
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
-        self.mutation_strategy = Strategies.RAND_1
+        self.mutation_strategies = [Strategies.RAND_1]
 
         self.run_all_functions = False
         self.run_all_args = False

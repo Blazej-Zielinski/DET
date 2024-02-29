@@ -339,7 +339,7 @@ def self_adaptive_de(pop, config):
     :param config:
     :return:
     """
-    v_pop = sa_mutation(pop, f=config.mutation_function, mut_strategy=config.mutation_strategy)
+    v_pop = sa_mutation(pop, f=config.mutation_function, mut_strategy=config.mutation_strategies)
 
     u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
 

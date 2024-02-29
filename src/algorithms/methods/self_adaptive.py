@@ -57,23 +57,52 @@ def sa_mutation_rand_2(member1: Member, member2: Member, member3: Member, member
     return new_member
 
 
-def sa_mutation(population: Population, f, mut_strategy) -> Population:
+def sa_mutation_strategy(mutation_strategies: list, member_strategy_indicator: float):
+    len_strategies = len(mutation_strategies)
+
+    if len_strategies < 1 or len_strategies > 5:
+        raise ValueError("Wrong number of strategies")
+
+    if len_strategies == 1:
+        return mutation_strategies[0][0]
+
+    elif len_strategies == 2:
+        if member_strategy_indicator <= mutation_strategies[0][1]:
+            return mutation_strategies[0][0]
+        else:
+            return mutation_strategies[1][0]
+
+    else:
+        for strategy, strategy_probability in mutation_strategies[:-1]:
+            if member_strategy_indicator <= strategy_probability:
+                return strategy
+
+        return mutation_strategies[-1][0]
+
+
+def sa_mutation(population: Population, f, mutation_strategies: list) -> Population:
     new_members = []
 
-    if mut_strategy == Strategies.RAND_1:
+    member_strategy_indicators = np.random.uniform(low=0, high=1, size=population.size)
+    pop_members_list = population.members.tolist()
+
+    for (idx, indicator) in enumerate(member_strategy_indicators):
+        member_strategy = sa_mutation_strategy(mutation_strategies, indicator)
+
+    if mutation_strategies == Strategies.RAND_1:
         for _ in range(population.size):
             selected_members = random.sample(population.members.tolist(), 3)
             new_member = sa_mutation_rand_1(selected_members[0], selected_members[1], selected_members[2], f)
             new_members.append(new_member)
 
-    elif mut_strategy == Strategies.BEST_1:
+    elif mutation_strategies == Strategies.BEST_1:
         best_member = population.get_best_members(1)
         for _ in range(population.size):
             selected_members = random.sample(population.members.tolist(), 2)
             new_member = sa_mutation_best_1(best_member, selected_members[0], selected_members[1], f)
             new_members.append(new_member)
 
-    elif mut_strategy == Strategies.CURRENT_TO_BEST_1:
+    elif mutation_strategies == Strategies.CURRENT_TO_BEST_1:
         pop_members_list = population.members.tolist()
         best_member = population.get_best_members(1)
         for i in range(population.size):
@@ -83,7 +112,7 @@ def sa_mutation(population: Population, f, mut_strategy) -> Population:
                                                     pop_members_list[selected_idx[1]], f)
             new_members.append(new_member)
 
-    elif mut_strategy == Strategies.BEST_2:
+    elif mutation_strategies == Strategies.BEST_2:
         best_member = population.get_best_members(1)
         for _ in range(population.size):
             selected_members = random.sample(population.members.tolist(), 4)
@@ -91,7 +120,7 @@ def sa_mutation(population: Population, f, mut_strategy) -> Population:
                                             selected_members[4], f)
             new_members.append(new_member)
 
-    elif mut_strategy == Strategies.RAND_2:
+    elif mutation_strategies == Strategies.RAND_2:
         for _ in range(population.size):
             selected_members = random.sample(population.members.tolist(), 5)
             new_member = sa_mutation_rand_2(selected_members[0], selected_members[1], selected_members[2],
