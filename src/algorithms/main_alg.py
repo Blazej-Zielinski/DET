@@ -6,7 +6,7 @@ from src.enums.algorithm import get_algorithm
 from src.config import Config
 
 
-def diff_evo_alg(pop: Population, config: Config, start_time=None):
+def    diff_evo_alg(pop: Population, config: Config, start_time=None):
     best_individuals = []
     temp_pop = copy.deepcopy(pop)
 

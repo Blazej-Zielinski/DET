@@ -14,7 +14,7 @@ from src.algorithms.methods.bidirectional import bi_mutation, bi_binomial_crossi
 from src.algorithms.methods.adaptive_params import ad_mutation, ad_binomial_crossing, ad_selection
 from src.algorithms.methods.em_de import em_mutation
 from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
-from src.algorithms.methods.self_adaptive import sa_mutation
+from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities
 
 
 def default_alg(pop, config):
@@ -331,7 +331,7 @@ def scaling_params_de(pop, config, curr_gen):
     return new_pop
 
 
-def self_adaptive_de(pop, config):
+def self_adaptive_de(pop, config, curr_gen):
     """
     Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1554904&tag=1
     :param curr_gen:
@@ -339,7 +339,8 @@ def self_adaptive_de(pop, config):
     :param config:
     :return:
     """
-    v_pop = sa_mutation(pop, f=config.mutation_function, mut_strategy=config.mutation_strategies)
+    v_pop, members_strategies = sa_mutation(pop, f=config.mutation_factor,
+                                            mutation_strategies=config.mutation_strategies)
 
     u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
 
@@ -350,6 +351,10 @@ def self_adaptive_de(pop, config):
     u_pop.update_fitness_values(lambda params: config.function.eval(params))
 
     # Select new population
-    new_pop, _ = selection(pop, u_pop)
+    new_pop, _ = sa_selection(pop, u_pop, members_strategies)
+
+    # Update strategy probabilities
+    if curr_gen != 0 and curr_gen % config.learning_period == 0:
+        sa_adapt_probabilities(*config.mutation_strategies)
 
     return new_pop, ()

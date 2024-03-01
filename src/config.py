@@ -2,7 +2,8 @@ from src.algorithms.boudary_fixing import BoundaryFixing
 from src.enums.optimization import OptimizationType
 from src.functions.fun_main import FUNCTIONS, FunctionObject
 from src.enums.algorithm import AlgorithmType
-from src.enums.strategies import Strategies
+from src.enums.strategies import StrategiesEnum
+from src.models.strategy import Strategy
 
 
 class Config:
@@ -18,11 +19,20 @@ class Config:
         self.mode = OptimizationType.MINIMIZATION
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
-        self.mutation_strategies = [Strategies.RAND_1]
+
+        self.mutation_strategies = [StrategiesEnum.RAND_1]
+        self.learning_period = 25
 
         self.run_all_functions = False
         self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
+
+        if len(self.mutation_strategies) >= 1:
+            self.mutation_strategies = [Strategy(stg, 1 / (len(self.mutation_strategies)))
+                                        for stg in self.mutation_strategies]
+
+    def sort_mutation_strategies(self):
+        self.mutation_strategies = sorted(self.mutation_strategies, key=lambda strategy: strategy.probability)
 
 
 class DatabaseConfig:

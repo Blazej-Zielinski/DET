@@ -52,5 +52,5 @@ def get_algorithm(alg_type: AlgorithmType):
         AlgorithmType.EM_DE: (lambda pop, config, curr_gen, args: em_de(pop, config), None),
         AlgorithmType.SCALING_PARAMS: (
             lambda pop, config, curr_gen, args: scaling_params_de(pop, config, curr_gen + 1), None),
-        AlgorithmType.SELF_ADAPTIVE: (lambda pop, config, curr_gen, args: self_adaptive_de(pop, config), None)
+        AlgorithmType.SELF_ADAPTIVE: (lambda pop, config, curr_gen, args: self_adaptive_de(pop, config, curr_gen), None)
     }.get(alg_type, lambda: None)
