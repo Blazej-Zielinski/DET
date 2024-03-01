@@ -20,13 +20,12 @@ class Config:
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
 
-        self.mutation_strategies = [StrategiesEnum.RAND_1]
-        self.learning_period = 25
-
         self.run_all_functions = False
         self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
 
+        self.mutation_strategies = [StrategiesEnum.RAND_1]
+        self.learning_period = 25
         if len(self.mutation_strategies) >= 1:
             self.mutation_strategies = [Strategy(stg, 1 / (len(self.mutation_strategies)))
                                         for stg in self.mutation_strategies]

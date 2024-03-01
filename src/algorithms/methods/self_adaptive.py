@@ -1,7 +1,5 @@
 import copy
 import random
-from typing import Tuple, List
-
 import numpy as np
 
 from diffEvoLib.models.member import Member
@@ -178,3 +176,6 @@ def sa_adapt_probabilities(strategy1: Strategy, strategy2: Strategy):
 
     strategy1.set_probability(p1)
     strategy2.set_probability(p2)
+
+    strategy1.reset_nf_ns()
+    strategy2.reset_nf_ns()
