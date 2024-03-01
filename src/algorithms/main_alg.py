@@ -1,5 +1,6 @@
 import copy
 import time
+from tqdm import tqdm
 
 from src.models.population import Population
 from src.enums.algorithm import get_algorithm
@@ -17,7 +18,7 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
     data = calculate_results(temp_pop, start_time, -1)
     best_individuals.append(data)
 
-    for epoch in range(config.num_of_epochs):
+    for epoch in tqdm(range(config.num_of_epochs)):
         # Applying selected algorithm
         new_pop, algorithm_vars = algorithm(temp_pop, config, epoch, algorithm_vars)
 

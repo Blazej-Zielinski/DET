@@ -3,14 +3,13 @@ from src.enums.optimization import OptimizationType
 from src.functions.fun_main import FUNCTIONS, FunctionObject
 from src.enums.algorithm import AlgorithmType
 from src.enums.strategies import StrategiesEnum
-from src.models.strategy import Strategy
 
 
 class Config:
     def __init__(self):
-        self.algorithm_type = AlgorithmType.DEFAULT
+        self.algorithm_type = AlgorithmType.SELF_ADAPTIVE
 
-        self.num_of_epochs = 10
+        self.num_of_epochs = 1000
         self.population_size = 100
         self.nr_of_args = 10
         self.interval = [-100, 100]
@@ -24,14 +23,18 @@ class Config:
         self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
 
-        self.mutation_strategies = [StrategiesEnum.RAND_1]
-        self.learning_period = 25
-        if len(self.mutation_strategies) >= 1:
-            self.mutation_strategies = [Strategy(stg, 1 / (len(self.mutation_strategies)))
-                                        for stg in self.mutation_strategies]
+        if self.algorithm_type == AlgorithmType.SELF_ADAPTIVE:
+            self.mutation_factor_mean = 0.5
+            self.mutation_factor_std = 0.3
+            self.mutation_learning_period = 25
+            self.mutation_strategies = [StrategiesEnum.RAND_1, StrategiesEnum.CURRENT_TO_BEST_1]
 
-    def sort_mutation_strategies(self):
-        self.mutation_strategies = sorted(self.mutation_strategies, key=lambda strategy: strategy.probability)
+            self.crossover_rate_mean = 0.5
+            self.crossover_rate_std = 0.1
+            self.crossover_learning_period = 5
+
+    def set_crossover_mean(self, new_mean: float):
+        self.crossover_rate_mean = new_mean
 
 
 class DatabaseConfig:

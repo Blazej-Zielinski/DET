@@ -14,7 +14,8 @@ from src.algorithms.methods.bidirectional import bi_mutation, bi_binomial_crossi
 from src.algorithms.methods.adaptive_params import ad_mutation, ad_binomial_crossing, ad_selection
 from src.algorithms.methods.em_de import em_mutation
 from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
-from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities
+from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities, \
+    sa_binomial_crossing, sa_adapt_crossover_rates
 
 
 def default_alg(pop, config):
@@ -331,18 +332,20 @@ def scaling_params_de(pop, config, curr_gen):
     return new_pop
 
 
-def self_adaptive_de(pop, config, curr_gen):
+def self_adaptive_de(pop, config, curr_gen: int, additional_data: list):
     """
     Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1554904&tag=1
     :param curr_gen:
     :param pop:
     :param config:
+    :param additional_data:
     :return:
     """
-    v_pop, members_strategies = sa_mutation(pop, f=config.mutation_factor,
-                                            mutation_strategies=config.mutation_strategies)
+    mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates = additional_data
 
-    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+    v_pop, members_strategies = sa_mutation(pop, mutation_factors, mutation_strategies, mutation_strategy_indicators)
+
+    u_pop = sa_binomial_crossing(pop, v_pop, crossover_rates)
 
     # boundary constrains
     fix_boundary_constraints(u_pop, config.boundary_constraints_fun)
@@ -351,10 +354,16 @@ def self_adaptive_de(pop, config, curr_gen):
     u_pop.update_fitness_values(lambda params: config.function.eval(params))
 
     # Select new population
-    new_pop, _ = sa_selection(pop, u_pop, members_strategies)
+    new_pop, _ = sa_selection(pop, u_pop, members_strategies, crossover_rates, crossover_success_rates)
+
+    # Update crossover rates
+    if curr_gen != 0 and curr_gen % config.crossover_learning_period == 0:
+        crossover_rates = sa_adapt_crossover_rates(config, crossover_success_rates)
+        crossover_success_rates = []
 
     # Update strategy probabilities
-    if curr_gen != 0 and curr_gen % config.learning_period == 0:
-        sa_adapt_probabilities(*config.mutation_strategies)
+    if curr_gen != 0 and curr_gen % config.mutation_learning_period == 0:
+        sa_adapt_probabilities(*mutation_strategies)
+        mutation_strategies = sorted(mutation_strategies, key=lambda strategy: strategy.probability)
 
-    return new_pop, ()
+    return new_pop, (mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates)

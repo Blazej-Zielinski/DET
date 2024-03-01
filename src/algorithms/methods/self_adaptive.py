@@ -2,11 +2,12 @@ import copy
 import random
 import numpy as np
 
-from diffEvoLib.models.member import Member
+from src.models.member import Member
 from src.models.population import Population
 from src.enums.strategies import StrategiesEnum
 from src.models.strategy import Strategy
 from src.enums.optimization import OptimizationType
+from src.algorithms.methods.default_de import binomial_crossing_ind
 
 
 def sa_mutation_rand_1(members: list[Member], f: float) -> Member:
@@ -14,7 +15,7 @@ def sa_mutation_rand_1(members: list[Member], f: float) -> Member:
         Formula: v_ij = x_r1 + F(x_r2 - x_r3)
     """
     new_member = copy.deepcopy(members[0])
-    new_member.chromosomes = members[0].chromosomes + f * (members[1].chromosomes - members[2].chromosomes)
+    new_member.chromosomes = members[0].chromosomes + (members[1].chromosomes - members[2].chromosomes) * f
     return new_member
 
 
@@ -23,7 +24,7 @@ def sa_mutation_best_1(best_member: Member, members: list[Member], f: float) -> 
         Formula: v_ij = x_best + F(x_r1 - x_r2)
     """
     new_member = copy.deepcopy(best_member)
-    new_member.chromosomes = best_member.chromosomes + f * (members[0].chromosomes - members[1].chromosomes)
+    new_member.chromosomes = best_member.chromosomes + (members[0].chromosomes - members[1].chromosomes) * f
     return new_member
 
 
@@ -32,8 +33,8 @@ def sa_mutation_curr_to_best_1(base_member: Member, best_member: Member, members
         Formula: v_ij = x_base + F(x_best - x_base) + F(x_r1 - x_r2)
     """
     new_member = copy.deepcopy(base_member)
-    new_member.chromosomes = (base_member.chromosomes + f * (best_member.chromosomes - base_member.chromosomes) +
-                              f * (members[0].chromosomes - members[1].chromosomes))
+    new_member.chromosomes = (base_member.chromosomes + (best_member.chromosomes - base_member.chromosomes) * f +
+                              (members[0].chromosomes - members[1].chromosomes) * f)
     return new_member
 
 
@@ -42,8 +43,8 @@ def sa_mutation_best_2(best_member: Member, members: list[Member], f: float) -> 
         Formula: v_ij = x_best + F(x_r1 - x_r2) + F(x_r3 - x_r4)
     """
     new_member = copy.deepcopy(best_member)
-    new_member.chromosomes = (best_member.chromosomes + f * (members[0].chromosomes - members[1].chromosomes) +
-                              f * (members[2].chromosomes - members[3].chromosomes))
+    new_member.chromosomes = (best_member.chromosomes + (members[0].chromosomes - members[1].chromosomes) * f +
+                              (members[2].chromosomes - members[3].chromosomes) * f)
     return new_member
 
 
@@ -52,32 +53,19 @@ def sa_mutation_rand_2(members: list[Member], f: float) -> Member:
         Formula: v_ij = x_best + F(x_r1 - x_r2) + F(x_r3 - x_r4)
     """
     new_member = copy.deepcopy(members[0])
-    new_member.chromosomes = (members[0].chromosomes + f * (members[1].chromosomes - members[2].chromosomes) +
-                              f * (members[3].chromosomes - members[4].chromosomes))
+    new_member.chromosomes = (members[0].chromosomes + (members[1].chromosomes - members[2].chromosomes) * f +
+                              (members[3].chromosomes - members[4].chromosomes) * f)
     return new_member
 
 
 def sa_get_mutation_strategy(mutation_strategies: list[Strategy], member_strategy_indicator: float) -> Strategy:
-    len_strategies = len(mutation_strategies)
-
-    if len_strategies < 1 or len_strategies > 5:
+    if len(mutation_strategies) != 2:
         raise ValueError("Wrong number of strategies")
 
-    if len_strategies == 1:
+    if member_strategy_indicator <= mutation_strategies[0].probability:
         return mutation_strategies[0]
-
-    elif len_strategies == 2:
-        if member_strategy_indicator <= mutation_strategies[0].probability:
-            return mutation_strategies[0]
-        else:
-            return mutation_strategies[1]
-
     else:
-        for strategy in mutation_strategies[:-1]:
-            if member_strategy_indicator <= strategy.probability:
-                return strategy
-
-        return mutation_strategies[-1]
+        return mutation_strategies[1]
 
 
 def get_strategy_function(strategy_type: StrategiesEnum):
@@ -91,25 +79,27 @@ def get_strategy_function(strategy_type: StrategiesEnum):
     }.get(strategy_type, lambda: None)
 
 
-def sa_mutation(population: Population, f: float, mutation_strategies: list[Strategy]) -> \
-        tuple[Population, list[Strategy]]:
+def sa_mutation(population: Population, mutation_factors: np.ndarray[float], mutation_strategies: list[Strategy],
+                mutation_strategy_indicators: np.ndarray[float]) -> tuple[Population, list[Strategy]]:
+    if population.size != len(mutation_factors) != len(mutation_strategy_indicators):
+        raise ValueError("Different sizes of parameters!")
+
     new_members = []
-    drew_strategy = []
+    drawn_strategy = []
 
     pop_members_list = population.members.tolist()
-    best_member = population.get_best_members(1)
+    best_member = population.get_best_members(1)[0]
 
-    member_strategy_indicators = np.random.uniform(low=0, high=1, size=population.size)
-    for (idx, indicator) in enumerate(member_strategy_indicators):
+    for (idx, indicator) in enumerate(mutation_strategy_indicators):
         member_strategy = sa_get_mutation_strategy(mutation_strategies, indicator)
-        drew_strategy.append(member_strategy)
+        drawn_strategy.append(member_strategy)
         strategy_function = get_strategy_function(member_strategy.strategy)
 
         indices = list(range(idx)) + list(range(idx + 1, population.size))
         selected_indices = random.sample(indices, 5)
-        auxiliary_members = [pop_members_list[i] for i in selected_indices]
+        additional_members = [pop_members_list[i] for i in selected_indices]
 
-        new_member = strategy_function(pop_members_list[idx], best_member, auxiliary_members, f)
+        new_member = strategy_function(pop_members_list[idx], best_member, additional_members, mutation_factors[idx])
         new_members.append(new_member)
 
     new_population = Population(
@@ -120,10 +110,32 @@ def sa_mutation(population: Population, f: float, mutation_strategies: list[Stra
     )
     new_population.members = np.array(new_members)
 
-    return new_population, drew_strategy
+    return new_population, drawn_strategy
 
 
-def sa_selection(origin_population: Population, modified_population: Population, member_strategies: list[Strategy]):
+def sa_binomial_crossing(origin_population: Population, mutated_population: Population,
+                         crossover_rates: np.ndarray[float]) -> Population:
+    if origin_population.size != mutated_population.size != len(crossover_rates):
+        raise ValueError("Binomial_crossing: populations have different sizes")
+
+    new_members = []
+    for i, cr in enumerate(crossover_rates):
+        new_member = binomial_crossing_ind(origin_population.members[i], mutated_population.members[i], cr)
+        new_members.append(new_member)
+
+    new_population = Population(
+        interval=origin_population.interval,
+        arg_num=origin_population.arg_num,
+        size=origin_population.size,
+        optimization=origin_population.optimization
+    )
+    new_population.members = np.array(new_members)
+
+    return new_population
+
+
+def sa_selection(origin_population: Population, modified_population: Population, member_strategies: list[Strategy],
+                 crossover_rates: np.ndarray[float], crossover_success_rates: list[float]):
     if origin_population.size != modified_population.size != len(member_strategies):
         print("Selection: populations have different sizes")
         return None
@@ -143,6 +155,7 @@ def sa_selection(origin_population: Population, modified_population: Population,
             else:
                 new_members.append(copy.deepcopy(modified_population.members[i]))
                 strategy.update_ns()
+                crossover_success_rates.append(crossover_rates[i])
                 better_count += 1
         elif optimization == OptimizationType.MAXIMIZATION:
             if origin_population.members[i] >= modified_population.members[i]:
@@ -151,6 +164,7 @@ def sa_selection(origin_population: Population, modified_population: Population,
             else:
                 new_members.append(copy.deepcopy(modified_population.members[i]))
                 strategy.update_ns()
+                crossover_success_rates.append(crossover_rates[i])
                 better_count += 1
 
     new_population = Population(
@@ -179,3 +193,10 @@ def sa_adapt_probabilities(strategy1: Strategy, strategy2: Strategy):
 
     strategy1.reset_nf_ns()
     strategy2.reset_nf_ns()
+
+
+def sa_adapt_crossover_rates(config, crossover_success_rates: list[float]):
+    new_cross_mean = sum(crossover_success_rates) / len(crossover_success_rates)
+    config.set_crossover_mean(new_cross_mean)
+    return np.random.normal(loc=config.crossover_rate_mean, scale=config.crossover_rate_std,
+                            size=config.population_size)

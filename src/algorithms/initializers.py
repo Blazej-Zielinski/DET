@@ -1,4 +1,5 @@
 import numpy as np
+from src.models.strategy import Strategy
 
 
 def nm_initialize(config):
@@ -28,3 +29,19 @@ def adaptive_params_initialize(config):
     prob_cr = 0.1
 
     return f_arr, cr_arr, prob_f, prob_cr
+
+
+def sa_initialize(config):
+    if len(config.mutation_strategies) != 2:
+        raise Exception("Wrong number of mutation strategies!")
+
+    # mutation_factors = np.random.uniform(low=0, high=1, size=config.population_size)
+    mutation_factors = np.random.normal(loc=config.mutation_factor_mean, scale=config.mutation_factor_std,
+                                        size=config.population_size)
+    crossover_rates = np.random.normal(loc=config.crossover_rate_mean, scale=config.crossover_rate_std,
+                                       size=config.population_size)
+    crossover_success_rates = []
+    mutation_strategies = [Strategy(stg, 1 / (len(config.mutation_strategies))) for stg in config.mutation_strategies]
+    mutation_strategy_indicators = np.random.uniform(low=0, high=1, size=config.population_size)
+
+    return [mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates]
