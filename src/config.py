@@ -9,7 +9,7 @@ class Config:
     def __init__(self):
         self.algorithm_type = AlgorithmType.SELF_ADAPTIVE
 
-        self.num_of_epochs = 100
+        self.num_of_epochs = 10000
         self.population_size = 100
         self.nr_of_args = 10
         self.interval = [-100, 100]
@@ -19,8 +19,8 @@ class Config:
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
 
-        self.run_all_functions = True
-        self.run_all_args = True
+        self.run_all_functions = False
+        self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
 
         if self.algorithm_type == AlgorithmType.SELF_ADAPTIVE:
