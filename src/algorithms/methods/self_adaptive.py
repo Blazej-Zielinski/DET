@@ -185,7 +185,10 @@ def sa_adapt_probabilities(strategy1: Strategy, strategy2: Strategy):
     ns2 = strategy2.ns
     nf2 = strategy2.nf
 
-    p1 = (ns1 * (ns2 + nf2)) / (ns2 * (ns1 + nf1) + ns1 * (ns2 + nf2))
+    numerator = ns1 * (ns2 + nf2)
+    denominator = ns2 * (ns1 + nf1) + ns1 * (ns2 + nf2)
+
+    p1 = numerator / denominator if denominator != 0 else 0
     p2 = 1 - p1
 
     strategy1.set_probability(p1)

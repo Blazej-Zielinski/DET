@@ -28,7 +28,11 @@ def run_de(config, fun=None):
     best_individuals_data = diff_evo_alg(S_pop, config, start_time)
     end_time = time.time()
     execution_time = end_time - start_time
-    print(f'{config.function.func_type.name}, {config.nr_of_args} Execution time: {execution_time} seconds')
+    print(f'''
+    Function: {config.function.func_type.name}
+    Num of arguments: {config.nr_of_args}
+    Execution time: {round(execution_time,2)} seconds
+    ''')
 
     # Connect to database
     db_config = DatabaseConfig()

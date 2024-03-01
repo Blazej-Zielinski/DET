@@ -18,7 +18,7 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
     data = calculate_results(temp_pop, start_time, -1)
     best_individuals.append(data)
 
-    for epoch in tqdm(range(config.num_of_epochs)):
+    for epoch in tqdm(range(config.num_of_epochs), desc="Performing evolution"):
         # Applying selected algorithm
         new_pop, algorithm_vars = algorithm(temp_pop, config, epoch, algorithm_vars)
 
@@ -46,8 +46,7 @@ def calculate_results(temp_pop, start_time, epoch):
     execution_time = end_time - start_time
 
     data = (epoch + 1, best_inv, worst_inv, pop_mean, pop_std, execution_time)
-    print(f"Epoch {epoch + 1}")
-    print("Best member:")
-    print(best_inv)
+    # print(f"Epoch {epoch + 1}")
+    # print(f"Best member:{best_inv.fitness_value}")
 
     return data
