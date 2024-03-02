@@ -203,3 +203,7 @@ def sa_adapt_crossover_rates(config, crossover_success_rates: list[float]):
     config.set_crossover_mean(new_cross_mean)
     return np.random.normal(loc=config.crossover_rate_mean, scale=config.crossover_rate_std,
                             size=config.population_size)
+
+# TODO
+# napisać funkcje losujaca mutation_facots z przedzialu 0-2, jezeli wychodzi liczba poza przedzial to usuwamy takie
+# wartopsci i losujemy jeszcze raz dopoki dlugosc nie bedzie odpowiadala wielkosci populacji

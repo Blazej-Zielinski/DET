@@ -16,6 +16,7 @@ from src.algorithms.methods.em_de import em_mutation
 from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
 from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities, \
     sa_binomial_crossing, sa_adapt_crossover_rates
+from src.algorithms.initializers import initialize_mutation_factors_normal_dist
 
 
 def default_alg(pop, config):
@@ -355,6 +356,11 @@ def self_adaptive_de(pop, config, curr_gen: int, additional_data: list):
 
     # Select new population
     new_pop, _ = sa_selection(pop, u_pop, members_strategies, crossover_rates, crossover_success_rates)
+
+    # Initialize new mutation factors
+    mutation_factors = initialize_mutation_factors_normal_dist(config.mutation_factor_mean, config.mutation_factor_std,
+                                                               config.population_size, config.mutation_factor_low,
+                                                               config.mutation_factor_high)
 
     # Update crossover rates
     if curr_gen != 0 and curr_gen % config.crossover_learning_period == 0:

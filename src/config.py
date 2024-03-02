@@ -9,7 +9,7 @@ class Config:
     def __init__(self):
         self.algorithm_type = AlgorithmType.SELF_ADAPTIVE
 
-        self.num_of_epochs = 10000
+        self.num_of_epochs = 101
         self.population_size = 100
         self.nr_of_args = 10
         self.interval = [-100, 100]
@@ -26,7 +26,9 @@ class Config:
         if self.algorithm_type == AlgorithmType.SELF_ADAPTIVE:
             self.mutation_factor_mean = 0.5
             self.mutation_factor_std = 0.3
-            self.mutation_learning_period = 25
+            self.mutation_factor_low = 0
+            self.mutation_factor_high = 2
+            self.mutation_learning_period = 50
             self.mutation_strategies = [StrategiesEnum.RAND_1, StrategiesEnum.CURRENT_TO_BEST_1]
 
             self.crossover_rate_mean = 0.5

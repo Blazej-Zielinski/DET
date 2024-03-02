@@ -27,6 +27,9 @@ class AlgorithmType(Enum):
 
     # new
     SELF_ADAPTIVE = 'self_adaptive'
+    GDE3 = 'gde3'
+    FUZZY = 'fuzzy'
+    JADE = 'jade'
 
 
 def get_algorithm(alg_type: AlgorithmType):
