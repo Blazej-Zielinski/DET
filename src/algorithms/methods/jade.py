@@ -1,8 +1,10 @@
 import copy
 import random
 import numpy as np
+from math import floor
 
 from src.models.member import Member
+from src.models.population import Population
 
 from src.enums.strategies import mutation_curr_to_best_1
 from src.algorithms.initializers import draw_cauchy_dist_within_bounds, draw_norm_dist_within_bounds
@@ -18,8 +20,39 @@ from src.algorithms.initializers import draw_cauchy_dist_within_bounds, draw_nor
 # In each generation the parent solutions, which fail to success into next gen are added to the archive
 # If the size of archive exceeds threshold some of the solutions are randomly removed
 
-def jade_mutation():
-    pass
+def jade_mutation(population: Population, archive: list[Member], mutation_factors: np.ndarray[float], p_best: float):
+    pop_members_array = population.members
+    pop_archive_members_array = np.concatenate((pop_members_array, np.array(archive)))
+
+    p_best_members = population.get_best_members(floor(p_best * population.size))
+
+    new_members = []
+    for (i, base_member) in enumerate(pop_members_array):
+        best_member = random.choice(p_best_members)[0]
+
+        indices = list(range(population.size))
+        indices.remove(i)
+        selected_idx = random.choice(indices)
+        x_r1 = pop_members_array[selected_idx]
+
+        indices = list(range(len(pop_archive_members_array)))
+        indices.remove(i)
+        indices.remove(selected_idx)
+        selected_idx = random.choice(indices)
+        x_r2 = pop_archive_members_array[selected_idx]
+
+        new_member = mutation_curr_to_best_1(base_member, best_member, [x_r1, x_r2], mutation_factors[i])
+        new_members.append(new_member)
+
+    new_population = Population(
+        interval=population.interval,
+        arg_num=population.arg_num,
+        size=population.size,
+        optimization=population.optimization
+    )
+    new_population.members = np.array(new_members)
+
+    return new_population
 
 
 def jade_adapt_mutation_factors(config, success_mutation_factors: list[float]) -> np.ndarray[float] | None:
