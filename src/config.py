@@ -33,7 +33,8 @@ class Config:
 
             self.crossover_rate_mean = 0.5
             self.crossover_rate_std = 0.1
-            self.crossover_learning_period = 5
+            self.crossover_reinit_period = 5
+            self.crossover_learning_period = 25
 
     def set_crossover_mean(self, new_mean: float):
         self.crossover_rate_mean = new_mean
