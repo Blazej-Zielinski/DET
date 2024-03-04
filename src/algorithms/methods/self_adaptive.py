@@ -2,60 +2,12 @@ import copy
 import random
 import numpy as np
 
-from src.models.member import Member
 from src.models.population import Population
-from src.enums.strategies import StrategiesEnum
+from src.enums.strategies import StrategiesEnum, mutation_rand_1, mutation_rand_2, mutation_best_1, mutation_best_2, \
+    mutation_curr_to_best_1
 from src.models.strategy import Strategy
 from src.enums.optimization import OptimizationType
 from src.algorithms.methods.default_de import binomial_crossing_ind
-
-
-def sa_mutation_rand_1(members: list[Member], f: float) -> Member:
-    """
-        Formula: v_ij = x_r1 + F(x_r2 - x_r3)
-    """
-    new_member = copy.deepcopy(members[0])
-    new_member.chromosomes = members[0].chromosomes + (members[1].chromosomes - members[2].chromosomes) * f
-    return new_member
-
-
-def sa_mutation_best_1(best_member: Member, members: list[Member], f: float) -> Member:
-    """
-        Formula: v_ij = x_best + F(x_r1 - x_r2)
-    """
-    new_member = copy.deepcopy(best_member)
-    new_member.chromosomes = best_member.chromosomes + (members[0].chromosomes - members[1].chromosomes) * f
-    return new_member
-
-
-def sa_mutation_curr_to_best_1(base_member: Member, best_member: Member, members: list[Member], f: float) -> Member:
-    """
-        Formula: v_ij = x_base + F(x_best - x_base) + F(x_r1 - x_r2)
-    """
-    new_member = copy.deepcopy(base_member)
-    new_member.chromosomes = (base_member.chromosomes + (best_member.chromosomes - base_member.chromosomes) * f +
-                              (members[0].chromosomes - members[1].chromosomes) * f)
-    return new_member
-
-
-def sa_mutation_best_2(best_member: Member, members: list[Member], f: float) -> Member:
-    """
-        Formula: v_ij = x_best + F(x_r1 - x_r2) + F(x_r3 - x_r4)
-    """
-    new_member = copy.deepcopy(best_member)
-    new_member.chromosomes = (best_member.chromosomes + (members[0].chromosomes - members[1].chromosomes) * f +
-                              (members[2].chromosomes - members[3].chromosomes) * f)
-    return new_member
-
-
-def sa_mutation_rand_2(members: list[Member], f: float) -> Member:
-    """
-        Formula: v_ij = x_best + F(x_r1 - x_r2) + F(x_r3 - x_r4)
-    """
-    new_member = copy.deepcopy(members[0])
-    new_member.chromosomes = (members[0].chromosomes + (members[1].chromosomes - members[2].chromosomes) * f +
-                              (members[3].chromosomes - members[4].chromosomes) * f)
-    return new_member
 
 
 def sa_get_mutation_strategy(mutation_strategies: list[Strategy], member_strategy_indicator: float) -> Strategy:
@@ -70,12 +22,12 @@ def sa_get_mutation_strategy(mutation_strategies: list[Strategy], member_strateg
 
 def get_strategy_function(strategy_type: StrategiesEnum):
     return {
-        StrategiesEnum.RAND_1: (lambda base, best, members, f: sa_mutation_rand_1(members, f)),
-        StrategiesEnum.RAND_2: (lambda base, best, members, f: sa_mutation_rand_2(members, f)),
-        StrategiesEnum.BEST_1: (lambda base, best, members, f: sa_mutation_best_1(best, members, f)),
-        StrategiesEnum.BEST_2: (lambda base, best, members, f: sa_mutation_best_2(best, members, f)),
+        StrategiesEnum.RAND_1: (lambda base, best, members, f: mutation_rand_1(members, f)),
+        StrategiesEnum.RAND_2: (lambda base, best, members, f: mutation_rand_2(members, f)),
+        StrategiesEnum.BEST_1: (lambda base, best, members, f: mutation_best_1(best, members, f)),
+        StrategiesEnum.BEST_2: (lambda base, best, members, f: mutation_best_2(best, members, f)),
         StrategiesEnum.CURRENT_TO_BEST_1: (
-            lambda base, best, members, f: sa_mutation_curr_to_best_1(base, best, members, f)),
+            lambda base, best, members, f: mutation_curr_to_best_1(base, best, members, f)),
     }.get(strategy_type, lambda: None)
 
 
