@@ -47,17 +47,40 @@ def sa_initialize(config) -> tuple:
     return mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates
 
 
-def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: float,
-                                 high: float) -> np.ndarray:
-    values = np.random.normal(loc=mean, scale=std, size=arr_size)
+def jade_initialize(config) -> tuple:
+    mutation_factors = draw_cauchy_dist_within_bounds(config.mutation_factor_mean, config.mutation_factor_std,
+                                                      config.population_size, config.mutation_factor_low,
+                                                      config.mutation_factor_high)
 
-    while True:
-        mask = (low < values) & (values <= high)
-        values = values[mask]
+    crossover_rates = draw_norm_dist_within_bounds(config.crossover_rate_mean, config.crossover_rate_std,
+                                                   config.population_size, config.crossover_rate_low,
+                                                   config.crossover_rate_high)
+    success_mutation_factors = []
+    success_crossover_rates = []
 
-        size_vals = len(values)
-        if size_vals == arr_size:
-            return values
+    return mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates
 
-        new_values = np.random.normal(loc=mean, scale=std, size=arr_size - size_vals)
+
+def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: float, high: float) -> np.ndarray:
+    """
+    Draw numbers from normal distributions within bounds (low, high].
+    """
+    values = np.clip(np.random.normal(loc=mean, scale=std, size=arr_size), low, high)
+
+    while len(values) < arr_size:
+        new_values = np.clip(np.random.normal(loc=mean, scale=std, size=arr_size - len(values)), low, high)
         values = np.concatenate((values, new_values))
+
+    return values[:arr_size]
+
+
+def draw_cauchy_dist_within_bounds(mean: float, std: float, arr_size: int, low: int, high: int) -> np.ndarray:
+    """
+        Draw numbers from Cauchy distribution within bounds (low,high].
+    """
+    values = mean + std * np.random.standard_cauchy(size=arr_size)
+
+    values = np.where(values >= high, high, values)
+    values = np.where(values <= low, draw_cauchy_dist_within_bounds(mean, std, arr_size, low, high), values)
+
+    return values

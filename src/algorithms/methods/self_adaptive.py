@@ -153,6 +153,6 @@ def sa_adapt_probabilities(strategy1: Strategy, strategy2: Strategy):
 def sa_adapt_crossover_rates(config, crossover_success_rates: list[float]):
     new_cross_mean = sum(crossover_success_rates) / len(crossover_success_rates) if len(
         crossover_success_rates) != 0 else 0
-    config.set_crossover_mean(new_cross_mean)
+    config.set_crossover_rate_mean(new_cross_mean)
     return np.random.normal(loc=config.crossover_rate_mean, scale=config.crossover_rate_std,
                             size=config.population_size)

@@ -36,7 +36,24 @@ class Config:
             self.crossover_reinit_period = 5
             self.crossover_learning_period = 25
 
-    def set_crossover_mean(self, new_mean: float):
+        if self.algorithm_type == AlgorithmType.JADE:
+            self.mutation_factor_mean = 0.5
+            self.mutation_factor_std = 0.1
+            self.mutation_factor_low = 0
+            self.mutation_factor_high = 1
+
+            self.crossover_rate_mean = 0.5
+            self.crossover_rate_std = 0.1
+            self.crossover_rate_low = 0
+            self.crossover_rate_high = 1
+
+            self.jade_c = 0.1  # (constant between (0,1)) describes the rate of parameter adaptation
+            self.jade_p = 0.1  # (constant between (0,1)) describes the greediness of the mutation
+
+    def set_mutation_factor_mean(self, new_mean: float):
+        self.mutation_factor_mean = new_mean
+
+    def set_crossover_rate_mean(self, new_mean: float):
         self.crossover_rate_mean = new_mean
 
 
