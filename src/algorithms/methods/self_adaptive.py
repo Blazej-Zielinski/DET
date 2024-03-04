@@ -88,7 +88,7 @@ def sa_binomial_crossing(origin_population: Population, mutated_population: Popu
 
 def sa_selection(origin_population: Population, modified_population: Population, member_strategies: list[Strategy],
                  crossover_rates: np.ndarray[float], crossover_success_rates: list[float]):
-    if origin_population.size != modified_population.size != len(member_strategies):
+    if origin_population.size != modified_population.size != len(member_strategies) != len(crossover_rates):
         print("Selection: populations have different sizes")
         return None
 

@@ -57,8 +57,9 @@ def jade_initialize(config) -> tuple:
                                                    config.crossover_rate_high)
     success_mutation_factors = []
     success_crossover_rates = []
+    archive = []
 
-    return mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates
+    return mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive
 
 
 def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: float, high: float) -> np.ndarray:

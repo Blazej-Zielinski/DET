@@ -17,6 +17,8 @@ from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomi
 from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities, \
     sa_binomial_crossing, sa_adapt_crossover_rates
 from src.algorithms.initializers import draw_norm_dist_within_bounds
+from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adapt_mutation_factors, \
+    jade_adapt_crossover_rates, jade_reduce_archive
 
 
 def default_alg(pop, config):
@@ -333,7 +335,7 @@ def scaling_params_de(pop, config, curr_gen):
     return new_pop
 
 
-def self_adaptive_de(pop, config, curr_gen: int, additional_data: list):
+def self_adaptive_de(pop, config, curr_gen: int, additional_data: tuple):
     """
     Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1554904&tag=1
     :param curr_gen:
@@ -379,3 +381,38 @@ def self_adaptive_de(pop, config, curr_gen: int, additional_data: list):
 
     return new_pop, (
         mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates)
+
+
+def jade(pop, config, additional_data: tuple):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5208221&tag=1
+        :param curr_gen:
+        :param pop:
+        :param config:
+        :param additional_data:
+        :return:
+        """
+
+    mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive = additional_data
+
+    v_pop = jade_mutation(pop, archive, mutation_factors, config.jade_p)
+
+    u_pop = sa_binomial_crossing(pop, v_pop, crossover_rates)
+
+    # boundary constrains
+    fix_boundary_constraints(u_pop, config.boundary_constraints_fun)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    new_pop, archive, success_mutation_factors, success_crossover_rates, _ = jade_selection(pop, u_pop, archive,
+                                                                                            mutation_factors,
+                                                                                            crossover_rates,
+                                                                                            success_mutation_factors,
+                                                                                            success_crossover_rates)
+
+    archive = jade_reduce_archive(config.population_size, archive)
+
+    mutation_factors, success_mutation_factors = jade_adapt_mutation_factors(config, success_mutation_factors)
+
+    crossover_rates, success_crossover_rates = jade_adapt_crossover_rates(config, success_crossover_rates)
