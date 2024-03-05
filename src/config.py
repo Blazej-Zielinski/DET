@@ -13,7 +13,7 @@ class Config:
         self.population_size = 100
         self.nr_of_args = 10
         self.interval = [-100, 100]
-        self.mutation_factor = 0.5  # F
+        self.mutation_factor = 0.5  # F should be between [0;2] larger F -> higher diversity
         self.crossover_rate = 0.8  # cr
         self.mode = OptimizationType.MINIMIZATION
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)

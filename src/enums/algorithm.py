@@ -30,6 +30,7 @@ class AlgorithmType(Enum):
     GDE3 = 'gde3'
     FUZZY = 'fuzzy'
     JADE = 'jade'
+    OPPOSITION_BASED = 'opposition_based'
 
 
 def get_algorithm(alg_type: AlgorithmType):

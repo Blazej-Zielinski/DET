@@ -11,17 +11,6 @@ from src.algorithms.initializers import draw_cauchy_dist_within_bounds, draw_nor
 from src.enums.optimization import OptimizationType
 
 
-# TODO
-# Fi is connected with xi, so every x has its own F
-# also F is regenerate in each generation and it is also adapted
-
-# Move strategies from SaDE to somewhere else so they could be used in different algos
-
-# Initializing archive as empty
-# In each generation the parent solutions, which fail to success into next gen are added to the archive
-# If the size of archive exceeds threshold some of the solutions are randomly removed
-
-
 def jade_mutation(population: Population, archive: list[Member], mutation_factors: np.ndarray[float], p_best: float):
     pop_members_array = population.members
     pop_archive_members_array = np.concatenate((pop_members_array, np.array(archive)))
@@ -152,5 +141,3 @@ def jade_reduce_archive(pop_size: int, archive: list[Member]) -> list[Member]:
         archive.pop(idx)
 
     return archive
-
-

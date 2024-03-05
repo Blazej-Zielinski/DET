@@ -19,7 +19,7 @@ from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_a
 from src.algorithms.initializers import draw_norm_dist_within_bounds
 from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adapt_mutation_factors, \
     jade_adapt_crossover_rates, jade_reduce_archive
-
+from src.algorithms.methods.opposition_based import opp_based_generate_opposite_pop, opp_based_selection
 
 def default_alg(pop, config):
     v_pop = mutation(pop, f=config.mutation_factor)
@@ -418,3 +418,16 @@ def jade(pop, config, additional_data: tuple):
     crossover_rates, success_crossover_rates = jade_adapt_crossover_rates(config, success_crossover_rates)
 
     return new_pop, (mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive)
+
+
+def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
+    if curr_gen == 0:
+        # Generate opposite population
+        opposite_pop = opp_based_generate_opposite_pop(pop)
+
+        # Update fitness values before selection
+        opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+        # Create new pop with base and opposite members
+        pop = opp_based_selection(pop, opposite_pop)
+
