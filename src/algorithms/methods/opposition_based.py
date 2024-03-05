@@ -7,7 +7,7 @@ from src.models.population import Population
 from src.enums.optimization import OptimizationType
 
 
-def opp_based_generate_opposite_pop(population: Population):
+def opp_based_calculate_opposite_pop(population: Population):
     new_members = []
 
     interval = sum(population.interval)
@@ -61,3 +61,6 @@ def opp_based_selection(origin_population: Population, modified_population: Popu
     new_population.members = np.array(new_members)
 
     return new_population, ()
+
+# Jr - jumping probability
+# Min and Max of every chromosome which will be used as Low and High limits

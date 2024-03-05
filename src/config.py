@@ -19,6 +19,9 @@ class Config:
         self.function = FunctionObject(FUNCTIONS.F1, self.nr_of_args)
         self.boundary_constraints_fun = BoundaryFixing.RANDOM
 
+        self.best_fitness_value = None
+        self.value_to_reach = 10e-8
+
         self.run_all_functions = False
         self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
@@ -49,6 +52,12 @@ class Config:
 
             self.jade_c = 0.1  # (constant between (0,1)) describes the rate of parameter adaptation
             self.jade_p = 0.1  # (constant between (0,1)) describes the greediness of the mutation
+
+        if self.algorithm_type == AlgorithmType.OPPOSITION_BASED:
+            self.nfc = 0
+            self.max_nfc = 10e6
+            self.jumping_rate = 0.3
+            self.mutation_strategy = StrategiesEnum.RAND_1
 
     def set_mutation_factor_mean(self, new_mean: float):
         self.mutation_factor_mean = new_mean

@@ -16,9 +16,15 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
     algorithm_vars = initialize_alg_vars(config) if initialize_alg_vars is not None else None
 
     data = calculate_results(temp_pop, start_time, -1)
+    config.best_fitness_value = data[1].fitness_value
     best_individuals.append(data)
 
     for epoch in tqdm(range(config.num_of_epochs), desc="Performing evolution"):
+
+        # Early stopping if best solution reached the objective threshold
+        if config.best_fitness_value <= config.value_to_reach:
+            return best_individuals
+
         # Applying selected algorithm
         new_pop, algorithm_vars = algorithm(temp_pop, config, epoch, algorithm_vars)
 
@@ -27,6 +33,7 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
 
         # Calculate results
         data = calculate_results(temp_pop, start_time, epoch)
+        config.best_fitness_value = data[1].fitness_value if data[1].fitness_value < config.best_fitness_value else config.best_fitness_value
         best_individuals.append(data)
 
     return best_individuals
