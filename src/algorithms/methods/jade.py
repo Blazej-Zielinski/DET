@@ -30,7 +30,7 @@ def jade_mutation(population: Population, archive: list[Member], mutation_factor
 
     new_members = []
     for (i, base_member) in enumerate(pop_members_array):
-        best_member = random.choice(p_best_members)[0]
+        best_member = random.choice(p_best_members)
 
         indices = list(range(population.size))
         indices.remove(i)
@@ -109,7 +109,7 @@ def jade_adapt_mutation_factors(config, success_mutation_factors: list[float]) -
 
     success_factor_mean = sum(success_mutation_factors) / len(success_mutation_factors)
     new_mutation_factors_mean = (1 - config.jade_c) * config.mutation_factor + config.jade_c * success_factor_mean
-    config.set_mutation_factors(new_mutation_factors_mean)
+    config.set_mutation_factor_mean(new_mutation_factors_mean)
     return draw_cauchy_dist_within_bounds(config.mutation_factor_mean, config.mutation_factor_std,
                                           config.population_size, config.mutation_factor_low,
                                           config.mutation_factor_high), []
@@ -120,19 +120,24 @@ def jade_adapt_crossover_rates(config, success_crossover_rates: list[float]) -> 
         return None
 
     success_crossover_mean = lehmer_mean(success_crossover_rates)
-    new_crossover_rates_mean = (1 - config.jade_c) * config.crossover_rate_mean + config.jade_c * success_crossover_mean
-    config.set_crossover_rates(new_crossover_rates_mean)
+    new_crossover_rate_mean = (1 - config.jade_c) * config.crossover_rate_mean + config.jade_c * success_crossover_mean
+    config.set_crossover_rate_mean(new_crossover_rate_mean)
     return draw_norm_dist_within_bounds(config.crossover_rate_mean, config.crossover_rate_std,
                                         config.population_size, config.crossover_rate_low,
                                         config.crossover_rate_high), []
 
 
 def lehmer_mean(numbers: list[float]) -> float | None:
-    if len(numbers) == 0:
+    if not numbers or len(numbers) == 0:
         return None
 
-    numerator = np.sum(np.array(numbers) ** 2)
-    denominator = sum(numbers)
+    numbers_array = np.array(numbers)
+
+    numerator = np.sum(numbers_array ** 2)
+    denominator = np.sum(numbers_array)
+
+    if denominator == 0:
+        return None
 
     return numerator / denominator
 

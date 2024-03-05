@@ -34,6 +34,9 @@ def run_de(config, fun=None):
     Execution time: {round(execution_time,2)} seconds
     ''')
 
+    print(best_individuals_data[0][1].fitness_value)
+    print(best_individuals_data[-1][1].fitness_value)
+
     # Connect to database
     db_config = DatabaseConfig()
     conn = SQLiteConnector(db_config.database)

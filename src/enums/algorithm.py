@@ -1,8 +1,8 @@
 from enum import Enum
 from src.algorithms.algs import default_alg, best_worst_alg, random_locations_alg, novel_modified_de, pcx_de, pbx_de, \
     laplace_de, tensegrity_structures_de, bidirectional_de, adaptive_params_de, em_de, scaling_params_de, \
-    self_adaptive_de
-from src.algorithms.initializers import nm_initialize, pbx_initialize, adaptive_params_initialize, sa_initialize
+    self_adaptive_de, jade
+from src.algorithms.initializers import nm_initialize, pbx_initialize, adaptive_params_initialize, sa_initialize, jade_initialize
 
 
 class AlgorithmType(Enum):
@@ -58,5 +58,9 @@ def get_algorithm(alg_type: AlgorithmType):
             lambda pop, config, curr_gen, args: scaling_params_de(pop, config, curr_gen + 1), None),
         AlgorithmType.SELF_ADAPTIVE: (
             lambda pop, config, curr_gen, args: self_adaptive_de(pop, config, curr_gen, args),
-            lambda config: sa_initialize(config))
+            lambda config: sa_initialize(config)),
+        AlgorithmType.JADE: (
+            lambda pop, config, curr_gen, args: jade(pop, config, args),
+            lambda config: jade_initialize(config)
+        )
     }.get(alg_type, lambda: None)

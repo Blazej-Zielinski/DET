@@ -416,3 +416,5 @@ def jade(pop, config, additional_data: tuple):
     mutation_factors, success_mutation_factors = jade_adapt_mutation_factors(config, success_mutation_factors)
 
     crossover_rates, success_crossover_rates = jade_adapt_crossover_rates(config, success_crossover_rates)
+
+    return new_pop, (mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive)

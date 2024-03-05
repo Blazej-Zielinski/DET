@@ -75,13 +75,30 @@ def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: fl
     return values[:arr_size]
 
 
-def draw_cauchy_dist_within_bounds(mean: float, std: float, arr_size: int, low: int, high: int) -> np.ndarray:
-    """
-        Draw numbers from Cauchy distribution within bounds (low,high].
-    """
-    values = mean + std * np.random.standard_cauchy(size=arr_size)
+# def draw_cauchy_dist_within_bounds(mean: float, std: float, arr_size: int, low: int, high: int) -> np.ndarray:
+#     """
+#         Draw numbers from Cauchy distribution within bounds (low,high].
+#     """
+#     values = mean + std * np.random.standard_cauchy(size=arr_size)
+#
+#     values = np.where(values >= high, high, values)
+#     values = np.where(values <= low, draw_cauchy_dist_within_bounds(mean, std, arr_size, low, high), values)
+#
+#     return values
 
-    values = np.where(values >= high, high, values)
-    values = np.where(values <= low, draw_cauchy_dist_within_bounds(mean, std, arr_size, low, high), values)
+
+def draw_cauchy_dist_within_bounds(mean: float, std: float, arr_size: int, low: int, high: int) -> np.ndarray:
+    values = np.empty(arr_size)
+    i = 0
+
+    while i < arr_size:
+        value = mean + std * np.random.standard_cauchy()
+
+        if value >= 1:
+            values[i] = 1
+            i += 1
+        elif 0 < value < 1:
+            values[i] = value
+            i += 1
 
     return values
