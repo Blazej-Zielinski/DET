@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 from src.algorithms.boudary_fixing import fix_boundary_constraints
 from src.algorithms.methods.default_de import mutation, binomial_crossing, selection
@@ -19,7 +20,8 @@ from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_a
 from src.algorithms.initializers import draw_norm_dist_within_bounds
 from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adapt_mutation_factors, \
     jade_adapt_crossover_rates, jade_reduce_archive
-from src.algorithms.methods.opposition_based import opp_based_calculate_opposite_pop, opp_based_selection
+from src.algorithms.methods.opposition_based import opp_based_calculate_opposite_pop, opp_based_selection, \
+    opp_based_min_max_gen
 
 
 def default_alg(pop, config):
@@ -422,9 +424,7 @@ def jade(pop, config, additional_data: tuple):
 
 
 def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
-    bfv = additional_data
-
-    if (bfv > config.vtr) and (config.nfc < config.max_nfc):
+    if config.nfc < config.max_nfc:
         if curr_gen == 0:
             # Generate opposite population
             opposite_pop = opp_based_calculate_opposite_pop(pop)
@@ -434,3 +434,30 @@ def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
 
             # Create new pop with base and opposite members
             pop = opp_based_selection(pop, opposite_pop)
+
+        v_pop = mutation(pop, config.mutation_factor)
+
+        # boundary constrains
+        fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+        u_pop = binomial_crossing(pop, v_pop, config.crossover_rate)
+
+        # Update values before selection
+        u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+        # Select new population
+        new_pop, _ = selection(pop, u_pop)
+
+        if random.random() < config.jumping_rate:
+            min_vals, max_vals = opp_based_min_max_gen(new_pop)
+
+            # Generate opposite population
+            opposite_pop = opp_based_calculate_opposite_pop(new_pop, min_vals, max_vals)
+
+            # Update fitness values before selection
+            opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+            # Create new pop with base and opposite members
+            new_pop = opp_based_selection(new_pop, opposite_pop)
+
+        return new_pop, ()

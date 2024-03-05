@@ -57,7 +57,6 @@ class Config:
             self.nfc = 0
             self.max_nfc = 10e6
             self.jumping_rate = 0.3
-            self.mutation_strategy = StrategiesEnum.RAND_1
 
     def set_mutation_factor_mean(self, new_mean: float):
         self.mutation_factor_mean = new_mean

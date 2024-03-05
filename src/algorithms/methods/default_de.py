@@ -5,6 +5,7 @@ import copy
 from src.models.member import Member
 from src.models.population import Population
 from src.enums.optimization import OptimizationType
+from src.enums.strategies import mutation_rand_1
 
 
 def mutation_ind(base_member: Member, member1: Member, member2: Member, f):
@@ -16,11 +17,27 @@ def mutation_ind(base_member: Member, member1: Member, member2: Member, f):
     return new_member
 
 
+# def mutation(population: Population, f):
+#     new_members = []
+#     for _ in range(population.size):
+#         selected_members = random.sample(population.members.tolist(), 3)
+#         new_member = mutation_ind(selected_members[0], selected_members[1], selected_members[2], f)
+#         new_members.append(new_member)
+#
+#     new_population = Population(
+#         interval=population.interval,
+#         arg_num=population.arg_num,
+#         size=population.size,
+#         optimization=population.optimization
+#     )
+#     new_population.members = np.array(new_members)
+#     return new_population
+
 def mutation(population: Population, f):
     new_members = []
     for _ in range(population.size):
         selected_members = random.sample(population.members.tolist(), 3)
-        new_member = mutation_ind(selected_members[0], selected_members[1], selected_members[2], f)
+        new_member = mutation_rand_1(selected_members, f)
         new_members.append(new_member)
 
     new_population = Population(
