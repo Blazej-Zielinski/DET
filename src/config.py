@@ -10,7 +10,7 @@ class Config:
         self.algorithm_type = AlgorithmType.DEGL
 
         self.num_of_epochs = 101
-        self.population_size = 10
+        self.population_size = 100
         self.nr_of_args = 10
         self.interval = [-100, 100]
         self.mutation_factor = 0.5  # F should be between [0;2] larger F -> higher diversity
@@ -59,8 +59,8 @@ class Config:
             self.jumping_rate = 0.3
 
         if self.algorithm_type == AlgorithmType.DEGL:
-            self.k_n = 3    # 2k + 1 <= NP, at least k=2
-            self.weight = 0.5
+            self.k_n = 9    # 2k + 1 <= NP, at least k=2
+            self.weight = 0.9
 
     def set_mutation_factor_mean(self, new_mean: float):
         self.mutation_factor_mean = new_mean

@@ -50,7 +50,9 @@ def degl_mutation(population: Population, k: int, f: float, w: float) -> Populat
         global_members = [pop_members_list[i] for i in selected_indices]
         global_donor = mutation_curr_to_best_1(member, best_global, global_members, f)
 
+        # Combining donors into new member
         new_member = degl_combine_donors(global_donor, local_donor, w)
+        new_members.append(new_member)
 
     new_population = Population(
         interval=population.interval,
