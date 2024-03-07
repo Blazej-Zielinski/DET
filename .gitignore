@@ -2,3 +2,4 @@ venv/
 .idea/
 *.db
 Notes.md
+test.py

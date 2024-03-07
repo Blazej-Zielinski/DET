@@ -62,10 +62,6 @@ def jade_initialize(config) -> tuple:
     return mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive
 
 
-def opposition_based_de_initialize(config) -> tuple:
-    pass
-
-
 def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: float, high: float) -> np.ndarray:
     """
     Draw numbers from normal distributions within bounds (low, high].

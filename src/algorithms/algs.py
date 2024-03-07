@@ -423,7 +423,7 @@ def jade(pop, config, additional_data: tuple):
     return new_pop, (mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive)
 
 
-def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
+def opposition_based(pop, config, curr_gen: int):
     if config.nfc < config.max_nfc:
         if curr_gen == 0:
             # Generate opposite population
@@ -431,9 +431,10 @@ def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
 
             # Update fitness values before selection
             opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+            config.nfc += config.population_size
 
             # Create new pop with base and opposite members
-            pop = opp_based_selection(pop, opposite_pop)
+            pop, _ = opp_based_selection(pop, opposite_pop)
 
         v_pop = mutation(pop, config.mutation_factor)
 
@@ -444,6 +445,7 @@ def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
 
         # Update values before selection
         u_pop.update_fitness_values(lambda params: config.function.eval(params))
+        config.nfc += config.population_size
 
         # Select new population
         new_pop, _ = selection(pop, u_pop)
@@ -456,8 +458,9 @@ def opposition_based(pop, config, curr_gen: int, additional_data: tuple):
 
             # Update fitness values before selection
             opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+            config.nfc += config.population_size
 
             # Create new pop with base and opposite members
-            new_pop = opp_based_selection(new_pop, opposite_pop)
+            new_pop, _ = opp_based_selection(new_pop, opposite_pop)
 
         return new_pop, ()

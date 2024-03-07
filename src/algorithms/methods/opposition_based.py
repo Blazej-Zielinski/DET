@@ -1,5 +1,4 @@
 import copy
-import random
 import numpy as np
 
 from src.models.member import Member
@@ -9,20 +8,19 @@ from src.enums.optimization import OptimizationType
 
 def opp_based_calculate_opposite_pop(population: Population, min_vals: np.ndarray[float] = None,
                                      max_vals: np.ndarray[float] = None) -> Population:
-    new_members = []
-
     if min_vals is not None and max_vals is not None:
         interval = min_vals + max_vals
     else:
         interval = sum(population.interval)
 
+    is_interval_array = isinstance(interval, np.ndarray)
+
+    new_members = []
     for member in population.members:
         new_member = Member(population.interval, population.arg_num)
         for i in range(population.arg_num):
-            if isinstance(interval, np.ndarray):
-                new_member.chromosomes[i].real_value = interval[i] - member.chromosomes[i].real_value
-            else:
-                new_member.chromosomes[i].real_value = interval - member.chromosomes[i].real_value
+            new_member.chromosomes[i].real_value = (interval[i] if is_interval_array else interval) - \
+                                                   member.chromosomes[i].real_value
         new_members.append(new_member)
 
     opposite_population = Population(
@@ -72,7 +70,7 @@ def opp_based_selection(origin_population: Population, modified_population: Popu
 
 
 def opp_based_min_max_gen(pop: Population) -> tuple[np.ndarray[float], np.ndarray[float]]:
-    all_chromosomes = np.array([member.chromosomes for member in pop.members])
+    all_chromosomes = np.array([[chromosome.real_value for chromosome in member.chromosomes] for member in pop.members])
 
     min_values = np.min(all_chromosomes, axis=0)
     max_values = np.max(all_chromosomes, axis=0)
