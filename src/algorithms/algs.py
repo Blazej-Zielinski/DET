@@ -22,6 +22,7 @@ from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adap
     jade_adapt_crossover_rates, jade_reduce_archive
 from src.algorithms.methods.opposition_based import opp_based_calculate_opposite_pop, opp_based_selection, \
     opp_based_min_max_gen
+from src.algorithms.methods.degl import degl_mutation
 
 
 def default_alg(pop, config):
@@ -464,3 +465,20 @@ def opposition_based(pop, config, curr_gen: int):
             new_pop, _ = opp_based_selection(new_pop, opposite_pop)
 
         return new_pop, ()
+
+
+def degl(pop, config):
+    v_pop = degl_mutation(pop, config.k_n, config.mutation_factor, config.weight)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = selection(pop, u_pop)
+
+    return new_pop, ()

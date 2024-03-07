@@ -1,7 +1,7 @@
 from enum import Enum
 from src.algorithms.algs import default_alg, best_worst_alg, random_locations_alg, novel_modified_de, pcx_de, pbx_de, \
     laplace_de, tensegrity_structures_de, bidirectional_de, adaptive_params_de, em_de, scaling_params_de, \
-    self_adaptive_de, jade, opposition_based
+    self_adaptive_de, jade, opposition_based, degl
 from src.algorithms.initializers import nm_initialize, pbx_initialize, adaptive_params_initialize, sa_initialize, jade_initialize
 
 
@@ -58,12 +58,13 @@ def get_algorithm(alg_type: AlgorithmType):
         AlgorithmType.EM_DE: (lambda pop, config, curr_gen, args: em_de(pop, config), None),
         AlgorithmType.SCALING_PARAMS: (
             lambda pop, config, curr_gen, args: scaling_params_de(pop, config, curr_gen + 1), None),
-        AlgorithmType.SELF_ADAPTIVE: (
+        AlgorithmType.SADE: (
             lambda pop, config, curr_gen, args: self_adaptive_de(pop, config, curr_gen, args),
             lambda config: sa_initialize(config)),
         AlgorithmType.JADE: (
             lambda pop, config, curr_gen, args: jade(pop, config, args),
             lambda config: jade_initialize(config)
         ),
-        AlgorithmType.OPPOSITION_BASED: (lambda pop, config, curr_gen, args: opposition_based(pop, config, curr_gen), None)
+        AlgorithmType.OPDE: (lambda pop, config, curr_gen, args: opposition_based(pop, config, curr_gen), None),
+        AlgorithmType.DEGL: (lambda pop, config, curr_gen, args: degl(pop, config), None)
     }.get(alg_type, lambda: None)

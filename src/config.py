@@ -7,10 +7,10 @@ from src.enums.strategies import StrategiesEnum
 
 class Config:
     def __init__(self):
-        self.algorithm_type = AlgorithmType.OPPOSITION_BASED
+        self.algorithm_type = AlgorithmType.DEGL
 
         self.num_of_epochs = 101
-        self.population_size = 100
+        self.population_size = 10
         self.nr_of_args = 10
         self.interval = [-100, 100]
         self.mutation_factor = 0.5  # F should be between [0;2] larger F -> higher diversity
@@ -26,7 +26,7 @@ class Config:
         self.run_all_args = False
         self.nr_of_args_arr = [10, 20, 30]
 
-        if self.algorithm_type == AlgorithmType.SELF_ADAPTIVE:
+        if self.algorithm_type == AlgorithmType.SADE:
             self.mutation_factor_mean = 0.5
             self.mutation_factor_std = 0.3
             self.mutation_factor_low = 0
@@ -50,13 +50,17 @@ class Config:
             self.crossover_rate_low = 0
             self.crossover_rate_high = 1
 
-            self.jade_c = 0.1  # (constant between (0,1)) describes the rate of parameter adaptation
-            self.jade_p = 0.1  # (constant between (0,1)) describes the greediness of the mutation
+            self.jade_c = 0.1   # (constant between (0,1)) describes the rate of parameter adaptation
+            self.jade_p = 0.1   # (constant between (0,1)) describes the greediness of the mutation
 
-        if self.algorithm_type == AlgorithmType.OPPOSITION_BASED:
+        if self.algorithm_type == AlgorithmType.OPDE:
             self.nfc = 0
             self.max_nfc = 10e6
             self.jumping_rate = 0.3
+
+        if self.algorithm_type == AlgorithmType.DEGL:
+            self.k_n = 3    # 2k + 1 <= NP, at least k=2
+            self.weight = 0.5
 
     def set_mutation_factor_mean(self, new_mean: float):
         self.mutation_factor_mean = new_mean
