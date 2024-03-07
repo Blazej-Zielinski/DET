@@ -26,11 +26,12 @@ class AlgorithmType(Enum):
     TENSEGRITY = 'tensegrity'
 
     # new
-    SELF_ADAPTIVE = 'self_adaptive'
-    GDE3 = 'gde3'
-    FUZZY = 'fuzzy'
-    JADE = 'jade'
-    OPPOSITION_BASED = 'opposition_based'
+    SADE = 'Self-adaptive DE'
+    GDE3 = '3rd evolution step generalized DE'
+    FUZZY = 'Fuzzy-adaptive DE'
+    JADE = 'Adaptive DE with optional external archive'
+    OPDE = 'Opposition-based DE'
+    DEGL = 'DE using a neighborhood-based mutation operator'
 
 
 def get_algorithm(alg_type: AlgorithmType):
