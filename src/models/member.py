@@ -27,9 +27,9 @@ class Member:
                f"{''.join(str(chromosome.real_value) + '; ' for chromosome in self.chromosomes)}] \n" \
                f"\t Fitness value: {self.fitness_value}\n" \
                f"]"
-               #f"\t Bin values: [\n" \
-               #f" {''.join(tab + tab + str(chromosome.binary_value) + new_line for chromosome in self.chromosomes)}" \
-               #f"\t ]\n" \
+        # f"\t Bin values: [\n" \
+        # f" {''.join(tab + tab + str(chromosome.binary_value) + new_line for chromosome in self.chromosomes)}" \
+        # f"\t ]\n" \
 
     def __add__(self, other):
         chromosomes = self.chromosomes + other.chromosomes
@@ -42,6 +42,10 @@ class Member:
         if isinstance(other, float):
             result = self.chromosomes - other
             return result
+        elif isinstance(other, Member):
+            m = Member(self.interval, self.args_num)
+            m.chromosomes = self.chromosomes - other.chromosomes
+            return m
         else:
             raise TypeError("Unsupported operand type(s) for -: 'Member' and '{}'".format(type(other).__name__))
 
@@ -77,3 +81,8 @@ class Member:
         new_member = Member(self.interval, self.args_num)
         new_member.chromosomes = abs_chromosomes
         return new_member
+
+    def __mul__(self, other):
+        m = Member(self.interval, self.args_num)
+        m.chromosomes = np.array([chromosome * other for chromosome in self.chromosomes])
+        return m

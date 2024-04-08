@@ -23,6 +23,7 @@ from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adap
 from src.algorithms.methods.opposition_based import opp_based_calculate_opposite_pop, opp_based_selection, \
     opp_based_min_max_gen
 from src.algorithms.methods.degl import degl_mutation
+from src.algorithms.methods.delb import delb_mutation, delb_selection
 
 
 def default_alg(pop, config):
@@ -480,5 +481,28 @@ def degl(pop, config):
 
     # Select new population
     new_pop, _ = selection(pop, u_pop)
+
+    return new_pop, ()
+
+
+def delb(pop, config):
+    """
+        Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
+        :param pop:
+        :param config:
+        :return:
+        """
+    v_pop = delb_mutation(pop)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop = delb_selection(pop, u_pop, w=config.w, fitness_func=lambda params: config.function.eval(params))
 
     return new_pop, ()

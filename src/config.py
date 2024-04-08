@@ -7,7 +7,7 @@ from src.enums.strategies import StrategiesEnum
 
 class Config:
     def __init__(self):
-        self.algorithm_type = AlgorithmType.DEGL
+        self.algorithm_type = AlgorithmType.DELB
 
         self.num_of_epochs = 101
         self.population_size = 100
@@ -61,6 +61,9 @@ class Config:
         if self.algorithm_type == AlgorithmType.DEGL:
             self.k_n = 9    # 2k + 1 <= NP, at least k=2
             self.weight = 0.9
+
+        if self.algorithm_type == AlgorithmType.DELB:
+            self.w = 0.3  # control frequency of local exploration around trial and best vectors
 
     def set_mutation_factor_mean(self, new_mean: float):
         self.mutation_factor_mean = new_mean
