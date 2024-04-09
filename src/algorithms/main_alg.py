@@ -5,6 +5,8 @@ from tqdm import tqdm
 from src.models.population import Population
 from src.enums.algorithm import get_algorithm
 from src.config import Config
+from src.enums.optimization import OptimizationType
+
 
 
 def diff_evo_alg(pop: Population, config: Config, start_time=None):
@@ -27,13 +29,20 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
 
         # Applying selected algorithm
         new_pop, algorithm_vars = algorithm(temp_pop, config, epoch, algorithm_vars)
+        if epoch % 5 == 0:
+            print(config.mutation_factor)
+            print(config.crossover_rate)
 
         # Setting new population
         temp_pop = new_pop
 
         # Calculate results
         data = calculate_results(temp_pop, start_time, epoch)
-        config.best_fitness_value = data[1].fitness_value if data[1].fitness_value < config.best_fitness_value else config.best_fitness_value
+        if config.mode == OptimizationType.MINIMIZATION:
+            config.best_fitness_value = data[1].fitness_value if data[1].fitness_value < config.best_fitness_value else config.best_fitness_value
+        else:
+            config.best_fitness_value = data[1].fitness_value if data[1].fitness_value > config.best_fitness_value else config.best_fitness_value
+
         best_individuals.append(data)
 
     return best_individuals

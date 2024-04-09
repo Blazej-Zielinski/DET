@@ -1,5 +1,6 @@
 import numpy as np
 from src.models.strategy import Strategy
+from src.models.fuzzy_universe import FuzzyLogicControl
 
 
 def nm_initialize(config):
@@ -60,6 +61,12 @@ def jade_initialize(config) -> tuple:
     archive = []
 
     return mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive
+
+
+def fuzzy_initialize() -> tuple:
+    FLC = FuzzyLogicControl()
+
+    return FLC,
 
 
 def draw_norm_dist_within_bounds(mean: float, std: float, arr_size: int, low: float, high: float) -> np.ndarray:

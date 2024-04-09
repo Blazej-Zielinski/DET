@@ -7,7 +7,7 @@ from src.enums.strategies import StrategiesEnum
 
 class Config:
     def __init__(self):
-        self.algorithm_type = AlgorithmType.DELB
+        self.algorithm_type = AlgorithmType.FUZZY
 
         self.num_of_epochs = 101
         self.population_size = 100

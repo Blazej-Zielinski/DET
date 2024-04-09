@@ -24,6 +24,7 @@ from src.algorithms.methods.opposition_based import opp_based_calculate_opposite
     opp_based_min_max_gen
 from src.algorithms.methods.degl import degl_mutation
 from src.algorithms.methods.delb import delb_mutation, delb_selection
+from src.algorithms.methods.fuzzy_de import fuzzy_adapt_f_cr
 
 
 def default_alg(pop, config):
@@ -506,3 +507,26 @@ def delb(pop, config):
     new_pop = delb_selection(pop, u_pop, w=config.w, fitness_func=lambda params: config.function.eval(params))
 
     return new_pop, ()
+
+
+def fuzzy_de(pop, config, additional_data: tuple):
+    v_pop = mutation(pop, f=config.mutation_factor)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = selection(pop, u_pop)
+
+    new_f, new_cr = fuzzy_adapt_f_cr(FLC=additional_data[0], origin_population=pop, next_population=new_pop,
+                                     vtr=config.value_to_reach, best_func_value=config.best_fitness_value)
+
+    config.mutation_factor = new_f
+    config.crossover_rate = new_cr
+
+    return new_pop, additional_data
