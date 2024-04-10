@@ -4,19 +4,21 @@ from skfuzzy import control as ctrl
 
 
 class MemberAntecedent:
-    def __init__(self, name: str, interval: list[int], mean: float, sigmas: list[float]):
+    def __init__(self, name: str, interval: list[int], sigma: float, means: list[float]):
         self.member = ctrl.Antecedent(np.linspace(interval[0], interval[1], 1000 * interval[1]), name)
-        self.member['S'] = fuzz.gaussmf(self.member.universe, mean, sigmas[0])
-        self.member['M'] = fuzz.gaussmf(self.member.universe, mean, sigmas[1])
-        self.member['B'] = fuzz.gaussmf(self.member.universe, mean, sigmas[2])
+        self.member['S'] = fuzz.gaussmf(self.member.universe, means[0], sigma)
+        self.member['M'] = fuzz.gaussmf(self.member.universe, means[1], sigma)
+        self.member['B'] = fuzz.gaussmf(self.member.universe, means[2], sigma)
+        # self.member.view()
 
 
 class MemberConsequent:
-    def __init__(self, name: str, interval: list[int], mean: float, sigmas: list[float]):
+    def __init__(self, name: str, interval: list[int], sigma: float, means: list[float]):
         self.member = ctrl.Consequent(np.linspace(interval[0], interval[1], 1000 * interval[1]), name)
-        self.member['S'] = fuzz.gaussmf(self.member.universe, mean, sigmas[0])
-        self.member['M'] = fuzz.gaussmf(self.member.universe, mean, sigmas[1])
-        self.member['B'] = fuzz.gaussmf(self.member.universe, mean, sigmas[2])
+        self.member['S'] = fuzz.gaussmf(self.member.universe, means[0], sigma)
+        self.member['M'] = fuzz.gaussmf(self.member.universe, means[1], sigma)
+        self.member['B'] = fuzz.gaussmf(self.member.universe, means[2], sigma)
+        # self.member.view()
 
 
 class RulesSet:
@@ -26,24 +28,15 @@ class RulesSet:
         self.second_member = second_member
         self.result_member = result_member
 
-        self.rule1 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['S']),
-                               self.result_member.member['S'])
-        self.rule2 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['M']),
-                               self.result_member.member['M'])
-        self.rule3 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['B']),
-                               self.result_member.member['B'])
-        self.rule4 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['S']),
-                               self.result_member.member['S'])
-        self.rule5 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['M']),
-                               self.result_member.member['M'])
-        self.rule6 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['B']),
-                               self.result_member.member['B'])
-        self.rule7 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['S']),
-                               self.result_member.member['B'])
-        self.rule8 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['M']),
-                               self.result_member.member['B'])
-        self.rule9 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['B']),
-                               self.result_member.member['B'])
+        self.rule1 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['S']),self.result_member.member['S'])
+        self.rule2 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['M']),self.result_member.member['M'])
+        self.rule3 = ctrl.Rule((self.first_member.member['S'] & self.second_member.member['B']),self.result_member.member['B'])
+        self.rule4 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['S']),self.result_member.member['M'])
+        self.rule5 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['M']),self.result_member.member['M'])
+        self.rule6 = ctrl.Rule((self.first_member.member['M'] & self.second_member.member['B']),self.result_member.member['B'])
+        self.rule7 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['S']),self.result_member.member['B'])
+        self.rule8 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['M']),self.result_member.member['B'])
+        self.rule9 = ctrl.Rule((self.first_member.member['B'] & self.second_member.member['B']),self.result_member.member['B'])
 
     def get_rules(self):
         return [self.rule1, self.rule2, self.rule3, self.rule4, self.rule5, self.rule6, self.rule7, self.rule8,
@@ -51,7 +44,6 @@ class RulesSet:
 
 
 class FuzzySystem:
-    # def __init__(self, name: str, interval: list[int], mean: float, sigmas: list[float]):
     def __init__(self, input_params: list[tuple[str, list[int], float, list[float]]],
                  output_params: tuple[str, list[int], float, list[float]]):
         self.first_input_member = MemberAntecedent(input_params[0][0], input_params[0][1], input_params[0][2],
@@ -86,4 +78,4 @@ class FuzzyLogicControl:
         self.cr_system = FuzzySystem(input_params=[
             ('D21', [0, 2], 0.5, [0.1, 0.8, 1.5]),
             ('D22', [0, 2], 0.5, [0.1, 0.8, 1.5])
-        ], output_params=('CR', [0, 1], 0.35, [0.1, 0.8, 1.5]))
+        ], output_params=('CR', [0, 1], 0.35, [0.4, 0.7, 1.0]))

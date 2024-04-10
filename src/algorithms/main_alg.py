@@ -8,7 +8,6 @@ from src.config import Config
 from src.enums.optimization import OptimizationType
 
 
-
 def diff_evo_alg(pop: Population, config: Config, start_time=None):
     best_individuals = []
     temp_pop = copy.deepcopy(pop)
@@ -29,9 +28,6 @@ def diff_evo_alg(pop: Population, config: Config, start_time=None):
 
         # Applying selected algorithm
         new_pop, algorithm_vars = algorithm(temp_pop, config, epoch, algorithm_vars)
-        if epoch % 5 == 0:
-            print(config.mutation_factor)
-            print(config.crossover_rate)
 
         # Setting new population
         temp_pop = new_pop
