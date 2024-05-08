@@ -22,17 +22,22 @@ def fuzzy_compute_parameter_vector_change(origin_population: Population, next_po
 
 
 def fuzzy_compute_error(vtr: float, best_func_value: float) -> float:
-    return best_func_value - vtr
+    return vtr - best_func_value
 
 
 def fuzzy_input_params(origin_population: Population, next_population: Population, vtr: float,
                        best_func_value: float) -> tuple[list[float], list[float]]:
+    best_func_value_origin = origin_population.get_best_members(1)[0].fitness_value
+    best_func_value_next = next_population.get_best_members(1)[0].fitness_value
+
     PC = fuzzy_compute_parameter_vector_change(origin_population, next_population)
     FC = fuzzy_compute_function_vector_change(origin_population, next_population)
-    e = fuzzy_compute_error(vtr, best_func_value)
+    e = fuzzy_compute_error(best_func_value_origin, best_func_value_next)
 
-    d11 = 1 - (1 - PC) * math.pow(e, -PC)
-    d12 = 1 - (1 - FC) * math.pow(e, -FC)
+    tmp = math.pow(e, -PC)
+
+    d11 = 1 - (1 + PC) * math.pow(e, -PC)
+    d12 = 1 - (1 + FC) * math.pow(e, -FC)
 
     d21 = 2 * (1 - (1 + PC)) * math.pow(e, -PC)
     d22 = 2 * (1 - (1 + FC)) * math.pow(e, -FC)

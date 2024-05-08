@@ -12,7 +12,7 @@ class Config:
         self.num_of_epochs = 101
         self.population_size = 100
         self.nr_of_args = 10
-        self.interval = [-100, 100]
+        self.interval = [-5, 5]
         self.mutation_factor = 0.5  # F should be between [0;2] larger F -> higher diversity
         self.crossover_rate = 0.8  # cr
         self.mode = OptimizationType.MINIMIZATION
