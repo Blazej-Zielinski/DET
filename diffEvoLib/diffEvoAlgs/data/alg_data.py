@@ -56,3 +56,9 @@ class EmDeData(BaseData):
 @dataclass
 class ScalingParamsData(BaseData):
     pass
+
+
+@dataclass
+class DELBData(BaseData):
+    mutation_factor: float
+    crossover_rate: float
