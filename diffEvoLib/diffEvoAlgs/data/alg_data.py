@@ -60,5 +60,5 @@ class ScalingParamsData(BaseData):
 
 @dataclass
 class DELBData(BaseData):
-    mutation_factor: float
     crossover_rate: float
+    w_factor: float  # control frequency of local exploration around trial and best vectors

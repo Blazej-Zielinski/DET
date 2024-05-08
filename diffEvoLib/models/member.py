@@ -34,6 +34,12 @@ class Member:
         new_member.chromosomes = chromosomes
         return new_member
 
+    def __sub__(self, other):
+        chromosomes = self.chromosomes - other.chromosomes
+        new_member = Member(self.interval, self.args_num)
+        new_member.chromosomes = chromosomes
+        return new_member
+
     def __lt__(self, other):
         return self.fitness_value < other.fitness_value
 
