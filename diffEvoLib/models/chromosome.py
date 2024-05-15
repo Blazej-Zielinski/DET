@@ -21,7 +21,7 @@ class Chromosome(BaseChromosome):
     def calculate_real_value(self, bin_ind):
         binary_string = ''.join([str(elem) for elem in bin_ind])
         return self.interval[0] + int(binary_string, 2) * (self.interval[1] - self.interval[0]) / (
-            math.pow(2, bin_ind.size) - 1)
+                math.pow(2, bin_ind.size) - 1)
 
     def __add__(self, other):
         c = Chromosome(self.interval)
@@ -30,7 +30,12 @@ class Chromosome(BaseChromosome):
 
     def __sub__(self, other):
         c = Chromosome(self.interval)
-        c.real_value = self.real_value - other.real_value
+        if isinstance(other, Chromosome):
+            c.real_value = self.real_value - other.real_value
+        elif isinstance(other, (np.int32, np.int64, np.float32, np.float64)):
+            c.real_value = self.real_value - other
+        else:
+            raise TypeError(f"Unsupported operand type(s) for -: 'Chromosome' and '{type(other).__name__}'")
         return c
 
     def __mul__(self, other):

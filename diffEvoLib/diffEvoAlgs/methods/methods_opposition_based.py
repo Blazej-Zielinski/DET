@@ -1,63 +1,55 @@
+from random import random
 import numpy as np
-import copy
 
-from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import OppBasedData
-from diffEvoLib.diffEvoAlgs.methods.methods_delb import delb_mutation, delb_selection
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing
-from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
-from diffEvoLib.models.population import Population, Member
+from diffEvoLib.models.member import Member
+from diffEvoLib.models.population import Population
 
 
-class OppBasedDE(BaseDiffEvoAlg):
-    def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
-        super().__init__(OppBasedDE.__name__, params, db_conn, db_auto_write)
+def calculate_central_points(population: Population) -> np.ndarray[float]:
+    all_chromosomes = np.array(
+        [[chromosome.real_value for chromosome in member.chromosomes] for member in population.members])
 
-        self.mutation_factor = params.mutation_factor  # F
-        self.crossover_rate = params.crossover_rate  # Cr
-        self.nfc = params.nfc  # number of function calls
-        self.max_nfc = params.max_nfc
-        self.jumping_rate = params.jumping_rate
+    min_values = np.min(all_chromosomes, axis=0)
+    max_values = np.max(all_chromosomes, axis=0)
 
-    def initialize(self):
-        if self._is_initialized:
-            print(f"{self.name} diff evo already initialized.")
-            return
+    return min_values + max_values
 
-        #  Generate initial population
-        population = Population(
-            interval=self.interval,
-            arg_num=self.nr_of_args,
-            size=self.population_size,
-            optimization=self.mode
-        )
-        population.generate_population()
-        population.update_fitness_values(self._function.eval)
 
-        #  Generate opposite population
-        central_point = sum(self.interval)
-        opposite_members = []
-        for member in population.members:
-            new_member = Member(self.name, self.nr_of_args)
-            for i in range(self.nr_of_args):
-                new_member.chromosomes[i] = (member.chromosomes[i] - central_point) * -1
-            opposite_members.append(new_member)
+def calculate_opposite_pop(population: Population, is_initial_pop: bool) -> Population:
+    central_points = np.full((population.arg_num,),
+                             sum(population.interval)) if is_initial_pop else calculate_central_points(population)
 
-        opposite_population = Population(
-            interval=self.interval,
-            arg_num=self.nr_of_args,
-            size=self.population_size,
-            optimization=self.mode
-        )
-        opposite_population.members = np.array(opposite_members)
-        opposite_population.update_fitness_values(self._function.eval)
+    opposite_members = []
+    for member in population.members:
+        opposite_member = Member(member.interval, member.args_num)
+        for i in range(member.args_num):
+            opposite_member.chromosomes[i] = (member.chromosomes[i] - central_points[i]) * -1
 
-        pops = np.concatenate((population.members, opposite_population.members))
-        sorted_pops_indices = np.argsort([member.fitness_value for member in pops])
-        sorted_pops = pops[sorted_pops_indices]
-        population.members = sorted_pops[:self.population_size]
+        opposite_members.append(opposite_member)
 
-        self._origin_pop = population
-        self._pop = copy.deepcopy(population)
+    opposite_population = Population(
+        interval=population.interval,
+        arg_num=population.arg_num,
+        size=population.size,
+        optimization=population.optimization
+    )
+    opposite_population.members = np.array(opposite_members)
 
-        self._is_initialized = True
+    return opposite_population
+
+
+def opp_based_keep_best_individuals(population: Population, func, is_initial_pop: bool = False):
+    opposite_population = calculate_opposite_pop(population, is_initial_pop)
+    opposite_population.update_fitness_values(func)
+
+    pops = np.concatenate((population.members, opposite_population.members))
+    sorted_pops_indices = np.argsort([member.fitness_value for member in pops])
+    sorted_pops = pops[sorted_pops_indices]
+    population.members = sorted_pops[:population.size]
+
+
+def opp_based_generation_jumping(population: Population, jumping_rate: float, func) -> bool:
+    if random() < jumping_rate:
+        opp_based_keep_best_individuals(population, func)
+        return True
+    return False

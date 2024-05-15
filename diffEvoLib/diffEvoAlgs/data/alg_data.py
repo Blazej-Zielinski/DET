@@ -68,6 +68,6 @@ class DELBData(BaseData):
 class OppBasedData(BaseData):
     mutation_factor: float
     crossover_rate: float
-    nfc: int
-    max_nfc: int
-    jumping_rate: int
+    max_nfc: float
+    jumping_rate: float
+    threshold: float

@@ -1,78 +1,108 @@
 import copy
-import numpy as np
+import time
+from tqdm import tqdm
 
-from src.models.member import Member
-from src.models.population import Population
-from src.enums.optimization import OptimizationType
-
-
-def opp_based_calculate_opposite_pop(population: Population, min_vals: np.ndarray[float] = None,
-                                     max_vals: np.ndarray[float] = None) -> Population:
-    if min_vals is not None and max_vals is not None:
-        interval = min_vals + max_vals
-    else:
-        interval = sum(population.interval)
-
-    is_interval_array = isinstance(interval, np.ndarray)
-
-    new_members = []
-    for member in population.members:
-        new_member = Member(population.interval, population.arg_num)
-        for i in range(population.arg_num):
-            new_member.chromosomes[i].real_value = (interval[i] if is_interval_array else interval) - \
-                                                   member.chromosomes[i].real_value
-        new_members.append(new_member)
-
-    opposite_population = Population(
-        interval=population.interval,
-        arg_num=population.arg_num,
-        size=population.size,
-        optimization=population.optimization
-    )
-    opposite_population.members = np.array(new_members)
-
-    return opposite_population
+from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
+from diffEvoLib.diffEvoAlgs.data.alg_data import OppBasedData
+from diffEvoLib.diffEvoAlgs.methods.methods_opposition_based import opp_based_keep_best_individuals, \
+    opp_based_generation_jumping
+from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation, binomial_crossing, selection
+from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
+from diffEvoLib.models.population import Population
+from diffEvoLib.helpers.metric_helper import MetricHelper
 
 
-def opp_based_selection(origin_population: Population, modified_population: Population):
-    if origin_population.size != modified_population.size:
-        print("Selection: populations have different sizes")
-        return None
+class OppBasedDE(BaseDiffEvoAlg):
+    def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
+        super().__init__(OppBasedDE.__name__, params, db_conn, db_auto_write)
 
-    if origin_population.optimization != modified_population.optimization:
-        print("Selection: populations have different optimization types")
-        return None
+        self.mutation_factor = params.mutation_factor  # F
+        self.crossover_rate = params.crossover_rate  # Cr
+        self.nfc = 0  # number of function calls
+        self.max_nfc = params.max_nfc
+        self.jumping_rate = params.jumping_rate
+        self.threshold = params.threshold
+        self.tmp = 0
 
-    optimization = origin_population.optimization
-    new_members = []
-    for i in range(origin_population.size):
-        if optimization == OptimizationType.MINIMIZATION:
-            if origin_population.members[i] <= modified_population.members[i]:
-                new_members.append(copy.deepcopy(origin_population.members[i]))
-            else:
-                new_members.append(copy.deepcopy(modified_population.members[i]))
+    def next_epoch(self):
+        # New population after mutation
+        v_pop = mutation(self._pop, f=self.mutation_factor)
 
-        elif optimization == OptimizationType.MAXIMIZATION:
-            if origin_population.members[i] >= modified_population.members[i]:
-                new_members.append(copy.deepcopy(origin_population.members[i]))
-            else:
-                new_members.append(copy.deepcopy(modified_population.members[i]))
+        # Apply boundary constrains on population in place
+        fix_boundary_constraints(v_pop, self.boundary_constraints_fun)
 
-    new_population = Population(
-        interval=origin_population.interval,
-        arg_num=origin_population.arg_num,
-        size=origin_population.size,
-        optimization=origin_population.optimization
-    )
-    new_population.members = np.array(new_members)
+        # New population after crossing
+        u_pop = binomial_crossing(self._pop, v_pop, cr=self.crossover_rate)
 
-    return new_population, ()
+        # Update values before selection
+        u_pop.update_fitness_values(self._function.eval)
+        self.nfc += self.population_size
 
+        # Select new population
+        new_pop = selection(self._pop, u_pop)
 
-def opp_based_min_max_gen(pop: Population) -> tuple[np.ndarray[float], np.ndarray[float]]:
-    all_chromosomes = np.array([[chromosome.real_value for chromosome in member.chromosomes] for member in pop.members])
+        # Generation jumping
+        if opp_based_generation_jumping(new_pop, self.jumping_rate, self._function.eval):
+            self.nfc += self.population_size
 
-    min_values = np.min(all_chromosomes, axis=0)
-    max_values = np.max(all_chromosomes, axis=0)
+        # Override data
+        self._pop = new_pop
 
-    return min_values, max_values
+        self._epoch_number += 1
+
+    def initialize(self):
+        if self._is_initialized:
+            print(f"{self.name} diff evo already initialized.")
+            return
+
+        #  Generate initial population
+        population = Population(
+            interval=self.interval,
+            arg_num=self.nr_of_args,
+            size=self.population_size,
+            optimization=self.mode
+        )
+        population.generate_population()
+        population.update_fitness_values(self._function.eval)
+
+        opp_based_keep_best_individuals(population, self._function.eval, True)
+
+        self._origin_pop = population
+        self._pop = copy.deepcopy(population)
+
+        self._is_initialized = True
+        self.nfc = 2 * self.population_size
+
+    def run(self):
+        if not self._is_initialized:
+            print(f"{self.name} diff evo not initialized.")
+            return
+
+        # Calculate metrics
+        epoch_metrics = []
+        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, epoch=-1)
+        epoch_metrics.append(epoch_metric)
+
+        start_time = time.time()
+        for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
+
+            # Conditions for early stopping
+            best_individual = self._pop.get_best_members(1)[0]
+            if best_individual.fitness_value < self.threshold or self.nfc > self.max_nfc:
+                break
+
+            self.next_epoch()
+
+            # Calculate metrics
+            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
+            epoch_metrics.append(epoch_metric)
+
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
+              f' Execution time: {execution_time} seconds')
+
+        if self._database is not None and self.db_auto_write:
+            self.write_results_to_database(epoch_metrics)
+
+        return epoch_metrics
