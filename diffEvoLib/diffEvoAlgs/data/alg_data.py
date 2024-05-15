@@ -71,3 +71,11 @@ class OppBasedData(BaseData):
     max_nfc: float
     jumping_rate: float
     threshold: float
+
+
+@dataclass
+class DEGLData(BaseData):
+    mutation_factor: float
+    crossover_rate: float
+    radius: int  # neighborhood size, 2k + 1 <= NP, at least k=2
+    weight: float  # controls the balance between the exploration and exploitation

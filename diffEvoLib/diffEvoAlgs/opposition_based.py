@@ -22,7 +22,6 @@ class OppBasedDE(BaseDiffEvoAlg):
         self.max_nfc = params.max_nfc
         self.jumping_rate = params.jumping_rate
         self.threshold = params.threshold
-        self.tmp = 0
 
     def next_epoch(self):
         # New population after mutation
