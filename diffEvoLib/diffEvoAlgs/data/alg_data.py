@@ -79,3 +79,19 @@ class DEGLData(BaseData):
     crossover_rate: float
     radius: int  # neighborhood size, 2k + 1 <= NP, at least k=2
     weight: float  # controls the balance between the exploration and exploitation
+
+
+@dataclass
+class JADEData(BaseData):
+    archive_size: int
+
+    mutation_factor_mean: float
+    mutation_factor_std: float
+
+    crossover_rate_mean: float
+    crossover_rate_std: float
+    crossover_rate_low: float
+    crossover_rate_high: float
+
+    c: float  # describes the rate of parameter adaptation
+    p: float  # describes the greediness of the mutation strategy
