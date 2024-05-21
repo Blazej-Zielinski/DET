@@ -95,3 +95,9 @@ class JADEData(BaseData):
 
     c: float  # describes the rate of parameter adaptation
     p: float  # describes the greediness of the mutation strategy
+
+
+@dataclass
+class AADEData(BaseData):
+    mutation_factor: float
+    crossover_rate: float
