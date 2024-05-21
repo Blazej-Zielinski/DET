@@ -102,7 +102,17 @@ class AADEData(BaseData):
     mutation_factor: float
     crossover_rate: float
 
+
 @dataclass
 class EIDEData(BaseData):
     crossover_rate_min: float
     crossover_rate_max: float
+
+
+@dataclass
+class MGDEData(BaseData):
+    crossover_rate: float
+    mutation_factor_f: float
+    mutation_factor_k: float
+    threshold: float
+    mu: float
