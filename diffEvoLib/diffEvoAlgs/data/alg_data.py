@@ -101,3 +101,8 @@ class JADEData(BaseData):
 class AADEData(BaseData):
     mutation_factor: float
     crossover_rate: float
+
+@dataclass
+class EIDEData(BaseData):
+    crossover_rate_min: float
+    crossover_rate_max: float
