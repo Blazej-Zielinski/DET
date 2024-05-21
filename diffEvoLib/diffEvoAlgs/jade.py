@@ -4,7 +4,6 @@ from diffEvoLib.diffEvoAlgs.methods.methods_jade import jade_adapt_mutation_fact
     jade_adapt_crossover_rates, jade_mutation, jade_selection, jade_reduce_archive, draw_norm_dist_within_bounds, \
     draw_cauchy_dist_within_bounds
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing
 
 
 class JADE(BaseDiffEvoAlg):

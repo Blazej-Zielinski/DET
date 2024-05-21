@@ -12,17 +12,13 @@ from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing_ind
 
 def jade_mutation(population: Population, mutation_factors: np.ndarray[float], p_best: float,
                   archive: list[Member] = []) -> Population:
-    if archive:
-        pop_members_list = population.members.tolist()
-        possible_members_list = pop_members_list.extend(archive)
 
-    else:
-        pop_members_list = population.members.tolist()
-        possible_members_list = pop_members_list
+    pop_members_list = population.members.tolist()
+    possible_members_list = pop_members_list + archive if archive else pop_members_list
 
     sort_reversed = False if population.optimization == OptimizationType.MINIMIZATION else True
     sorted_members = sorted(possible_members_list, key=lambda x: x.fitness_value, reverse=sort_reversed)
-    p_best_members = sorted_members[:(floor(p_best * population.size))]
+    p_best_members = sorted_members[:floor(p_best * population.size)]
 
     new_members = []
     for (i, base_member) in enumerate(pop_members_list):
@@ -135,7 +131,7 @@ def jade_adapt_crossover_rates(c: float, cr_mean: float, cr_std: float, cr_low: 
         cr_mean = (1 - c) * cr_mean + c * a_mean
 
     new_crossover_rates = draw_norm_dist_within_bounds(cr_mean, cr_std, cr_low, cr_high, size)
-    success_crossover_rates = []
+    success_crossover_rates.clear()
     return new_crossover_rates, cr_mean
 
 
@@ -145,7 +141,7 @@ def jade_adapt_mutation_factors(c: float, f_mean: float, f_std: float, size: int
         f_mean = (1 - c) * f_mean + c * lehmer_mean(success_mutation_factors)
 
     new_mutation_factors = draw_cauchy_dist_within_bounds(f_mean, f_std, size)
-    success_mutation_factors = []
+    success_mutation_factors.clear()
     return new_mutation_factors, f_mean
 
 
