@@ -10,7 +10,7 @@ from diffEvoLib.models.population import Population
 def mgde_mutation(population: Population, curr_generation: int, max_generation: float, mutation_factor_f: float,
                   mutation_factor_k: float) -> Population:
     pop_members_list = population.members.tolist()
-    best_member = population.members.tolist(1)[0]
+    best_member = population.get_best_members(1)[0]
 
     new_members = []
     for i, member in enumerate(population.members):
@@ -35,22 +35,33 @@ def mgde_mutation(population: Population, curr_generation: int, max_generation: 
     return new_population
 
 
-def mgde_adapt_threshold(population: Population, threshold: float, mu: float):
+def mgde_adapt_threshold(population: Population, threshold: float, mu: float, func):
     sorted_members = population.get_best_members(population.size)
     best_member = sorted_members[0]
-    worst_members = sorted_members[-5:]
-    worst_member = worst_members[random.randint(0, 4)]
 
     if best_member.fitness_value < threshold:
-        new_threshold = threshold / 10
+        threshold /= 10
         if random.random() > 0.5:
+            worst_members = sorted_members[-5:]
+            worst_member = worst_members[random.randint(0, 4)]
             member_chromosome_values = np.array([chromosome.real_value for chromosome in worst_member.chromosomes])
-            new_chromosome_values = mu*member_chromosome_values*(1-member_chromosome_values)
+            new_chromosome_values = mu * member_chromosome_values * (1 - member_chromosome_values)
             for i in range(worst_member.args_num):
                 worst_member.chromosomes[i].real_value = new_chromosome_values[i]
         else:
-            pass
+            member = sorted_members[random.randint(1, population.size - 1)]
+            d = random.randint(0, member.args_num - 1)
+            n = random.randint(0, 1)
+            h = np.random.normal(loc=0.5, scale=0.3)
 
+            temp = copy.deepcopy(member)
+            temp.chromosomes[d] = member.chromosomes[d] + (
+                        member.chromosomes[d] - best_member.chromosomes[d]) * h * (-1) ** n
+
+            temp.calculate_fitness_fun(func)
+            if temp < best_member:
+                sorted_members[0] = temp
+                print('Dziala')
 
 
 def mutation_curr_to_best_1_modified(base_member: Member, best_member: Member, members: list[Member], f: float,

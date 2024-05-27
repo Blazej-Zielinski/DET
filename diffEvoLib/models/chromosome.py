@@ -32,7 +32,7 @@ class Chromosome(BaseChromosome):
         c = Chromosome(self.interval)
         if isinstance(other, Chromosome):
             c.real_value = self.real_value - other.real_value
-        elif isinstance(other, (np.int32, np.int64, np.float32, np.float64)):
+        elif isinstance(other, (float, np.int32, np.int64, np.float32, np.float64)):
             c.real_value = self.real_value - other
         else:
             raise TypeError(f"Unsupported operand type(s) for -: 'Chromosome' and '{type(other).__name__}'")
