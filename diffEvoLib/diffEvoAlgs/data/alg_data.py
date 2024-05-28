@@ -16,6 +16,9 @@ class BaseData:
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase
 
+    optimum: float
+    tolerance: float
+
 
 @dataclass
 class DefaultAlgData(BaseData):

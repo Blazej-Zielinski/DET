@@ -68,12 +68,18 @@ def aade_selection(origin_population: Population, modified_population: Populatio
         if optimization == OptimizationType.MINIMIZATION:
             if origin_population.members[i] <= modified_population.members[i]:
                 new_members.append(copy.deepcopy(origin_population.members[i]))
-                mutation_factors[i] = [mutation_factors[i][0] - (
-                        modified_population.members[i].fitness_value - origin_population.members[i].fitness_value) /
-                                       modified_population.members[i].fitness_value * random.random(), True]
-                crossover_rates[i] = [crossover_rates[i][0] - (
-                        modified_population.members[i].fitness_value - origin_population.members[i].fitness_value) /
-                                      modified_population.members[i].fitness_value * random.random(), True]
+                try:
+                    mutation_factors[i] = [mutation_factors[i][0] - (
+                            modified_population.members[i].fitness_value - origin_population.members[i].fitness_value) /
+                                           modified_population.members[i].fitness_value * random.random(), True]
+                except Exception as e:
+                    mutation_factors[i] = [0, True]
+                try:
+                    crossover_rates[i] = [crossover_rates[i][0] - (
+                            modified_population.members[i].fitness_value - origin_population.members[i].fitness_value) /
+                                          modified_population.members[i].fitness_value * random.random(), True]
+                except Exception as e:
+                    crossover_rates[i] = [0, True]
             else:
                 new_members.append(copy.deepcopy(modified_population.members[i]))
         elif optimization == OptimizationType.MAXIMIZATION:

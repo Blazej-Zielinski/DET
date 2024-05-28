@@ -11,6 +11,7 @@ class AADE(BaseDiffEvoAlg):
 
         self.mutation_factors = [[params.mutation_factor, False] for _ in range(params.population_size)]
         self.crossover_rates = [[params.crossover_rate, False] for _ in range(params.population_size)]
+        self.tolerance = params.tolerance
 
     def next_epoch(self):
         # New population after mutation

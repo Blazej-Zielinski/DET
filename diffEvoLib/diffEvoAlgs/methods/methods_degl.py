@@ -58,3 +58,7 @@ def degl_mutation(population: Population, radius: int, f: float, weight: float) 
     new_population.members = np.array(new_members)
 
     return new_population
+
+
+def degl_adapt_weight(current_generation: int, max_generation: int) -> float:
+    return current_generation / max_generation
