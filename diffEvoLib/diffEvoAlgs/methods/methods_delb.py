@@ -8,15 +8,13 @@ from diffEvoLib.models.enums.mutation import mutation_rand_1
 
 
 def delb_mutation(population: Population):
-    new_members = []
+    members = population.members.tolist()
+    drew_members = [random.sample(members, 3) for _ in range(population.size)]
+    drew_fs = [random.uniform(-1, -0.4) if random.random() < 0.5 else random.uniform(0.4, 1)
+               for _ in range(population.size)]
 
-    for _ in range(population.size):
-        #  Generate random numer from set (−1, -0.4) ∪ (0.4, 1)
-        f = random.uniform(-1, -0.4) if random.random() < 0.5 else random.uniform(0.4, 1)
-        selected_members = random.sample(population.members.tolist(), 3)
-
-        new_member = mutation_rand_1(selected_members, f)
-        new_members.append(new_member)
+    new_members = [mutation_rand_1(selected_members, f)
+                   for selected_members, f in zip(drew_members, drew_fs)]
 
     new_population = Population(
         interval=population.interval,

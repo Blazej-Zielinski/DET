@@ -2,20 +2,18 @@ import numpy as np
 import random
 import copy
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation_ind, binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing_ind
 from diffEvoLib.models.population import Population
 from diffEvoLib.models.enums.optimization import OptimizationType
+from diffEvoLib.models.enums.mutation import mutation_rand_1
 
 
 def aade_mutation(population: Population, mutation_factors: list[list[float, bool]]) -> Population:
-    new_members = []
-    members = population.members
+    members = population.members.tolist()
+    drew_members = [random.sample(members, 3) for _ in range(population.size)]
 
-    for i in range(population.size):
-        idxs = np.random.choice(population.size, 3, replace=False)
-        selected_members = members[idxs]
-        new_member = mutation_ind(selected_members[0], selected_members[1], selected_members[2], mutation_factors[i][0])
-        new_members.append(new_member)
+    new_members = [mutation_rand_1(selected_members, f)
+                   for selected_members, (f, _) in zip(drew_members, mutation_factors)]
 
     new_population = Population(
         interval=population.interval,
@@ -33,13 +31,8 @@ def aade_crossing(origin_population: Population, mutated_population: Population,
         print("Binomial_crossing: populations have different sizes")
         return None
 
-    new_members = []
-
-    for i in range(origin_population.size):
-        new_member = binomial_crossing_ind(origin_population.members[i],
-                                           mutated_population.members[i],
-                                           crossover_rates[i][0])
-        new_members.append(new_member)
+    new_members = [binomial_crossing_ind(origin_population.members[i], mutated_population.members[i], crossover_rates[i][0])
+                   for i in range(origin_population.size)]
 
     new_population = Population(
         interval=origin_population.interval,

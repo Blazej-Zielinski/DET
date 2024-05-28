@@ -16,8 +16,8 @@ def calculate_central_points(population: Population) -> np.ndarray[float]:
 
 
 def calculate_opposite_pop(population: Population, is_initial_pop: bool) -> Population:
-    central_points = np.full((population.arg_num,),
-                             sum(population.interval)) if is_initial_pop else calculate_central_points(population)
+    central_points = np.full((population.arg_num,), sum(population.interval)) if is_initial_pop else (
+        calculate_central_points(population))
 
     opposite_members = []
     for member in population.members:

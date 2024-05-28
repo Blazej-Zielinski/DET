@@ -21,7 +21,6 @@ class OppBasedDE(BaseDiffEvoAlg):
         self.nfc = 0  # number of function calls
         self.max_nfc = params.max_nfc
         self.jumping_rate = params.jumping_rate
-        self.threshold = params.threshold
 
     def next_epoch(self):
         # New population after mutation
@@ -84,12 +83,9 @@ class OppBasedDE(BaseDiffEvoAlg):
 
         start_time = time.time()
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
-
-            # Conditions for early stopping
-            best_individual = self._pop.get_best_members(1)[0]
-            if best_individual.fitness_value < self.threshold or self.nfc > self.max_nfc:
+            best_member = self._pop.get_best_members(1)[0]
+            if abs(self.optimum - best_member.fitness_value) < self.tolerance or self.nfc > self.max_nfc:
                 break
-
             self.next_epoch()
 
             # Calculate metrics

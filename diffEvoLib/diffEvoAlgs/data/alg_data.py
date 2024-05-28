@@ -73,7 +73,6 @@ class OppBasedData(BaseData):
     crossover_rate: float
     max_nfc: float
     jumping_rate: float
-    threshold: float
 
 
 @dataclass
@@ -87,15 +86,12 @@ class DEGLData(BaseData):
 @dataclass
 class JADEData(BaseData):
     archive_size: int
-
     mutation_factor_mean: float
     mutation_factor_std: float
-
     crossover_rate_mean: float
     crossover_rate_std: float
     crossover_rate_low: float
     crossover_rate_high: float
-
     c: float  # describes the rate of parameter adaptation
     p: float  # describes the greediness of the mutation strategy
 
