@@ -7,6 +7,10 @@ from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
 class JADE(BaseDiffEvoAlg):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5208221
+    """
+
     def __init__(self, params: JADEData, db_conn=None, db_auto_write=False):
         super().__init__(JADE.__name__, params, db_conn, db_auto_write)
 

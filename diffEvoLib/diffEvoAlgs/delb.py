@@ -6,6 +6,10 @@ from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
 class DELB(BaseDiffEvoAlg):
+    """
+        Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
+    """
+
     def __init__(self, params: DELBData, db_conn=None, db_auto_write=False):
         super().__init__(DELB.__name__, params, db_conn, db_auto_write)
 

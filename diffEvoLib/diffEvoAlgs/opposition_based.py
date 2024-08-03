@@ -13,6 +13,10 @@ from diffEvoLib.helpers.metric_helper import MetricHelper
 
 
 class OppBasedDE(BaseDiffEvoAlg):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4358759
+    """
+
     def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
         super().__init__(OppBasedDE.__name__, params, db_conn, db_auto_write)
 

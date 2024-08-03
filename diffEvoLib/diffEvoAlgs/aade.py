@@ -6,6 +6,10 @@ from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
 class AADE(BaseDiffEvoAlg):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8819749&tag=1
+    """
+
     def __init__(self, params: AADEData, db_conn=None, db_auto_write=False):
         super().__init__(AADE.__name__, params, db_conn, db_auto_write)
 

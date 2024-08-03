@@ -11,6 +11,10 @@ from diffEvoLib.helpers.metric_helper import MetricHelper
 
 
 class EIDE(BaseDiffEvoAlg):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6390324&tag=1
+    """
+
     def __init__(self, params: EIDEData, db_conn=None, db_auto_write=False):
         super().__init__(EIDE.__name__, params, db_conn, db_auto_write)
 
