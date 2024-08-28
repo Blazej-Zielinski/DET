@@ -1,17 +1,17 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import ScalingParamsData
+from diffEvoLib.diffEvoAlgs.data.alg_data import IDEData
 from diffEvoLib.diffEvoAlgs.methods.methods_default import selection, mutation
 from diffEvoLib.diffEvoAlgs.methods.methods_scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class ScalingParams(BaseDiffEvoAlg):
+class IDE(BaseDiffEvoAlg):
     """
     Source: https://www.scirp.org/journal/paperinformation.aspx?paperid=96749
     """
 
-    def __init__(self, params: ScalingParamsData, db_conn=None, db_auto_write=False):
-        super().__init__(ScalingParams.__name__, params, db_conn, db_auto_write)
+    def __init__(self, params: IDEData, db_conn=None, db_auto_write=False):
+        super().__init__(IDE.__name__, params, db_conn, db_auto_write)
 
     def next_epoch(self):
         # Calculate F and CR

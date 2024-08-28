@@ -1,17 +1,17 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import EmDeData
+from diffEvoLib.diffEvoAlgs.data.alg_data import EMDEData
 from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing, selection
 from diffEvoLib.diffEvoAlgs.methods.methods_emde import em_mutation
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class EmDe(BaseDiffEvoAlg):
+class EMDE(BaseDiffEvoAlg):
     """
     Source: https://link.springer.com/article/10.1007/s13042-015-0479-6#Sec8
     """
 
-    def __init__(self, params: EmDeData, db_conn=None, db_auto_write=False):
-        super().__init__(EmDe.__name__, params, db_conn, db_auto_write)
+    def __init__(self, params: EMDEData, db_conn=None, db_auto_write=False):
+        super().__init__(EMDE.__name__, params, db_conn, db_auto_write)
 
         self.crossover_rate = params.crossover_rate  # Cr
 

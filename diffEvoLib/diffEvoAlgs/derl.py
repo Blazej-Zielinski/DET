@@ -1,19 +1,24 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import DefaultAlgData
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation, binomial_crossing, selection
+from diffEvoLib.diffEvoAlgs.data.alg_data import DERLData
+from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing, selection
+from diffEvoLib.diffEvoAlgs.methods.methods_random_locations import rl_mutation
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class Default(BaseDiffEvoAlg):
-    def __init__(self, params: DefaultAlgData, db_conn=None, db_auto_write=False):
-        super().__init__(Default.__name__, params, db_conn, db_auto_write)
+class DERL(BaseDiffEvoAlg):
+    """
+    Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
+    """
+
+    def __init__(self, params: DERLData, db_conn=None, db_auto_write=False):
+        super().__init__(DERL.__name__, params, db_conn, db_auto_write)
 
         self.mutation_factor = params.mutation_factor  # F
         self.crossover_rate = params.crossover_rate  # Cr
 
     def next_epoch(self):
         # New population after mutation
-        v_pop = mutation(self._pop, f=self.mutation_factor)
+        v_pop = rl_mutation(self._pop)
 
         # Apply boundary constrains on population in place
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)

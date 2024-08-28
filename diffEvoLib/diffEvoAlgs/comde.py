@@ -1,17 +1,17 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import BestWorstData
+from diffEvoLib.diffEvoAlgs.data.alg_data import COMDEData
 from diffEvoLib.diffEvoAlgs.methods.methods_best_worst import calculate_cr, best_worst_mutation
 from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing, selection
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class BestWorst(BaseDiffEvoAlg):
+class COMDE(BaseDiffEvoAlg):
     """
     Source: https://www.sciencedirect.com/science/article/pii/S0020025512000278
     """
 
-    def __init__(self, params: BestWorstData, db_conn=None, db_auto_write=False):
-        super().__init__(BestWorst.__name__, params, db_conn, db_auto_write)
+    def __init__(self, params: COMDEData, db_conn=None, db_auto_write=False):
+        super().__init__(COMDE.__name__, params, db_conn, db_auto_write)
 
         self.mutation_factor = params.mutation_factor  # F
         self.crossover_rate = params.crossover_rate  # Cr

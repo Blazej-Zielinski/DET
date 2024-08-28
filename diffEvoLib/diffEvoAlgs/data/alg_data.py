@@ -18,41 +18,41 @@ class BaseData:
 
 
 @dataclass
-class DefaultAlgData(BaseData):
+class DEData(BaseData):
     mutation_factor: float
     crossover_rate: float
 
 
 @dataclass
-class BestWorstData(BaseData):
+class COMDEData(BaseData):
     mutation_factor: float
     crossover_rate: float
 
 
 @dataclass
-class RandomLocationsData(BaseData):
+class DERLData(BaseData):
     mutation_factor: float
     crossover_rate: float
 
 
 @dataclass
-class NovelModifiedData(BaseData):
+class NMDEData(BaseData):
     delta_f: float
     delta_cr: float
     sp: int
 
 
 @dataclass
-class AdaptiveParamsData(BaseData):
+class SADEData(BaseData):
     prob_f: float
     prob_cr: float
 
 
 @dataclass
-class EmDeData(BaseData):
+class EMDEData(BaseData):
     crossover_rate: float
 
 
 @dataclass
-class ScalingParamsData(BaseData):
+class IDEData(BaseData):
     pass

@@ -1,19 +1,19 @@
 import numpy as np
 
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
-from diffEvoLib.diffEvoAlgs.data.alg_data import NovelModifiedData
+from diffEvoLib.diffEvoAlgs.data.alg_data import NMDEData
 from diffEvoLib.diffEvoAlgs.methods.methods_novel_modified import nm_mutation, nm_selection, nm_calculate_fm_crm, \
     nm_binomial_crossing, nm_update_f_cr
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class NovelModified(BaseDiffEvoAlg):
+class NMDE(BaseDiffEvoAlg):
     """
     Source: https://www.sciencedirect.com/science/article/pii/S0898122111000460#s000015
     """
 
-    def __init__(self, params: NovelModifiedData, db_conn=None, db_auto_write=False):
-        super().__init__(NovelModified.__name__, params, db_conn, db_auto_write)
+    def __init__(self, params: NMDEData, db_conn=None, db_auto_write=False):
+        super().__init__(NMDE.__name__, params, db_conn, db_auto_write)
 
         self.delta_f = params.delta_f
         self.delta_cr = params.delta_cr
