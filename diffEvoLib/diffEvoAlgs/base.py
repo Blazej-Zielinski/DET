@@ -62,7 +62,7 @@ class BaseDiffEvoAlg(ABC):
 
         # Calculate metrics
         epoch_metrics = []
-        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, epoch=-1)
+        epoch_metric = MetricHelper.calculate_start_metrics(self._pop)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
