@@ -17,6 +17,9 @@ class BaseDiffEvoAlg(ABC):
         self._epoch_number = 0
         self._is_initialized = False
 
+        self.optimum = params.optimum
+        self.tolerance = params.tolerance
+
         self._origin_pop = None
         self._pop = None
 
@@ -67,6 +70,9 @@ class BaseDiffEvoAlg(ABC):
 
         start_time = time.time()
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
+            best_member = self._pop.get_best_members(1)[0]
+            if abs(self.optimum - best_member.fitness_value) < self.tolerance:
+                break
             self.next_epoch()
 
             # Calculate metrics

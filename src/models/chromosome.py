@@ -11,7 +11,7 @@ class BaseChromosome(ABC):
 
 
 class Chromosome(BaseChromosome):
-    def __init__(self, interval):
+    def __init__(self, interval: list):
         # Options
         self.interval = interval
 

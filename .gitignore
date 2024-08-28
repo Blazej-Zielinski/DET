@@ -2,3 +2,6 @@ venv/
 .idea/
 *.db
 Notes.md
+test.py
+funkcje.py
+konfiguracje.py

@@ -5,7 +5,7 @@ from src.enums.optimization import OptimizationType
 
 
 class Population:
-    def __init__(self, interval, arg_num, size, optimization: OptimizationType):
+    def __init__(self, interval: list, arg_num: int, size: int, optimization: OptimizationType):
         self.size = size
         self.members = None
         self.optimization = optimization
