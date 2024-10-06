@@ -1,6 +1,6 @@
 from time import sleep
 
-import diffEvoLib
+import DET
 import opfunu.cec_based.cec2014 as opf
 
 
@@ -13,23 +13,23 @@ def example_function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
 if __name__ == "__main__":
     num_of_epochs = 100
 
-    fitness_fun = diffEvoLib.FitnessFunction(
+    fitness_fun = DET.FitnessFunction(
         func=example_function
     )
 
-    fitness_fun_opf = diffEvoLib.FitnessFunctionOpfunu(
+    fitness_fun_opf = DET.FitnessFunctionOpfunu(
         func_type=opf.F12014,
         ndim=10
     )
 
-    params = diffEvoLib.DEData(
+    params = DET.DEData(
         num_of_epochs=num_of_epochs,
         population_size=100,
         nr_of_args=10,
         interval_lower_bound=-100,
         interval_higher_bound=100,
-        mode=diffEvoLib.OptimizationType.MINIMIZATION,
-        boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+        mode=DET.OptimizationType.MINIMIZATION,
+        boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
         function=fitness_fun_opf,
         mutation_factor=0.5,
         crossover_rate=0.8
@@ -37,11 +37,11 @@ if __name__ == "__main__":
     # params.optimum = 100.0
     # params.tolerance = 0.1
 
-    # default = diffEvoLib.Default(params, db_conn="Differential_evolution.db", db_auto_write=True)
+    # default = DET.Default(params, db_conn="Differential_evolution.db", db_auto_write=True)
     # default.initialize()
     # default.run()
 
-    default2 = diffEvoLib.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
+    default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
     default2.initialize()
     results = default2.run()
     # default2.write_results_to_database(results)
@@ -61,103 +61,103 @@ if __name__ == "__main__":
 
 
 
-    # params = diffEvoLib.BestWorstData(
+    # params = DET.BestWorstData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun,
     #     mutation_factor=0.5,
     #     crossover_rate=0.8
     # )
     #
-    # best_worst = diffEvoLib.BestWorst(params)
+    # best_worst = DET.BestWorst(params)
     # best_worst.initialize()
     # best_worst.run()
     #
-    # params = diffEvoLib.RandomLocationsData(
+    # params = DET.RandomLocationsData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun,
     #     mutation_factor=0.5,
     #     crossover_rate=0.8
     # )
     #
-    # random_locations = diffEvoLib.RandomLocations(params)
+    # random_locations = DET.RandomLocations(params)
     # random_locations.initialize()
     # random_locations.run()
     #
-    # params = diffEvoLib.NovelModifiedData(
+    # params = DET.NovelModifiedData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun,
     #     delta_f=0.2,
     #     delta_cr=0.1,
     #     sp=50
     # )
     #
-    # novel_modified = diffEvoLib.NovelModified(params)
+    # novel_modified = DET.NovelModified(params)
     # novel_modified.initialize()
     # novel_modified.run()
     #
-    # params = diffEvoLib.AdaptiveParamsData(
+    # params = DET.AdaptiveParamsData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun,
     #     prob_f=0.1,
     #     prob_cr=0.1
     # )
     #
-    # adaptive = diffEvoLib.AdaptiveParams(params)
+    # adaptive = DET.AdaptiveParams(params)
     # adaptive.initialize()
     # adaptive.run()
     #
-    # params = diffEvoLib.EmDeData(
+    # params = DET.EmDeData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun,
     #     crossover_rate=0.8
     # )
     #
-    # emde = diffEvoLib.EmDe(params)
+    # emde = DET.EmDe(params)
     # emde.initialize()
     # emde.run()
     #
-    # params = diffEvoLib.ScalingParamsData(
+    # params = DET.ScalingParamsData(
     #     num_of_epochs=num_of_epochs,
     #     population_size=100,
     #     nr_of_args=10,
     #     interval_lower_bound=-100,
     #     interval_higher_bound=100,
-    #     mode=diffEvoLib.OptimizationType.MINIMIZATION,
-    #     boundary_constraints_fun=diffEvoLib.BoundaryFixing.RANDOM,
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
     #     function=fitness_fun
     # )
     #
-    # scaling_params = diffEvoLib.ScalingParams(params)
+    # scaling_params = DET.ScalingParams(params)
     # scaling_params.initialize()
     # scaling_params.run()
 
