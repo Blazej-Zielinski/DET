@@ -1,10 +1,11 @@
 import numpy as np
+import random
 
 from src.algorithms.boudary_fixing import fix_boundary_constraints
 from src.algorithms.methods.default_de import mutation, binomial_crossing, selection
 from src.algorithms.methods.best_worst import best_worst_mutation, calculate_cr
 from src.algorithms.methods.random_locations import rl_mutation
-from src.algorithms.methods.novel_modified import nm_mutation, nm_binomial_crossing, nm_selection,\
+from src.algorithms.methods.novel_modified import nm_mutation, nm_binomial_crossing, nm_selection, \
     nm_calculate_fm_crm, nm_update_f_cr
 from src.algorithms.methods.parent_centric import parent_centric_mutation
 from src.algorithms.methods.pbx import pbx_mutation, p_best_crossover, calculate_crm, calculate_fm
@@ -14,6 +15,16 @@ from src.algorithms.methods.bidirectional import bi_mutation, bi_binomial_crossi
 from src.algorithms.methods.adaptive_params import ad_mutation, ad_binomial_crossing, ad_selection
 from src.algorithms.methods.em_de import em_mutation
 from src.algorithms.methods.scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
+from src.algorithms.methods.self_adaptive import sa_mutation, sa_selection, sa_adapt_probabilities, \
+    sa_binomial_crossing, sa_adapt_crossover_rates
+from src.algorithms.initializers import draw_norm_dist_within_bounds
+from src.algorithms.methods.jade import jade_mutation, jade_selection, jade_adapt_mutation_factors, \
+    jade_adapt_crossover_rates, jade_reduce_archive
+from src.algorithms.methods.opposition_based import opp_based_calculate_opposite_pop, opp_based_selection, \
+    opp_based_min_max_gen
+from src.algorithms.methods.degl import degl_mutation
+from src.algorithms.methods.delb import delb_mutation, delb_selection
+from src.algorithms.methods.fuzzy_de import fuzzy_adapt_f_cr
 
 
 def default_alg(pop, config):
@@ -328,3 +339,194 @@ def scaling_params_de(pop, config, curr_gen):
     new_pop = selection(pop, u_pop)
 
     return new_pop
+
+
+def self_adaptive_de(pop, config, curr_gen: int, additional_data: tuple):
+    """
+    Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=1554904&tag=1
+    :param curr_gen:
+    :param pop:
+    :param config:
+    :param additional_data:
+    :return:
+    """
+    mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates = additional_data
+
+    v_pop, members_strategies = sa_mutation(pop, mutation_factors, mutation_strategies, mutation_strategy_indicators)
+
+    u_pop = sa_binomial_crossing(pop, v_pop, crossover_rates)
+
+    # boundary constrains
+    fix_boundary_constraints(u_pop, config.boundary_constraints_fun)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = sa_selection(pop, u_pop, members_strategies, crossover_rates, crossover_success_rates)
+
+    # Reinitialize mutation factors
+    mutation_factors = draw_norm_dist_within_bounds(config.mutation_factor_mean, config.mutation_factor_std,
+                                                    config.population_size, config.mutation_factor_low,
+                                                    config.mutation_factor_high)
+
+    # Reinitialize crossover rates
+    if curr_gen != 0 and curr_gen % config.crossover_reinit_period == 0:
+        crossover_rates = np.random.normal(loc=config.crossover_rate_mean, scale=config.crossover_rate_std,
+                                           size=config.population_size)
+
+    # Update crossover rates
+    if curr_gen != 0 and curr_gen % config.crossover_learning_period == 0:
+        crossover_rates = sa_adapt_crossover_rates(config, crossover_success_rates)
+        crossover_success_rates = []
+
+    # Update strategy probabilities
+    if curr_gen != 0 and curr_gen % config.mutation_learning_period == 0:
+        sa_adapt_probabilities(*mutation_strategies)
+        mutation_strategies = sorted(mutation_strategies, key=lambda strategy: strategy.probability)
+
+    return new_pop, (
+        mutation_factors, mutation_strategies, crossover_rates, mutation_strategy_indicators, crossover_success_rates)
+
+
+def jade(pop, config, additional_data: tuple):
+    """
+        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5208221&tag=1
+        :param curr_gen:
+        :param pop:
+        :param config:
+        :param additional_data:
+        :return:
+        """
+
+    mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive = additional_data
+
+    v_pop = jade_mutation(pop, archive, mutation_factors, config.jade_p)
+
+    u_pop = sa_binomial_crossing(pop, v_pop, crossover_rates)
+
+    # boundary constrains
+    fix_boundary_constraints(u_pop, config.boundary_constraints_fun)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    new_pop, archive, success_mutation_factors, success_crossover_rates, _ = jade_selection(pop, u_pop, archive,
+                                                                                            mutation_factors,
+                                                                                            crossover_rates,
+                                                                                            success_mutation_factors,
+                                                                                            success_crossover_rates)
+
+    archive = jade_reduce_archive(config.population_size, archive)
+
+    mutation_factors, success_mutation_factors = jade_adapt_mutation_factors(config, success_mutation_factors)
+
+    crossover_rates, success_crossover_rates = jade_adapt_crossover_rates(config, success_crossover_rates)
+
+    return new_pop, (mutation_factors, crossover_rates, success_mutation_factors, success_crossover_rates, archive)
+
+
+def opposition_based(pop, config, curr_gen: int):
+    if config.nfc < config.max_nfc:
+        if curr_gen == 0:
+            # Generate opposite population
+            opposite_pop = opp_based_calculate_opposite_pop(pop)
+
+            # Update fitness values before selection
+            opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+            config.nfc += config.population_size
+
+            # Create new pop with base and opposite members
+            pop, _ = opp_based_selection(pop, opposite_pop)
+
+        v_pop = mutation(pop, config.mutation_factor)
+
+        # boundary constrains
+        fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+        u_pop = binomial_crossing(pop, v_pop, config.crossover_rate)
+
+        # Update values before selection
+        u_pop.update_fitness_values(lambda params: config.function.eval(params))
+        config.nfc += config.population_size
+
+        # Select new population
+        new_pop, _ = selection(pop, u_pop)
+
+        if random.random() < config.jumping_rate:
+            min_vals, max_vals = opp_based_min_max_gen(new_pop)
+
+            # Generate opposite population
+            opposite_pop = opp_based_calculate_opposite_pop(new_pop, min_vals, max_vals)
+
+            # Update fitness values before selection
+            opposite_pop.update_fitness_values(lambda params: config.function.eval(params))
+            config.nfc += config.population_size
+
+            # Create new pop with base and opposite members
+            new_pop, _ = opp_based_selection(new_pop, opposite_pop)
+
+        return new_pop, ()
+
+
+def degl(pop, config):
+    v_pop = degl_mutation(pop, config.k_n, config.mutation_factor, config.weight)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = selection(pop, u_pop)
+
+    return new_pop, ()
+
+
+def delb(pop, config):
+    """
+        Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
+        :param pop:
+        :param config:
+        :return:
+        """
+    v_pop = delb_mutation(pop)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop = delb_selection(pop, u_pop, w=config.w, fitness_func=lambda params: config.function.eval(params))
+
+    return new_pop, ()
+
+
+def fuzzy_de(pop, config, additional_data: tuple):
+    v_pop = mutation(pop, f=config.mutation_factor)
+
+    # boundary constrains
+    fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
+
+    u_pop = binomial_crossing(pop, v_pop, cr=config.crossover_rate)
+
+    # Update values before selection
+    u_pop.update_fitness_values(lambda params: config.function.eval(params))
+
+    # Select new population
+    new_pop, _ = selection(pop, u_pop)
+
+    new_f, new_cr = fuzzy_adapt_f_cr(FLC=additional_data[0], origin_population=pop, next_population=new_pop,
+                                     vtr=config.value_to_reach, best_func_value=config.best_fitness_value)
+
+    config.mutation_factor = new_f
+    config.crossover_rate = new_cr
+
+    return new_pop, additional_data

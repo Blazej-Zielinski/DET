@@ -1,43 +1,17 @@
+import copy
 import random
 import numpy as np
-import copy
 
-from src.models.member import Member
-from src.models.population import Population
-from src.enums.optimization import OptimizationType
-from src.enums.strategies import mutation_rand_1
+from DET.DETAlgs.methods.methods_de import mutation_ind, binomial_crossing_ind
+from DET.models.enums.optimization import OptimizationType
+from DET.models.population import Population
 
 
-def mutation_ind(base_member: Member, member1: Member, member2: Member, f):
-    """
-        Formula: v_ij = x_r1 + F(x_r2 - x_r3)
-    """
-    new_member = copy.deepcopy(base_member)
-    new_member.chromosomes = base_member.chromosomes + (member1.chromosomes - member2.chromosomes) * f
-    return new_member
-
-
-# def mutation(population: Population, f):
-#     new_members = []
-#     for _ in range(population.size):
-#         selected_members = random.sample(population.members.tolist(), 3)
-#         new_member = mutation_ind(selected_members[0], selected_members[1], selected_members[2], f)
-#         new_members.append(new_member)
-#
-#     new_population = Population(
-#         interval=population.interval,
-#         arg_num=population.arg_num,
-#         size=population.size,
-#         optimization=population.optimization
-#     )
-#     new_population.members = np.array(new_members)
-#     return new_population
-
-def mutation(population: Population, f):
+def sade_mutation(population: Population, f_arr):
     new_members = []
-    for _ in range(population.size):
+    for i in range(population.size):
         selected_members = random.sample(population.members.tolist(), 3)
-        new_member = mutation_rand_1(selected_members, f)
+        new_member = mutation_ind(selected_members[0], selected_members[1], selected_members[2], f_arr[i])
         new_members.append(new_member)
 
     new_population = Population(
@@ -50,32 +24,14 @@ def mutation(population: Population, f):
     return new_population
 
 
-def binomial_crossing_ind(org_member: Member, mut_member: Member, cr):
-    new_member = copy.deepcopy(org_member)
-
-    random_numbers = np.random.rand(new_member.args_num)
-    mask = random_numbers <= cr
-
-    # ensures that new member gets at least one parameter (giga important line)
-    i_rand = np.random.randint(low=0, high=new_member.args_num)
-
-    for i in range(new_member.args_num):
-        if mask[i] or i_rand == i:
-            new_member.chromosomes[i].real_value = mut_member.chromosomes[i].real_value
-        else:
-            new_member.chromosomes[i].real_value = org_member.chromosomes[i].real_value
-
-    return new_member
-
-
-def binomial_crossing(origin_population: Population, mutated_population: Population, cr):
+def sade_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
     if origin_population.size != mutated_population.size:
         print("Binomial_crossing: populations have different sizes")
         return None
 
     new_members = []
     for i in range(origin_population.size):
-        new_member = binomial_crossing_ind(origin_population.members[i], mutated_population.members[i], cr)
+        new_member = binomial_crossing_ind(origin_population.members[i], mutated_population.members[i], cr_arr[i])
         new_members.append(new_member)
 
     new_population = Population(
@@ -88,7 +44,7 @@ def binomial_crossing(origin_population: Population, mutated_population: Populat
     return new_population
 
 
-def selection(origin_population: Population, modified_population: Population):
+def sade_selection(origin_population: Population, modified_population: Population, f_arr, cr_arr, prob_f, prob_cr):
     if origin_population.size != modified_population.size:
         print("Selection: populations have different sizes")
         return None
@@ -99,19 +55,23 @@ def selection(origin_population: Population, modified_population: Population):
 
     optimization = origin_population.optimization
     new_members = []
-    better_count = 0
     for i in range(origin_population.size):
         if optimization == OptimizationType.MINIMIZATION:
             if origin_population.members[i] <= modified_population.members[i]:
                 new_members.append(copy.deepcopy(origin_population.members[i]))
+                if np.random.uniform() < prob_f:
+                    f_arr[i] = np.random.uniform()
             else:
                 new_members.append(copy.deepcopy(modified_population.members[i]))
-                better_count += 1
+                if np.random.uniform() >= prob_cr:
+                    cr_arr[i] = np.random.uniform()
         elif optimization == OptimizationType.MAXIMIZATION:
             if origin_population.members[i] >= modified_population.members[i]:
                 new_members.append(copy.deepcopy(origin_population.members[i]))
             else:
                 new_members.append(copy.deepcopy(modified_population.members[i]))
+                f_arr[i] = np.random.uniform() if np.random.uniform() < prob_f else f_arr[i]
+                cr_arr[i] = np.random.uniform() if np.random.uniform() < prob_cr else cr_arr[i]
 
     new_population = Population(
         interval=origin_population.interval,
@@ -120,4 +80,4 @@ def selection(origin_population: Population, modified_population: Population):
         optimization=origin_population.optimization
     )
     new_population.members = np.array(new_members)
-    return new_population, better_count
+    return new_population, f_arr, cr_arr

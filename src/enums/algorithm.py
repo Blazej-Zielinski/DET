@@ -1,7 +1,8 @@
 from enum import Enum
-from src.algorithms.algs import default_alg, best_worst_alg, random_locations_alg, novel_modified_de, pcx_de, pbx_de,\
-    laplace_de, tensegrity_structures_de, bidirectional_de, adaptive_params_de, em_de, scaling_params_de
-from src.algorithms.initializers import nm_initialize, pbx_initialize, adaptive_params_initialize
+from src.algorithms.algs import default_alg, best_worst_alg, random_locations_alg, novel_modified_de, pcx_de, pbx_de, \
+    laplace_de, tensegrity_structures_de, bidirectional_de, adaptive_params_de, em_de, scaling_params_de, \
+    self_adaptive_de, jade, opposition_based, degl, delb, fuzzy_de
+from src.algorithms.initializers import nm_initialize, pbx_initialize, adaptive_params_initialize, sa_initialize, jade_initialize, fuzzy_initialize
 
 
 class AlgorithmType(Enum):
@@ -25,6 +26,13 @@ class AlgorithmType(Enum):
     TENSEGRITY = 'tensegrity'
 
     # new
+    SADE = 'Self-adaptive DE'
+    GDE3 = '3rd evolution step generalized DE'
+    FUZZY = 'Fuzzy-adaptive DE'
+    JADE = 'Adaptive DE with optional external archive'
+    OPDE = 'Opposition-based DE'
+    DEGL = 'DE using a neighborhood-based mutation operator'
+    DELB = 'DE utilizing the localizations around the best vector'
 
 
 def get_algorithm(alg_type: AlgorithmType):
@@ -49,5 +57,18 @@ def get_algorithm(alg_type: AlgorithmType):
             lambda config: adaptive_params_initialize(config)
         ),
         AlgorithmType.EM_DE: (lambda pop, config, curr_gen, args: em_de(pop, config), None),
-        AlgorithmType.SCALING_PARAMS: (lambda pop, config, curr_gen, args: scaling_params_de(pop, config, curr_gen + 1), None),
+        AlgorithmType.SCALING_PARAMS: (
+            lambda pop, config, curr_gen, args: scaling_params_de(pop, config, curr_gen + 1), None),
+        AlgorithmType.SADE: (
+            lambda pop, config, curr_gen, args: self_adaptive_de(pop, config, curr_gen, args),
+            lambda config: sa_initialize(config)),
+        AlgorithmType.JADE: (
+            lambda pop, config, curr_gen, args: jade(pop, config, args),
+            lambda config: jade_initialize(config)
+        ),
+        AlgorithmType.OPDE: (lambda pop, config, curr_gen, args: opposition_based(pop, config, curr_gen), None),
+        AlgorithmType.DEGL: (lambda pop, config, curr_gen, args: degl(pop, config), None),
+        AlgorithmType.DELB: (lambda pop, config, curr_gen, args: delb(pop, config), None),
+        AlgorithmType.FUZZY: (lambda pop, config, curr_gen, args: fuzzy_de(pop, config, args),
+                              lambda config: fuzzy_initialize())
     }.get(alg_type, lambda: None)

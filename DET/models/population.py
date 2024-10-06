@@ -1,11 +1,12 @@
+import concurrent.futures
 import numpy as np
 
-from src.models.member import Member
-from src.enums.optimization import OptimizationType
+from DET.models.enums.optimization import OptimizationType
+from DET.models.member import Member
 
 
 class Population:
-    def __init__(self, interval: list, arg_num: int, size: int, optimization: OptimizationType):
+    def __init__(self, interval, arg_num, size, optimization: OptimizationType):
         self.size = size
         self.members = None
         self.optimization = optimization
@@ -17,9 +18,21 @@ class Population:
     def generate_population(self):
         self.members = np.array([Member(self.interval, self.arg_num) for _ in range(self.size)])
 
+    @staticmethod
+    def calculate_fitness(member, fitness_fun):
+        args = member.get_chromosomes()
+        return member, fitness_fun(args)
+
     def update_fitness_values(self, fitness_fun):
-        for member in self.members:
-            member.calculate_fitness_fun(fitness_fun)
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = [executor.submit(self.calculate_fitness, member, fitness_fun) for member in self.members]
+
+            for future in concurrent.futures.as_completed(futures):
+                member, fitness_value = future.result()
+                member.fitness_value = fitness_value
+
+        # for member in self.members:
+        #     member.calculate_fitness_fun(fitness_fun)
 
     def get_best_members(self, nr_of_members):
         # Get the indices that would sort the array based on the key function
