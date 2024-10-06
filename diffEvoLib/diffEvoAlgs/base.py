@@ -73,11 +73,16 @@ class BaseDiffEvoAlg(ABC):
             best_member = self._pop.get_best_members(1)[0]
             if abs(self.optimum - best_member.fitness_value) < self.tolerance:
                 break
-            self.next_epoch()
 
-            # Calculate metrics
-            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
-            epoch_metrics.append(epoch_metric)
+            try:
+                self.next_epoch()
+
+                # Calculate metrics
+                epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
+                epoch_metrics.append(epoch_metric)
+            except:
+                print('An unexpected error occurred during calculation.')
+                return epoch_metrics
 
         end_time = time.time()
         execution_time = end_time - start_time
@@ -85,7 +90,10 @@ class BaseDiffEvoAlg(ABC):
               f' Execution time: {execution_time} seconds')
 
         if self._database is not None and self.db_auto_write:
-            self.write_results_to_database(epoch_metrics)
+            try:
+                self.write_results_to_database(epoch_metrics)
+            except:
+                print('An unexpected error occurred while writing to the database.')
 
         return epoch_metrics
 
