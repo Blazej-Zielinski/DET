@@ -1,8 +1,11 @@
+from time import sleep
+
 import diffEvoLib
 import opfunu.cec_based.cec2014 as opf
 
 
 def example_function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
+    sleep(0.02)
     return (x1 - 1)**2 + (x2 - 2)**2 + (x3 - 3)**2 + (x4 - 4)**2 + (x5 - 5)**2 + \
            (x6 - 6)**2 + (x7 - 7)**2 + (x8 - 8)**2 + (x9 - 9)**2 + (x10 - 10)**2
 
@@ -31,6 +34,8 @@ if __name__ == "__main__":
         mutation_factor=0.5,
         crossover_rate=0.8
     )
+    # params.optimum = 100.0
+    # params.tolerance = 0.1
 
     # default = diffEvoLib.Default(params, db_conn="Differential_evolution.db", db_auto_write=True)
     # default.initialize()

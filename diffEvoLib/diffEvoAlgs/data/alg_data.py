@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Optional
 
 from diffEvoLib.models.fitness_function import FitnessFunctionBase
 from diffEvoLib.models.enums.boundary_constrain import BoundaryFixing
@@ -16,8 +17,8 @@ class BaseData:
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase
 
-    optimum: float
-    tolerance: float
+    optimum: Optional[float] = field(init=False, default=None)
+    tolerance: Optional[float] = field(init=False, default=None)
 
 
 @dataclass
