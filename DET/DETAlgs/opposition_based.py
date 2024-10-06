@@ -2,7 +2,7 @@ import copy
 import time
 from tqdm import tqdm
 
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import OppBasedData
 from DET.DETAlgs.methods.methods_opposition_based import opp_based_keep_best_individuals, \
     opp_based_generation_jumping
@@ -12,7 +12,7 @@ from DET.models.population import Population
 from DET.helpers.metric_helper import MetricHelper
 
 
-class OppBasedDE(BaseDiffEvoAlg):
+class OppBasedDE(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4358759
     """
@@ -82,7 +82,7 @@ class OppBasedDE(BaseDiffEvoAlg):
 
         # Calculate metrics
         epoch_metrics = []
-        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, epoch=-1)
+        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, -1, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
@@ -93,7 +93,7 @@ class OppBasedDE(BaseDiffEvoAlg):
             self.next_epoch()
 
             # Calculate metrics
-            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
+            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
             epoch_metrics.append(epoch_metric)
 
         end_time = time.time()

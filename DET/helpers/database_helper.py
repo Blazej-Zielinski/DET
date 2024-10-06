@@ -22,6 +22,8 @@ def format_individuals(individuals: typing.List[Metric]):
         mean = data.population_mean
         std = data.population_std
         exec_time = data.execution_time
+        population = [str(member) for member in data.population]
+
         formatted_individuals.append(
             (
                 epoch,
@@ -31,7 +33,8 @@ def format_individuals(individuals: typing.List[Metric]):
                 worst_member.fitness_value,
                 mean,
                 std,
-                exec_time
+                exec_time,
+                json.dumps(population)
             )
         )
     return formatted_individuals

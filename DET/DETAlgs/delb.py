@@ -1,11 +1,11 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import DELBData
 from DET.DETAlgs.methods.methods_delb import delb_mutation, delb_selection
 from DET.DETAlgs.methods.methods_de import binomial_crossing
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class DELB(BaseDiffEvoAlg):
+class DELB(BaseAlg):
     """
         Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
     """

@@ -11,7 +11,7 @@ from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
 
 
-class BaseDiffEvoAlg(ABC):
+class BaseAlg(ABC):
     def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False):
         self.name = name
         self._epoch_number = 0
@@ -34,6 +34,7 @@ class BaseDiffEvoAlg(ABC):
 
         self._database = SQLiteConnector(db_conn) if db_conn is not None else None
         self.db_auto_write = db_auto_write
+        self.log_population = params.log_population
 
     @abstractmethod
     def next_epoch(self):
@@ -65,7 +66,7 @@ class BaseDiffEvoAlg(ABC):
 
         # Calculate metrics
         epoch_metrics = []
-        epoch_metric = MetricHelper.calculate_start_metrics(self._pop)
+        epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
@@ -78,7 +79,7 @@ class BaseDiffEvoAlg(ABC):
                 self.next_epoch()
 
                 # Calculate metrics
-                epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
+                epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
             except:
                 print('An unexpected error occurred during calculation.')

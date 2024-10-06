@@ -54,7 +54,8 @@ class SQLiteConnector(BaseSQLiteConnector):
                 fitnessValueWorst REAL,
                 mean REAL,
                 std REAL,
-                calculationTime REAL
+                calculationTime REAL,
+                population TEXT
             )
         '''
 
@@ -73,8 +74,8 @@ class SQLiteConnector(BaseSQLiteConnector):
 
     def insert_multiple_best_individuals(self, table_name, params):
         insert_query = f'''
-        INSERT INTO {table_name} (epoch, argumentsBest, fitnessValueBest, argumentsWorst, fitnessValueWorst, mean, std, calculationTime)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO {table_name} (epoch, argumentsBest, fitnessValueBest, argumentsWorst, fitnessValueWorst, mean, std, calculationTime, population)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         '''
 
         self.executemany_query(insert_query, params)

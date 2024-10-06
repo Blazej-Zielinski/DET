@@ -16,6 +16,7 @@ class BaseData:
     mode: OptimizationType
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase
+    log_population: bool
 
     optimum: Optional[float] = field(init=False, default=None)
     tolerance: Optional[float] = field(init=False, default=None)

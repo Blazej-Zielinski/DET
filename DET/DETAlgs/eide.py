@@ -1,16 +1,13 @@
 import random
-from tqdm import tqdm
-import time
 
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import EIDEData
 from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from DET.DETAlgs.methods.methods_eide import eide_adopt_parameters
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.helpers.metric_helper import MetricHelper
 
 
-class EIDE(BaseDiffEvoAlg):
+class EIDE(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6390324&tag=1
     """

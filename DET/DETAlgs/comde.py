@@ -1,11 +1,11 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import COMDEData
 from DET.DETAlgs.methods.methods_comde import calculate_cr, comde_mutation
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class COMDE(BaseDiffEvoAlg):
+class COMDE(BaseAlg):
     """
     Source: https://www.sciencedirect.com/science/article/pii/S0020025512000278
     """

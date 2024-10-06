@@ -1,5 +1,6 @@
 import time
-from dataclasses import dataclass
+import typing
+from dataclasses import dataclass, field
 
 from DET.models.member import Member
 from DET.models.population import Population
@@ -8,7 +9,7 @@ from DET.models.population import Population
 class MetricHelper:
 
     @staticmethod
-    def calculate_start_metrics(population: Population):
+    def calculate_start_metrics(population: Population, log_population: bool = False):
         sorted_members = population.get_best_members(population.size)
         best_inv = sorted_members[0]
         worst_inv = sorted_members[-1]
@@ -25,11 +26,13 @@ class MetricHelper:
             population_std=pop_std,
             execution_time=0.0
         )
+        if log_population:
+            metric.population = population.members
 
         return metric
 
     @staticmethod
-    def calculate_metrics(population: Population, start_time, epoch):
+    def calculate_metrics(population: Population, start_time, epoch, log_population: bool = False):
         sorted_members = population.get_best_members(population.size)
         best_inv = sorted_members[0]
         worst_inv = sorted_members[-1]
@@ -49,6 +52,8 @@ class MetricHelper:
             population_std=pop_std,
             execution_time=execution_time
         )
+        if log_population:
+            metric.population = population.members
 
         return metric
 
@@ -61,3 +66,4 @@ class Metric:
     population_mean: float
     population_std: float
     execution_time: float
+    population: typing.Optional[typing.List] = field(default_factory=list)

@@ -1,10 +1,10 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import DEData
 from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class DE(BaseDiffEvoAlg):
+class DE(BaseAlg):
     def __init__(self, params: DEData, db_conn=None, db_auto_write=False):
         super().__init__(DE.__name__, params, db_conn, db_auto_write)
 

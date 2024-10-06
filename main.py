@@ -32,7 +32,8 @@ if __name__ == "__main__":
         boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
         function=fitness_fun_opf,
         mutation_factor=0.5,
-        crossover_rate=0.8
+        crossover_rate=0.8,
+        log_population=True
     )
     # params.optimum = 100.0
     # params.tolerance = 0.1
@@ -44,7 +45,7 @@ if __name__ == "__main__":
     default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
     default2.initialize()
     results = default2.run()
-    # default2.write_results_to_database(results)
+    default2.write_results_to_database(results)
 
 
 

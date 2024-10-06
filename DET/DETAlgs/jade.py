@@ -1,4 +1,4 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import JADEData
 from DET.DETAlgs.methods.methods_jade import jade_adapt_mutation_factors, jade_binomial_crossing, \
     jade_adapt_crossover_rates, jade_mutation, jade_selection, jade_reduce_archive, draw_norm_dist_within_bounds, \
@@ -6,7 +6,7 @@ from DET.DETAlgs.methods.methods_jade import jade_adapt_mutation_factors, jade_b
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class JADE(BaseDiffEvoAlg):
+class JADE(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5208221
     """

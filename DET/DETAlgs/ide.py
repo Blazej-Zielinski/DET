@@ -1,11 +1,11 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import IDEData
 from DET.DETAlgs.methods.methods_de import selection, mutation
 from DET.DETAlgs.methods.methods_ide import ide_get_f, ide_get_cr, ide_binomial_crossing
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class IDE(BaseDiffEvoAlg):
+class IDE(BaseAlg):
     """
     Source: https://www.scirp.org/journal/paperinformation.aspx?paperid=96749
     """

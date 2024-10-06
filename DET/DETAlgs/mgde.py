@@ -1,7 +1,7 @@
 from tqdm import tqdm
 import time
 
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import MGDEData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_mgde import mgde_mutation, mgde_adapt_threshold
@@ -9,7 +9,7 @@ from DET.models.enums.boundary_constrain import fix_boundary_constraints
 from DET.helpers.metric_helper import MetricHelper
 
 
-class MGDE(BaseDiffEvoAlg):
+class MGDE(BaseAlg):
     def __init__(self, params: MGDEData, db_conn=None, db_auto_write=False):
         super().__init__(MGDE.__name__, params, db_conn, db_auto_write)
 
@@ -50,7 +50,7 @@ class MGDE(BaseDiffEvoAlg):
 
         # Calculate metrics
         epoch_metrics = []
-        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, epoch=-1)
+        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, -1, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
@@ -59,7 +59,7 @@ class MGDE(BaseDiffEvoAlg):
             self.next_epoch()
 
             # Calculate metrics
-            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch=epoch)
+            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
             epoch_metrics.append(epoch_metric)
 
         end_time = time.time()

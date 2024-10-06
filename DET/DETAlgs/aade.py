@@ -1,11 +1,11 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import AADEData
 from DET.DETAlgs.methods.methods_aade import aade_mutation, aade_crossing, aade_selection, \
     aade_adapat_parameters
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class AADE(BaseDiffEvoAlg):
+class AADE(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8819749&tag=1
     """

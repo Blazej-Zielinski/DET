@@ -1,11 +1,11 @@
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import DEGLData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_degl import degl_mutation, degl_adapt_weight
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class DEGL(BaseDiffEvoAlg):
+class DEGL(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5089881
     """

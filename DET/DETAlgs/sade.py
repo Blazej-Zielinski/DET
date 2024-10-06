@@ -1,12 +1,12 @@
 import numpy as np
 
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import SADEData
 from DET.DETAlgs.methods.methods_sade import sade_mutation, sade_binomial_crossing, sade_selection
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class SADE(BaseDiffEvoAlg):
+class SADE(BaseAlg):
     """
     Source: https://ieeexplore.ieee.org/abstract/document/4730987
     """

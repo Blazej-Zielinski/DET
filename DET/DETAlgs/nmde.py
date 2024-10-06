@@ -1,13 +1,13 @@
 import numpy as np
 
-from DET.DETAlgs.base import BaseDiffEvoAlg
+from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import NMDEData
 from DET.DETAlgs.methods.methods_nmde import nmde_mutation, nmde_selection, nmde_calculate_fm_crm, \
     nmde_binomial_crossing, nmde_update_f_cr
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
 
-class NMDE(BaseDiffEvoAlg):
+class NMDE(BaseAlg):
     """
     Source: https://www.sciencedirect.com/science/article/pii/S0898122111000460#s000015
     """
