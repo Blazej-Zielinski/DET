@@ -2,7 +2,7 @@ import numpy as np
 
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import SADEData
-from diffEvoLib.diffEvoAlgs.methods.methods_adaptive_params import ad_mutation, ad_binomial_crossing, ad_selection
+from diffEvoLib.diffEvoAlgs.methods.methods_sade import sade_mutation, sade_binomial_crossing, sade_selection
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
@@ -24,19 +24,19 @@ class SADE(BaseDiffEvoAlg):
         f_arr, cr_arr, prob_f, prob_cr = (self._f_arr, self._cr_arr, self.prob_f, self.prob_cr)
 
         # New population after mutation
-        v_pop = ad_mutation(self._pop, f_arr)
+        v_pop = sade_mutation(self._pop, f_arr)
 
         # Apply boundary constrains on population in place
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)
 
         # New population after crossing
-        u_pop = ad_binomial_crossing(self._pop, v_pop, cr_arr)
+        u_pop = sade_binomial_crossing(self._pop, v_pop, cr_arr)
 
         # Update values before selection
         u_pop.update_fitness_values(self._function.eval)
 
         # Select new population
-        new_pop, f_arr, cr_arr = ad_selection(self._pop, u_pop, f_arr, cr_arr, prob_f, prob_cr)
+        new_pop, f_arr, cr_arr = sade_selection(self._pop, u_pop, f_arr, cr_arr, prob_f, prob_cr)
 
         # Override data
         self._pop = new_pop

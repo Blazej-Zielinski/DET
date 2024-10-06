@@ -2,8 +2,8 @@ import numpy as np
 
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import NMDEData
-from diffEvoLib.diffEvoAlgs.methods.methods_novel_modified import nm_mutation, nm_selection, nm_calculate_fm_crm, \
-    nm_binomial_crossing, nm_update_f_cr
+from diffEvoLib.diffEvoAlgs.methods.methods_nmde import nmde_mutation, nmde_selection, nmde_calculate_fm_crm, \
+    nmde_binomial_crossing, nmde_update_f_cr
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
@@ -31,19 +31,19 @@ class NMDE(BaseDiffEvoAlg):
         )
 
         # New population after mutation
-        v_pop = nm_mutation(self._pop, f_arr)
+        v_pop = nmde_mutation(self._pop, f_arr)
 
         # Apply boundary constrains on population in place
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)
 
         # New population after crossing
-        u_pop = nm_binomial_crossing(self._pop, v_pop, cr_arr)
+        u_pop = nmde_binomial_crossing(self._pop, v_pop, cr_arr)
 
         # Update values before selection
         u_pop.update_fitness_values(self._function.eval)
 
         # Select new population
-        new_pop, better_members_indexes = nm_selection(self._pop, u_pop)
+        new_pop, better_members_indexes = nmde_selection(self._pop, u_pop)
 
         for i in range(self.population_size):
             if i in better_members_indexes:
@@ -52,12 +52,12 @@ class NMDE(BaseDiffEvoAlg):
             else:
                 flags[i] += 1
 
-        f_m, cr_m = nm_calculate_fm_crm(f_set, cr_set)
+        f_m, cr_m = nmde_calculate_fm_crm(f_set, cr_set)
 
         for i in range(self.population_size):
             if flags[i] == sp:
                 if f_set != set() and cr_set != set():
-                    f_arr[i], cr_arr[i] = nm_update_f_cr(f_m, cr_m, delta_f, delta_cr)
+                    f_arr[i], cr_arr[i] = nmde_update_f_cr(f_m, cr_m, delta_f, delta_cr)
                 else:
                     f_arr[i] = np.random.uniform(low=0, high=2)
                     cr_arr[i] = np.random.uniform(low=0, high=1)

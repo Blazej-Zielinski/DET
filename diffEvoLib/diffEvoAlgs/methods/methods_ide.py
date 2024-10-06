@@ -1,11 +1,11 @@
 import numpy as np
 import math
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing_ind
 from diffEvoLib.models.population import Population
 
 
-def sp_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
+def ide_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
     if origin_population.size != mutated_population.size:
         print("Binomial_crossing: populations have different sizes")
         return None
@@ -25,13 +25,13 @@ def sp_binomial_crossing(origin_population: Population, mutated_population: Popu
     return new_population
 
 
-def sp_get_f(curr_gen, max_gen):
+def ide_get_f(curr_gen, max_gen):
     f_0 = 0.5
     exponent = 1 - (max_gen / (max_gen + 1 - curr_gen))
     return f_0 * 2 ** (math.e ** exponent)
 
 
-def sp_get_cr(pop: Population):
+def ide_get_cr(pop: Population):
     cr_arr = np.zeros(pop.size)
     cr_min, cr_max = 0.3, 0.9
 

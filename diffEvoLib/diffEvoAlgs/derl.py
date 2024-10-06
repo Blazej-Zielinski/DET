@@ -1,7 +1,7 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import DERLData
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing, selection
-from diffEvoLib.diffEvoAlgs.methods.methods_random_locations import rl_mutation
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing, selection
+from diffEvoLib.diffEvoAlgs.methods.methods_derl import derl_mutation
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
@@ -18,7 +18,7 @@ class DERL(BaseDiffEvoAlg):
 
     def next_epoch(self):
         # New population after mutation
-        v_pop = rl_mutation(self._pop)
+        v_pop = derl_mutation(self._pop)
 
         # Apply boundary constrains on population in place
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)

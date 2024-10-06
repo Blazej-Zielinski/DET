@@ -2,12 +2,12 @@ import random
 import numpy as np
 import copy
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation_ind, binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import mutation_ind, binomial_crossing_ind
 from diffEvoLib.models.enums.optimization import OptimizationType
 from diffEvoLib.models.population import Population
 
 
-def nm_mutation(population: Population, f_arr):
+def nmde_mutation(population: Population, f_arr):
     new_members = []
     for i in range(population.size):
         pop_without_element = population.members.tolist()
@@ -28,7 +28,7 @@ def nm_mutation(population: Population, f_arr):
     return new_population
 
 
-def nm_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
+def nmde_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
     if origin_population.size != mutated_population.size:
         print("Binomial_crossing: populations have different sizes")
         return None
@@ -48,7 +48,7 @@ def nm_binomial_crossing(origin_population: Population, mutated_population: Popu
     return new_population
 
 
-def nm_selection(origin_population: Population, modified_population: Population):
+def nmde_selection(origin_population: Population, modified_population: Population):
     if origin_population.size != modified_population.size:
         print("Selection: populations have different sizes")
         return None
@@ -84,14 +84,14 @@ def nm_selection(origin_population: Population, modified_population: Population)
     return new_population, better_members_indexes
 
 
-def nm_calculate_fm_crm(set_f: set, set_cr: set):
+def nmde_calculate_fm_crm(set_f: set, set_cr: set):
     list_f, list_cr = list(set_f), list(set_cr)
     f_m = sum(list_f) / len(list_f) if len(list_f) > 0.0 else 0.0
     cr_m = sum(list_cr) / len(list_cr) if len(list_cr) > 0.0 else 0.0
     return f_m, cr_m
 
 
-def nm_update_f_cr(f_m, cr_m, delta_f, delta_cr):
+def nmde_update_f_cr(f_m, cr_m, delta_f, delta_cr):
     f_i = np.random.uniform(low=f_m - delta_f, high=f_m + delta_f)
     cr_i = np.random.uniform(low=cr_m - delta_cr, high=cr_m + delta_cr)
 

@@ -1,7 +1,7 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import IDEData
-from diffEvoLib.diffEvoAlgs.methods.methods_default import selection, mutation
-from diffEvoLib.diffEvoAlgs.methods.methods_scaling_params import sp_get_f, sp_get_cr, sp_binomial_crossing
+from diffEvoLib.diffEvoAlgs.methods.methods_de import selection, mutation
+from diffEvoLib.diffEvoAlgs.methods.methods_ide import ide_get_f, ide_get_cr, ide_binomial_crossing
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 
@@ -15,8 +15,8 @@ class IDE(BaseDiffEvoAlg):
 
     def next_epoch(self):
         # Calculate F and CR
-        f = sp_get_f(self._epoch_number, self.num_of_epochs)
-        cr_arr = sp_get_cr(self._pop)
+        f = ide_get_f(self._epoch_number, self.num_of_epochs)
+        cr_arr = ide_get_cr(self._pop)
 
         # New population after mutation
         v_pop = mutation(self._pop, f)
@@ -25,7 +25,7 @@ class IDE(BaseDiffEvoAlg):
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)
 
         # New population after crossing
-        u_pop = sp_binomial_crossing(self._pop, v_pop, cr_arr)
+        u_pop = ide_binomial_crossing(self._pop, v_pop, cr_arr)
 
         # Update values before selection
         u_pop.update_fitness_values(self._function.eval)

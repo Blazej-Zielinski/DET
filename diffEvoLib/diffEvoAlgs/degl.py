@@ -1,6 +1,6 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import DEGLData
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing, selection
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing, selection
 from diffEvoLib.diffEvoAlgs.methods.methods_degl import degl_mutation, degl_adapt_weight
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 

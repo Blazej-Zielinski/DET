@@ -4,7 +4,7 @@ import time
 
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import EIDEData
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation, binomial_crossing, selection
+from diffEvoLib.diffEvoAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from diffEvoLib.diffEvoAlgs.methods.methods_eide import eide_adopt_parameters
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 from diffEvoLib.helpers.metric_helper import MetricHelper

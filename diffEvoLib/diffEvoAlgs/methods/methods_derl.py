@@ -1,11 +1,11 @@
 import random
 import numpy as np
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import mutation_ind
 from diffEvoLib.models.population import Population
 
 
-def rl_mutation(population: Population):
+def derl_mutation(population: Population):
     new_members = []
     for _ in range(population.size):
         selected_members = np.array(random.sample(population.members.tolist(), 3))

@@ -2,7 +2,7 @@ import numpy as np
 import random
 import copy
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing_ind
 from diffEvoLib.models.population import Population
 from diffEvoLib.models.enums.optimization import OptimizationType
 from diffEvoLib.models.enums.mutation import mutation_rand_1

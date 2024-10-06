@@ -7,7 +7,7 @@ from diffEvoLib.models.population import Population
 from diffEvoLib.models.member import Member
 from diffEvoLib.models.enums.mutation import mutation_curr_to_best_1
 from diffEvoLib.models.enums.optimization import OptimizationType
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing_ind
 
 
 def jade_mutation(population: Population, mutation_factors: np.ndarray[float], p_best: float,

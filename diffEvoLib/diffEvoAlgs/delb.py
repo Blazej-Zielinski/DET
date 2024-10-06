@@ -1,7 +1,7 @@
 from diffEvoLib.diffEvoAlgs.base import BaseDiffEvoAlg
 from diffEvoLib.diffEvoAlgs.data.alg_data import DELBData
 from diffEvoLib.diffEvoAlgs.methods.methods_delb import delb_mutation, delb_selection
-from diffEvoLib.diffEvoAlgs.methods.methods_default import binomial_crossing
+from diffEvoLib.diffEvoAlgs.methods.methods_de import binomial_crossing
 from diffEvoLib.models.enums.boundary_constrain import fix_boundary_constraints
 
 

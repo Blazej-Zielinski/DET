@@ -1,11 +1,11 @@
 import random
 import numpy as np
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import mutation_ind
 from diffEvoLib.models.population import Population
 
 
-def best_worst_mutation(population: Population):
+def comde_mutation(population: Population):
     new_members = []
     for _ in range(population.size):
         f_l = np.random.uniform()                   # random in (0, 1]

@@ -2,12 +2,12 @@ import copy
 import random
 import numpy as np
 
-from diffEvoLib.diffEvoAlgs.methods.methods_default import mutation_ind, binomial_crossing_ind
+from diffEvoLib.diffEvoAlgs.methods.methods_de import mutation_ind, binomial_crossing_ind
 from diffEvoLib.models.enums.optimization import OptimizationType
 from diffEvoLib.models.population import Population
 
 
-def ad_mutation(population: Population, f_arr):
+def sade_mutation(population: Population, f_arr):
     new_members = []
     for i in range(population.size):
         selected_members = random.sample(population.members.tolist(), 3)
@@ -24,7 +24,7 @@ def ad_mutation(population: Population, f_arr):
     return new_population
 
 
-def ad_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
+def sade_binomial_crossing(origin_population: Population, mutated_population: Population, cr_arr):
     if origin_population.size != mutated_population.size:
         print("Binomial_crossing: populations have different sizes")
         return None
@@ -44,7 +44,7 @@ def ad_binomial_crossing(origin_population: Population, mutated_population: Popu
     return new_population
 
 
-def ad_selection(origin_population: Population, modified_population: Population, f_arr, cr_arr, prob_f, prob_cr):
+def sade_selection(origin_population: Population, modified_population: Population, f_arr, cr_arr, prob_f, prob_cr):
     if origin_population.size != modified_population.size:
         print("Selection: populations have different sizes")
         return None
