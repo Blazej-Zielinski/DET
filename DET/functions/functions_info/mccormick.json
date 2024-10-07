@@ -1,0 +1,23 @@
+{
+ "MCCORMICK": {
+  "definition": "f(x)=\\sin(x_0+x_1)+(x_0-x_1)^2-1.5x_0+2.5x_1+1",
+  "minima": {
+   "2": [
+    [
+     "+",
+     [
+      -0.54719,
+      -1.54719
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{adorio2005mvf,title={Mvf-multivariate test functions library in c for unconstrained global optimization},author={Adorio, Ernesto P and Diliman, U},journal={Quezon City, Metro Manila, Philippines},pages={100--104},year={2005}}",
+  "suggested bounds": {
+   "lower": -3,
+   "upper": 4
+  },
+  "summary": "Unimodal, uneven slopes on the sides. It's defined only for 2 dimensions.",
+  "version": "0.1"
+ }
+}

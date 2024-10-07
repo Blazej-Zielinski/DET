@@ -1,0 +1,68 @@
+{
+ "KEANE": {
+  "definition": "f(x)=-(\\|\\sum_{i=0}^{N-1}\\cos^4x_i-\\prod_{i=0}^{N-1}\\cos^2x_i\\|)(\\sum_{i=0}^{N-1}x_i^2(i+1))^{-\\frac{1}{2}}",
+  "minima": {
+   "2": [
+    [
+     "~",
+     [
+      1.60086,
+      0.468498
+     ]
+    ],
+    [
+     "~",
+     [
+      1.60086,
+      0.468498
+     ]
+    ]
+   ],
+   "3": [
+    [
+     "~",
+     [
+      3.042963,
+      1.482875,
+      0.166211
+     ]
+    ],
+    [
+     "~",
+     [
+      3.042963,
+      1.482875,
+      0.166211
+     ]
+    ]
+   ],
+   "4": [
+    [
+     "~",
+     [
+      3.065318,
+      1.531047,
+      0.405617,
+      0.393987
+     ]
+    ],
+    [
+     "~",
+     [
+      3.065318,
+      1.531047,
+      0.405617,
+      0.393987
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{vanaret2020certified,title={Certified global minima for a benchmark of difficult optimization problems},author={Vanaret, Charlie and Gotteland, Jean-Baptiste and Durand, Nicolas and Alliot, Jean-Marc},journal={arXiv preprint arXiv:2003.09867},year={2020}}",
+  "suggested bounds": {
+   "lower": 0.0,
+   "upper": 10.0
+  },
+  "summary": "Mutlimodal funciton with local optima regions of different depth.",
+  "version": "0.1"
+ }
+}

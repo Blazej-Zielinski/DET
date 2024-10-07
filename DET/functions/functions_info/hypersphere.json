@@ -1,0 +1,23 @@
+{
+	"HYPERSPHERE": {
+	 "definition": "f(x)=\\sum_{i=1}^N x_i^2",
+	 "minima": {
+		"*": [
+		 [
+			"+",
+			[
+			 0.0,
+			 0.0
+			]
+		 ]
+		]
+	 },
+	 "reference": "",
+	 "suggested bounds": {
+		"lower": -5.0,
+		"upper": 5.0
+	 },
+	 "summary": "",
+	 "version": "0.1"
+	}
+ }

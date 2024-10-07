@@ -1,0 +1,23 @@
+{
+ "ACKLEY": {
+  "definition": "f_{a,b,c}(x)=-a\\exp\\left(-b\\sqrt{\\frac{1}{N}\\sum_{i=0}^{N-1} x_i^2}\\right)-\\exp\\left(\\frac{1}{N}\\sum_{i=1}^N \\cos(x_i c)\\right)+a+e",
+  "minima": {
+   "*": [
+    [
+     "~",
+     [
+      0.0,
+      0.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@book{ackley2012connectionist,title={A connectionist machine for genetic hillclimbing},author={Ackley, David},volume={28},year={2012},publisher={Springer Science & Business Media}}",
+  "suggested bounds": {
+   "lower": -32.768,
+   "upper": 32.768
+  },
+  "summary": "Non-convex and multimodal. Clear global minimum at the center surrounded by many symmetrical local minima. Use three parameters a, b and c.",
+  "version": "0.1"
+ }
+}

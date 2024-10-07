@@ -1,0 +1,89 @@
+{
+ "GRIEWANK": {
+  "definition": "f(x)=\\sum_{i=0}^{N-1} \frac{x_i^2}{4000}- \\prod_{i=0}^{N-1} \\cos\frac{x_i}{\\sqrt{i+1}}+1",
+  "reference": "@article{molga2005test,title={Test functions for optimization needs},author={Molga, Marcin and Smutnicki, Czes{\\l}aw},journal={Test functions for optimization needs},volume={101},pages={48},year={2005}}",
+  "summary": "Non-convex and (highly) multimodal, it shows a different behaviour depending on the scale (zoom=[1,2,3]) that is used.",
+  "version": "0.1",
+  "zoom=0": {
+   "minima": {
+    "*": [
+     [
+      "~",
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    ]
+   },
+   "suggested bounds": {
+    "lower": -600.0,
+    "upper": 600.0
+   }
+  },
+  "zoom=1": {
+   "minima": {
+    "*": [
+     [
+      "~",
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    ]
+   },
+   "suggested bounds": {
+    "lower": -10.0,
+    "upper": 10.0
+   }
+  },
+  "zoom=2": {
+   "minima": {
+    "*": [
+     [
+      "~",
+      [
+       0.0,
+       0.0
+      ]
+     ]
+    ],
+    "2": [
+     [
+      "~",
+      [
+       -3.14002,
+       -4.43844
+      ]
+     ],
+     [
+      "~",
+      [
+       3.14002,
+       -4.43844
+      ]
+     ],
+     [
+      "~",
+      [
+       -3.14002,
+       4.43844
+      ]
+     ],
+     [
+      "~",
+      [
+       3.14002,
+       4.43844
+      ]
+     ]
+    ]
+   },
+   "suggested bounds": {
+    "lower": -5.0,
+    "upper": 5.0
+   }
+  }
+ }
+}

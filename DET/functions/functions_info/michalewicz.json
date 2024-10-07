@@ -1,0 +1,139 @@
+{
+ "MICHALEWICZ": {
+  "definition": "f_m(x)=-\\sum_{i=0}^{N-1} \\sin(x_i)\\sin^{2m}\\left(\\frac{x_i^2{i+1)}{\\pi}\\right)",
+  "minima": {
+   "10": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047,
+      1.570796,
+      1.454414,
+      1.756087,
+      1.655717,
+      1.570796
+     ]
+    ]
+   ],
+   "2": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796
+     ]
+    ],
+    [
+     "~",
+     [
+      2.202900552,
+      2.71157148384
+     ]
+    ]
+   ],
+   "3": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992
+     ]
+    ]
+   ],
+   "4": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058
+     ]
+    ]
+   ],
+   "5": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047
+     ]
+    ]
+   ],
+   "6": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047,
+      1.570796
+     ]
+    ]
+   ],
+   "7": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047,
+      1.570796,
+      1.454414
+     ]
+    ]
+   ],
+   "8": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047,
+      1.570796,
+      1.454414,
+      1.756087
+     ]
+    ]
+   ],
+   "9": [
+    [
+     "~",
+     [
+      2.202906,
+      1.570796,
+      1.284992,
+      1.923058,
+      1.72047,
+      1.570796,
+      1.454414,
+      1.756087,
+      1.655717
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{vanaret2020certified,title={Certified global minima for a benchmark of difficult optimization problems},author={Vanaret, Charlie and Gotteland, Jean-Baptiste and Durand, Nicolas and Alliot, Jean-Marc},journal={arXiv preprint arXiv:2003.09867},year={2020}}",
+  "suggested bounds": {
+   "lower": 0.0,
+   "upper": 3.141592653589793
+  },
+  "dev_comment": "Optima here present are taken from the article in refence. They are all been validated with a threshold of 1e-7 however better solutions are likely to exists at an higher precision (e.g. f([2.202906000253365, 1.5707959996814946])=-1.8013034100904715<-1.8013034100904854=f([2.202906,1.570796]) )",
+  "summary": "Non-convex and (highly) multimodal. Contains n! local minimum. Use a parameter m that defines the stepness of the curves.",
+  "version": "0.1"
+ }
+}

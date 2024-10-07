@@ -1,0 +1,32 @@
+{
+ "SCHWEFEL": {
+  "definition": "f(x)=418.9829 N\\sum_{i=0}^{N-1} x_i\\sin(\\sqrt{\\|x_i\\|})",
+  "minima": {
+    "*": [
+      [
+        "~",
+        [
+         420.9687,
+         420.9687
+        ]
+      ]
+     ],
+    "2": [
+      [
+        "~",
+        [
+          -302.5249351839932,
+          420.9687467475071
+        ]
+      ]
+     ]
+  },
+  "reference": "@book{schwefel1981numerical,title={Numerical optimization of computer models},author={Schwefel, Hans-Paul},year={1981},publisher={John Wiley & Sons, Inc.}}",
+  "suggested bounds": {
+   "lower": -500.0,
+   "upper": 500.0
+  },
+  "summary": "",
+  "version": "0.1"
+ }
+}

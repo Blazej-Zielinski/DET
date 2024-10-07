@@ -1,0 +1,23 @@
+{
+ "SCHAFFER 2": {
+  "definition": "f(x)=0.5 + \\frac{\\sin(\\sqrt(x_0^2+x_1^2))^2 - 0.5}{(1.0 + 0.001(x_0^2+x_1^2))^2}",
+  "minima": {
+   "2": [
+    [
+     "+",
+     [
+      0.0,
+      0.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{mishra2006some,title={Some new test functions for global optimization and performance of repulsive particle swarm method},author={Mishra, Sudhanshu K},journal={Available at SSRN 926132},year={2006}}",
+  "suggested bounds": {
+   "lower": -100,
+   "upper": 100
+  },
+  "summary": "Highly multimodal, with symmetrical ripples tath progressivly increase in magnitude closer to the origin. It's defined only for 2 dimensions.",
+  "version": "0.1"
+ }
+}
