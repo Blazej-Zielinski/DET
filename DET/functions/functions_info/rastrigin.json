@@ -1,0 +1,23 @@
+{
+ "RASTRIGIN": {
+  "definition": "f(x)=10N+\\sum_{i=0}^{N-1} (x_i^2 - 10\\cos(2\\pi x_i))",
+  "minima": {
+   "*": [
+    [
+     "~",
+     [
+      0.0,
+      0.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{pohlheim2007examples,title={Examples of objective functions},author={Pohlheim, Hartmut},journal={Retrieved},volume={4},number={10},pages={2012},year={2007}}",
+  "suggested bounds": {
+   "lower": -5.12,
+   "upper": 5.12
+  },
+  "summary": "Non-convex and (highly) multimodal. Location of the local minima are regularly distributed.",
+  "version": "0.1"
+ }
+}

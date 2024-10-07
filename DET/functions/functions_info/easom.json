@@ -1,0 +1,23 @@
+{
+ "EASOM": {
+  "definition": "f(x)=-\\cos(x_1)\\cos(x_2)e^{-(x_1-\\pi)^2-(x_2-\\pi)^2}",
+  "minima": {
+   "2": [
+    [
+     "+",
+     [
+      3.141592653589793,
+      3.141592653589793
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{chung1998caep,title={CAEP: An evolution-based tool for real-valued function optimization using cultural algorithms},author={Chung, Chan-Jin and Reynolds, Robert G},journal={International Journal on Artificial Intelligence Tools},volume={7},number={03},pages={239--291},year={1998},publisher={World Scientific}}",
+  "suggested bounds": {
+   "lower": -100,
+   "upper": 100
+  },
+  "summary": "Unimodal, mostly a plateau with global minimum in a small central area. It's defined only for 2 dimensions. ",
+  "version": "0.1"
+ }
+}

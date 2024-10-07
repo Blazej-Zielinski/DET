@@ -1,0 +1,23 @@
+{
+ "GOLDSTEIN AND PRICE": {
+  "definition": "f(x)=(1+(x_0+x_1+1)^2(19-14x_0+3x_0^2-14x_1+6x_0x_1+3x_1^2))\\cdot(30+(2x_0-3x_1)^2(18-32x_0+12x_0^2+48x_1-36x_0x_1+27x_1^2))",
+  "minima": {
+   "2": [
+    [
+     "~",
+     [
+      0.0,
+      -1.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{picheny2013benchmark,title={A benchmark of kriging-based infill criteria for noisy optimization},author={Picheny, Victor and Wagner, Tobias and Ginsbourger, David},journal={Structural and Multidisciplinary Optimization},volume={48},number={3},pages={607--626},year={2013},publisher={Springer}}",
+  "suggested bounds": {
+   "lower": -2,
+   "upper": 2
+  },
+  "summary": "Multimodal with an asymmetrical hight slope and global minimum on a plateau. It's defined only for 2 dimensions.",
+  "version": "0.1"
+ }
+}

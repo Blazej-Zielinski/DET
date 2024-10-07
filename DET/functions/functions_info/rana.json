@@ -1,0 +1,83 @@
+{
+ "RANA": {
+  "definition": "f(x)=\\sum_{i=0}^{N-2}x_i\\cos\\sqrt{\\|x_{i+1}+x_i+1\\|}\\sin\\sqrt{\\|x_{i+1}-x_i+1\\|}+(1+x_{i+1})\\sin\\sqrt{\\|x_{i+1}+x_i+1\\|}\\cos\\sqrt{\\|x_{i+1}-x_i+1\\|}",
+  "minima": {
+   "2": [
+    [
+     "~",
+     [
+      -488.632577,
+      512
+     ]
+    ]
+   ],
+   "3": [
+    [
+     "~",
+     [
+      -512.0,
+      -512.0,
+      -512.0
+     ]
+    ]
+   ],
+   "4": [
+    [
+     "~",
+     [
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0
+     ]
+    ]
+   ],
+   "5": [
+    [
+     "~",
+     [
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0
+     ]
+    ]
+   ],
+   "6": [
+    [
+     "~",
+     [
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0
+     ]
+    ]
+   ],
+   "7": [
+    [
+     "~",
+     [
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0,
+      -512.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{vanaret2020certified,title={Certified global minima for a benchmark of difficult optimization problems},author={Vanaret, Charlie and Gotteland, Jean-Baptiste and Durand, Nicolas and Alliot, Jean-Marc},journal={arXiv preprint arXiv:2003.09867},year={2020}}",
+  "suggested bounds": {
+   "lower": -512.0,
+   "upper": 512.0
+  },
+  "summary": "Highly multimodal symmetric function.",
+  "version": "0.1"
+ }
+}

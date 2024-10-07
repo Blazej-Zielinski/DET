@@ -1,0 +1,24 @@
+{
+ "MARTIN AND GADDY": {
+  "definition": "f(x)=(x_1-x_2)^2+\\left(\\frac{x_1+x_2-10}{3}\\right)^2",
+  "minima": {
+   "2": [
+    [
+     "~",
+     [
+      5.0,
+      5.0
+     ]
+    ]
+   ]
+  },
+  "reference": "@article{choon2015gene,title={Gene knockout identification using an extension of bees hill flux balance analysis},author={Choon, Yee Wen and Mohamad, Mohd Saberi and Deris, Safaai and Chong, Chuii Khim and Omatu, Sigeru and Corchado, Juan Manuel},journal={BioMed research international},volume={2015},year={2015},publisher={Hindawi}}",
+  "suggested bounds": {
+   "lower": -20,
+   "upper": 20
+  },
+  "dev_comment": "The reference is not the original one, it is just the oldest reference I could find that used this function",
+  "summary": "Unimodal, with a large single valley between two symmetrical peaks. It's defined only for 2 dimensions.",
+  "version": "0.1"
+ }
+}

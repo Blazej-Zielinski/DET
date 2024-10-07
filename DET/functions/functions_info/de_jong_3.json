@@ -1,0 +1,35 @@
+{
+ "DE JONG 3": {
+  "definition": "f(x)=\\sum_{i=0}^{N-1} \\lfloor x_{i}\rfloor",
+  "dev_comment": "Optima for all the dimensions are provided programmatically, here are stored only the global optima. All local optima lie in a plateau. All the optima are conventionally placed at the geometrical centre of their plateau. Be wary that returning 8^N optima can become expensive both in time and space. Conversely, asking the optimum is efficient.",
+  "minima": {
+    "*": [
+     [
+      "_",
+      [
+       -3.5,
+       -3.5
+      ]
+     ]
+    ]
+   },
+   "maxima": {
+    "*": [
+     [
+      "_",
+      [
+       3.5,
+       3.5
+      ]
+     ]
+    ]
+   },
+  "reference": "@book{de1975analysis,title={An analysis of the behavior of a class of genetic adaptive systems.},author={De Jong, Kenneth Alan},year={1975},publisher={University of Michigan}}",
+  "suggested bounds": {
+   "lower": -3.8,
+   "upper": 3.8
+  },
+  "summary": "Multimodal, \"stair\"-like function, with multiple plateau at different levels. Within the suggested boundaries, it contains 8^N local optima, one for each plateau.",
+  "version": "0.1"
+ }
+}

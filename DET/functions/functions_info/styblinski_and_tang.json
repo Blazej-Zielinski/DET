@@ -1,0 +1,23 @@
+{
+ "STYBLINSKI AND TANG": {
+  "definition": "f(x)=0.5\\sum_{i=0}^{N-1}(x_i^4-16x_i^2+x_i)",
+  "minima": {
+   "*": [
+    [
+     "~",
+     [
+      -2.903534,
+      -2.903534
+     ]
+    ]
+   ]
+  },
+  "reference": "",
+  "suggested bounds": {
+   "lower": -5,
+   "upper": 5
+  },
+  "summary": "Multimodal, with optima displaced in a symmetric way.",
+  "version": "0.1"
+ }
+}

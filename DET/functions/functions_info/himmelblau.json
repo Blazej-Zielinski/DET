@@ -1,0 +1,44 @@
+{
+ "HIMMELBLAU": {
+  "definition": "f(x)=(x_0^2+x_1-11)^2+(x_0+x_1^2-7)^2",
+  "minima": {
+   "2": [
+    [
+      "+",
+      [
+       3.0,
+       2.0
+      ]
+    ],
+    [
+      "+",
+      [
+       -2.805118,
+       3.131312
+      ]
+     ],
+     [
+      "+",
+      [
+       -3.77931,
+       -3.283186
+      ]
+     ],
+     [
+      "+",
+      [
+       3.584428,
+       -1.848126
+      ]
+     ]
+   ]
+  },
+  "reference": "@book{himmelblau2018applied,title={Applied nonlinear programming},author={Himmelblau, David M and others}, year={2018},publisher={McGraw-Hill}}",
+  "suggested bounds": {
+   "lower": -5,
+   "upper": 5
+  },
+  "summary": "Multimodal, with the four local optima sharing the same shallow basin. It's defined only for 2 dimensions.",
+  "version": "0.1"
+ }
+}

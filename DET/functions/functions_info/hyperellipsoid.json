@@ -1,0 +1,23 @@
+{
+ "HYPERELLIPSOID": {
+  "definition": "f(x)=\\sum_{i=0}^{N-1} \\sum_{j=0}^{i} x_j^2",
+  "minima": {
+   "*": [
+    [
+     "+",
+     [
+      0.0,
+      0.0
+     ]
+    ]
+   ]
+  },
+  "reference": "",
+  "suggested bounds": {
+   "lower": -65.536,
+   "upper": 65.536
+  },
+  "summary": "Continuous, convex and unimodal.",
+  "version": "0.1"
+ }
+}
