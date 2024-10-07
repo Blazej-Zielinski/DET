@@ -13,7 +13,11 @@ which u want to use in your calculations.
 
 ```
 function_loader = FunctionLoader()
-result = function_loader.evaluate_function('ackley', [0.0, 0.0])
+function_name = "ackley"
+variables = [0.0, 0.0]
+n_dimensions = 2
+
+result = function_loader.evaluate_function(function_name, variables, n_dimensions)
 ```
 
 Available functions:
