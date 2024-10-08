@@ -10,7 +10,7 @@ from DET.helpers.database_helper import get_table_name, format_individuals
 from DET.helpers.metric_helper import MetricHelper
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
-from logger import Logger
+from DET.DETAlgs.logger import Logger
 
 
 class BaseAlg(ABC):
