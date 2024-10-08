@@ -45,6 +45,7 @@ class BaseAlg(ABC):
         self._database = SQLiteConnector(db_conn) if db_conn is not None else None
         self.db_auto_write = db_auto_write
         self.log_population = params.log_population
+        self.parallel_processing = params.parallel_processing
 
         # Use Logger for output control
         self.logger = Logger(verbose)
@@ -65,7 +66,7 @@ class BaseAlg(ABC):
             optimization=self.mode
         )
         population.generate_population()
-        population.update_fitness_values(self._function.eval)
+        population.update_fitness_values(self._function.eval, self.parallel_processing)
 
         self._origin_pop = population
         self._pop = copy.deepcopy(population)
@@ -79,6 +80,8 @@ class BaseAlg(ABC):
 
         epoch_metrics = []
         best_fitness_values = []
+
+        # Calculate metrics
         epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
         epoch_metrics.append(epoch_metric)
 
