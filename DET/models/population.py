@@ -22,23 +22,21 @@ class Population:
         return fitness_fun(args)
 
     def calculate_member(self, index, fitness_fun):
-        self.members[index[0]].fitness_value = self.calculate_fitness(self.members[index[0]], fitness_fun)
+        member = self.members[index]
+        member.fitness_value = self.calculate_fitness(member, fitness_fun)
 
     def update_fitness_values(self, fitness_fun, parallel_processing):
-        worker = 1
         if parallel_processing is None:
             executor_class = concurrent.futures.ThreadPoolExecutor
             worker = 1
         elif parallel_processing[0] == "process":
-            executor_class = concurrent.futures.ProcessPoolExecutor
-            worker = parallel_processing[1]
-            raise ValueError('Not supported. Please use thread configuration')
+            raise ValueError('ProcessPoolExecutor is not supported. Please use thread configuration.')
         else:
             executor_class = concurrent.futures.ThreadPoolExecutor
             worker = parallel_processing[1]
 
         with executor_class(max_workers=worker) as executor:
-            executor.map(lambda i: self.calculate_member(i, fitness_fun), enumerate(self.members))
+            executor.map(lambda idx: self.calculate_member(idx, fitness_fun), range(len(self.members)))
 
     def get_best_members(self, nr_of_members):
         # Get the indices that would sort the array based on the key function

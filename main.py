@@ -39,6 +39,8 @@ if __name__ == "__main__":
         crossover_rate=0.8,
         log_population=True
     )
+    params.parallel_processing = ['thread', 5]
+
     # params.optimum = 100.0
     # params.tolerance = 0.1
 

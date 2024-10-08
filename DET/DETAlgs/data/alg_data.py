@@ -21,7 +21,6 @@ class BaseData:
     tolerance: Optional[float] = field(init=False, default=None)
     parallel_processing: Optional[list] = field(init=False, default=None)
 
-
 @dataclass
 class DEData(BaseData):
     mutation_factor: float
