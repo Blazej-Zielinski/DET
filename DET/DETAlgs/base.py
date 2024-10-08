@@ -105,7 +105,7 @@ class BaseAlg(ABC):
         end_time = time.time()
         execution_time = end_time - start_time
         self.logger.log(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-                        f' Execution time: {execution_time} seconds')
+                        f' Execution time: {round(execution_time,2)} seconds')
 
         if self._database is not None and self.db_auto_write:
             try:
