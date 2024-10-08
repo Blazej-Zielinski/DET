@@ -2,6 +2,7 @@ import copy
 import time
 from abc import ABC, abstractmethod
 from tqdm import tqdm
+import numpy as np
 
 from DET.database.database_connector import SQLiteConnector
 from DET.DETAlgs.data.alg_data import BaseData
@@ -76,14 +77,16 @@ class BaseAlg(ABC):
             self.logger.log(f"{self.name} diff evo not initialized.")
             return
 
-        # Calculate metrics
         epoch_metrics = []
+        best_fitness_values = []
         epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
             best_member = self._pop.get_best_members(1)[0]
+            best_fitness_values.append(best_member.fitness_value)
+
             if (self.optimum is not None and self.tolerance is not None) and abs(
                     self.optimum - best_member.fitness_value) < self.tolerance:
                 break
@@ -91,7 +94,6 @@ class BaseAlg(ABC):
             try:
                 self.next_epoch()
 
-                # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
 
@@ -105,7 +107,17 @@ class BaseAlg(ABC):
         end_time = time.time()
         execution_time = end_time - start_time
         self.logger.log(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-                        f' Execution time: {round(execution_time,2)} seconds')
+                        f' Execution time: {round(execution_time, 2)} seconds')
+
+        avg_fitness = np.mean(best_fitness_values)
+        std_fitness = np.std(best_fitness_values)
+
+        self.logger.log(f"Average Best Fitness: {avg_fitness}")
+        self.logger.log(f"Standard Deviation of Fitness: {std_fitness}")
+
+        best_solution = self._pop.get_best_members(1)[0]
+
+        self.logger.log(f"Best Solution: {best_solution}")
 
         if self._database is not None and self.db_auto_write:
             try:
@@ -113,14 +125,20 @@ class BaseAlg(ABC):
             except Exception as e:
                 self.logger.log(f'An unexpected error occurred while writing to the database: {e}')
 
-        return epoch_metrics
+        result = {
+            "epoch_metrics": epoch_metrics,
+            "avg_fitness": avg_fitness,
+            "std_fitness": std_fitness,
+            "best_solution": best_solution
+        }
+        return result
 
     def write_results_to_database(self, results_data):
         self.logger.log(f'Writing to Database...')
 
         # Check if database is present
         if self._database is None:
-            self.logger.log(f"There is not database.")
+            self.logger.log(f"There is no database.")
             return
 
         # Connect to database
