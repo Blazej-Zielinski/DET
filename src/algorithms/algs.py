@@ -53,7 +53,7 @@ def best_worst_alg(pop, config, curr_gen):
     :return:
     """
     # calculate not constant cr depend on generation number
-    cr = calculate_cr(curr_gen, config.num_of_epochs)
+    cr = calculate_cr(curr_gen, config.epoch)
 
     v_pop = best_worst_mutation(pop)
 
@@ -180,7 +180,7 @@ def pbx_de(pop, config, curr_gen, additional_data):
     # boundary constrains
     fix_boundary_constraints(v_pop, config.boundary_constraints_fun)
 
-    u_pop, cr_success_set = p_best_crossover(pop, v_pop, config, cr_m, curr_gen, config.num_of_epochs)
+    u_pop, cr_success_set = p_best_crossover(pop, v_pop, config, cr_m, curr_gen, config.epoch)
 
     # Update values before selection
     u_pop.update_fitness_values(lambda params: config.function.eval(params))
@@ -325,7 +325,7 @@ def scaling_params_de(pop, config, curr_gen):
     :param config:
     :return:
     """
-    f = sp_get_f(curr_gen, config.num_of_epochs)
+    f = sp_get_f(curr_gen, config.epoch)
     cr_arr = sp_get_cr(pop)
 
     v_pop = mutation(pop, f)

@@ -27,9 +27,9 @@ if __name__ == "__main__":
     print(func.x_global)
 
     params = DET.DEData(
-        num_of_epochs=num_of_epochs,
+        epoch=num_of_epochs,
         population_size=100,
-        nr_of_args=10,
+        dimension=10,
         interval_lower_bound=-100,
         interval_higher_bound=100,
         mode=DET.OptimizationType.MINIMIZATION,
@@ -40,9 +40,6 @@ if __name__ == "__main__":
         log_population=True
     )
     params.parallel_processing = ['thread', 5]
-
-    # params.optimum = 100.0
-    # params.tolerance = 0.1
 
     # default = DET.Default(params, db_conn="Differential_evolution.db", db_auto_write=True)
     # default.initialize()

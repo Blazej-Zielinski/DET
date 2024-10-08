@@ -16,7 +16,7 @@ def run_de(config, fun=None):
 
     S_pop = Population(
         interval=config.interval,
-        arg_num=config.nr_of_args,
+        arg_num=config.dimension,
         size=config.population_size,
         optimization=config.mode
     )
@@ -30,7 +30,7 @@ def run_de(config, fun=None):
     execution_time = end_time - start_time
     print(f'''
     Function: {config.function.func_type.name}
-    Num of arguments: {config.nr_of_args}
+    Num of arguments: {config.dimension}
     Execution time: {round(execution_time,2)} seconds
     ''')
 

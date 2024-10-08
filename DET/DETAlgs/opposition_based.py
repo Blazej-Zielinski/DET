@@ -10,6 +10,7 @@ from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selectio
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 from DET.models.population import Population
 from DET.helpers.metric_helper import MetricHelper
+from DET.helpers.database_helper import get_table_name, format_individuals
 
 
 class OppBasedDE(BaseAlg):
@@ -88,8 +89,6 @@ class OppBasedDE(BaseAlg):
         start_time = time.time()
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
             best_member = self._pop.get_best_members(1)[0]
-            if abs(self.optimum - best_member.fitness_value) < self.tolerance or self.nfc > self.max_nfc:
-                break
             self.next_epoch()
 
             # Calculate metrics
@@ -105,3 +104,32 @@ class OppBasedDE(BaseAlg):
             self.write_results_to_database(epoch_metrics)
 
         return epoch_metrics
+
+    def write_results_to_database(self, results_data):
+        """
+            TO REFACTOR LIKE IN BASE ALG -> NEED SAVING AFTER EACH 50 EPOCHS
+        """
+        print(f'Writing to Database...')
+
+        # Check if database is present
+        if self._database is None:
+            print(f"There is not database.")
+            return
+
+        # Connect to database
+        self._database.connect()
+
+        # Creating table
+        table_name = get_table_name(
+            func_name=self._function.name,
+            alg_name=self.name,
+            nr_of_args=self.nr_of_args,
+            pop_size=self.population_size
+        )
+        table_name = self._database.create_table(table_name)
+
+        # Inserting data into database
+        formatted_best_individuals = format_individuals(results_data)
+        self._database.insert_multiple_best_individuals(table_name, formatted_best_individuals)
+
+        self._database.close()
