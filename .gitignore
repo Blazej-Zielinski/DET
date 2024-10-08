@@ -5,3 +5,5 @@ Notes.md
 test.py
 funkcje.py
 konfiguracje.py
+__pycache__/
+*.pyc
