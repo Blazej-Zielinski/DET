@@ -20,7 +20,7 @@ class Result:
             \t Fitness value: {self.fitness_value_best}
             \t Mean: {self.mean}
             \t Std: {self.std}
-            \t Execution time: {self.exec_time}
+            \t Execution time: {round(self.exec_time,2)}
             ]        
         '''
 
