@@ -4,17 +4,18 @@ from DET.models.enums.optimization import OptimizationType
 from DET.models.member import Member
 
 class Population:
-    def __init__(self, interval, arg_num, size, optimization: OptimizationType):
+    def __init__(self, lb, ub, arg_num, size, optimization: OptimizationType):
         self.size = size
         self.members = None
         self.optimization = optimization
 
         # chromosome config
-        self.interval = interval
+        self.lb = lb
+        self.ub = ub
         self.arg_num = arg_num
 
     def generate_population(self):
-        self.members = np.array([Member(self.interval, self.arg_num) for _ in range(self.size)])
+        self.members = np.array([Member(self.lb, self.ub, self.arg_num) for _ in range(self.size)])
 
     @staticmethod
     def calculate_fitness(member, fitness_fun):

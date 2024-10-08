@@ -23,7 +23,8 @@ class BaseAlg(ABC):
         self.num_of_epochs = params.epoch
         self.population_size = params.population_size
         self.nr_of_args = params.dimension
-        self.interval = [params.interval_lower_bound, params.interval_higher_bound]
+        self.lb = params.lb
+        self.ub = params.ub
         self.mode = params.mode
         self.boundary_constraints_fun = params.boundary_constraints_fun
 
@@ -46,7 +47,8 @@ class BaseAlg(ABC):
             return
 
         population = Population(
-            interval=self.interval,
+            lb = self.lb,
+            ub = self.ub,
             arg_num=self.nr_of_args,
             size=self.population_size,
             optimization=self.mode
