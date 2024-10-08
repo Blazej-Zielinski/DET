@@ -10,15 +10,7 @@ from DET.helpers.database_helper import get_table_name, format_individuals
 from DET.helpers.metric_helper import MetricHelper
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
-
-
-class Logger:
-    def __init__(self, verbose=True):
-        self.verbose = verbose
-
-    def log(self, message):
-        if self.verbose:
-            print(message)
+from logger import Logger
 
 
 class BaseAlg(ABC):
