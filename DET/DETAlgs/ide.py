@@ -28,7 +28,7 @@ class IDE(BaseAlg):
         u_pop = ide_binomial_crossing(self._pop, v_pop, cr_arr)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop = selection(self._pop, u_pop)

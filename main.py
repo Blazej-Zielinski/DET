@@ -18,9 +18,13 @@ if __name__ == "__main__":
     )
 
     fitness_fun_opf = DET.FitnessFunctionOpfunu(
-        func_type=opf.F12014,
+        func_type=opf.F82014,
         ndim=10
     )
+
+    func = opf.F82014(ndim=10)
+    print(func.f_global)
+    print(func.x_global)
 
     params = DET.DEData(
         num_of_epochs=num_of_epochs,

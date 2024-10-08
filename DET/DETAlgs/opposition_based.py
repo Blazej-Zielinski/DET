@@ -65,7 +65,7 @@ class OppBasedDE(BaseAlg):
             optimization=self.mode
         )
         population.generate_population()
-        population.update_fitness_values(self._function.eval)
+        population.update_fitness_values(self._function.eval, self.parallel_processing)
 
         opp_based_keep_best_individuals(population, self._function.eval, True)
 

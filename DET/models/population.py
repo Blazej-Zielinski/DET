@@ -1,9 +1,7 @@
 import concurrent.futures
 import numpy as np
-
 from DET.models.enums.optimization import OptimizationType
 from DET.models.member import Member
-
 
 class Population:
     def __init__(self, interval, arg_num, size, optimization: OptimizationType):
@@ -21,18 +19,26 @@ class Population:
     @staticmethod
     def calculate_fitness(member, fitness_fun):
         args = member.get_chromosomes()
-        return member, fitness_fun(args)
+        return fitness_fun(args)
 
-    def update_fitness_values(self, fitness_fun):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = [executor.submit(self.calculate_fitness, member, fitness_fun) for member in self.members]
+    def calculate_member(self, index, fitness_fun):
+        self.members[index[0]].fitness_value = self.calculate_fitness(self.members[index[0]], fitness_fun)
 
-            for future in concurrent.futures.as_completed(futures):
-                member, fitness_value = future.result()
-                member.fitness_value = fitness_value
+    def update_fitness_values(self, fitness_fun, parallel_processing):
+        worker = 1
+        if parallel_processing is None:
+            executor_class = concurrent.futures.ThreadPoolExecutor
+            worker = 1
+        elif parallel_processing[0] == "process":
+            executor_class = concurrent.futures.ProcessPoolExecutor
+            worker = parallel_processing[1]
+            raise ValueError('Not supported. Please use thread configuration')
+        else:
+            executor_class = concurrent.futures.ThreadPoolExecutor
+            worker = parallel_processing[1]
 
-        # for member in self.members:
-        #     member.calculate_fitness_fun(fitness_fun)
+        with executor_class(max_workers=worker) as executor:
+            executor.map(lambda i: self.calculate_member(i, fitness_fun), enumerate(self.members))
 
     def get_best_members(self, nr_of_members):
         # Get the indices that would sort the array based on the key function

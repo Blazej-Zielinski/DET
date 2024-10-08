@@ -30,7 +30,7 @@ class COMDE(BaseAlg):
         u_pop = binomial_crossing(self._pop, v_pop, cr=cr)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop = selection(self._pop, u_pop)

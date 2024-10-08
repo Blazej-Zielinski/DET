@@ -28,7 +28,7 @@ class AADE(BaseAlg):
         u_pop = aade_crossing(self._pop, v_pop, crossover_rates=self.crossover_rates)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop = aade_selection(self._pop, u_pop, self.mutation_factors, self.crossover_rates)
