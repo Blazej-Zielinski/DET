@@ -17,10 +17,9 @@ class BaseData:
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase
     log_population: bool
-
     optimum: Optional[float] = field(init=False, default=None)
     tolerance: Optional[float] = field(init=False, default=None)
-
+    parallel_processing: Optional[list] = field(init=False, default=None)
 
 @dataclass
 class DEData(BaseData):

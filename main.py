@@ -18,9 +18,13 @@ if __name__ == "__main__":
     )
 
     fitness_fun_opf = DET.FitnessFunctionOpfunu(
-        func_type=opf.F12014,
+        func_type=opf.F82014,
         ndim=10
     )
+
+    func = opf.F82014(ndim=10)
+    print(func.f_global)
+    print(func.x_global)
 
     params = DET.DEData(
         num_of_epochs=num_of_epochs,
@@ -35,6 +39,8 @@ if __name__ == "__main__":
         crossover_rate=0.8,
         log_population=True
     )
+    params.parallel_processing = ['thread', 5]
+
     # params.optimum = 100.0
     # params.tolerance = 0.1
 

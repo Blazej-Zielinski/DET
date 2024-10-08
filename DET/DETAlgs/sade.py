@@ -33,7 +33,7 @@ class SADE(BaseAlg):
         u_pop = sade_binomial_crossing(self._pop, v_pop, cr_arr)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop, f_arr, cr_arr = sade_selection(self._pop, u_pop, f_arr, cr_arr, prob_f, prob_cr)

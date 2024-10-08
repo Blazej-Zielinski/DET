@@ -46,7 +46,7 @@ class JADE(BaseAlg):
         u_pop = jade_binomial_crossing(self._pop, v_pop, self.crossover_rates)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop = jade_selection(self._pop, u_pop, self.mutation_factors, self.crossover_rates,

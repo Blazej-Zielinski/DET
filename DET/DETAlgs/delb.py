@@ -27,7 +27,7 @@ class DELB(BaseAlg):
         u_pop = binomial_crossing(self._pop, v_pop, cr=self.crossover_rate)
 
         # Update values before selection
-        u_pop.update_fitness_values(self._function.eval)
+        u_pop.update_fitness_values(self._function.eval, self.parallel_processing)
 
         # Select new population
         new_pop = delb_selection(self._pop, u_pop, self.w_factor, self._function.eval)
