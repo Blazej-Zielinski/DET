@@ -1,3 +1,4 @@
+
 import copy
 import time
 from abc import ABC, abstractmethod
@@ -11,8 +12,17 @@ from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
 
 
+class Logger:
+    def __init__(self, verbose=True):
+        self.verbose = verbose
+
+    def log(self, message):
+        if self.verbose:
+            print(message)
+
+
 class BaseAlg(ABC):
-    def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False):
+    def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False, verbose=True):
         self.name = name
         self._epoch_number = 0
         self._is_initialized = False
@@ -35,14 +45,17 @@ class BaseAlg(ABC):
         self._database = SQLiteConnector(db_conn) if db_conn is not None else None
         self.db_auto_write = db_auto_write
         self.log_population = params.log_population
-        self.parallel_processing = params.parallel_processing
+
+        # Use Logger for output control
+        self.logger = Logger(verbose)
+
     @abstractmethod
     def next_epoch(self):
         pass
 
     def initialize(self):
         if self._is_initialized:
-            print(f"{self.name} diff evo already initialized.")
+            self.logger.log(f"{self.name} diff evo already initialized.")
             return
 
         population = Population(
@@ -52,7 +65,7 @@ class BaseAlg(ABC):
             optimization=self.mode
         )
         population.generate_population()
-        population.update_fitness_values(self._function.eval, self.parallel_processing)
+        population.update_fitness_values(self._function.eval)
 
         self._origin_pop = population
         self._pop = copy.deepcopy(population)
@@ -61,7 +74,7 @@ class BaseAlg(ABC):
 
     def run(self):
         if not self._is_initialized:
-            print(f"{self.name} diff evo not initialized.")
+            self.logger.log(f"{self.name} diff evo not initialized.")
             return
 
         # Calculate metrics
@@ -72,7 +85,8 @@ class BaseAlg(ABC):
         start_time = time.time()
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
             best_member = self._pop.get_best_members(1)[0]
-            if (self.optimum is not None and self.tolerance is not None) and abs(self.optimum - best_member.fitness_value) < self.tolerance:
+            if (self.optimum is not None and self.tolerance is not None) and abs(
+                    self.optimum - best_member.fitness_value) < self.tolerance:
                 break
 
             try:
@@ -81,30 +95,33 @@ class BaseAlg(ABC):
                 # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
-            except Exception as ex :
-                print(ex)
-                print('An unexpected error occurred during calculation.')
+
+                # Log statistics per epoch
+                self.logger.log(f"Epoch {epoch + 1}/{self.num_of_epochs}, Best Fitness: {best_member.fitness_value}")
+
+            except Exception as e:
+                self.logger.log(f'An unexpected error occurred during calculation: {e}')
                 return epoch_metrics
 
         end_time = time.time()
         execution_time = end_time - start_time
-        print(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-              f' Execution time: {execution_time} seconds')
+        self.logger.log(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
+                        f' Execution time: {execution_time} seconds')
 
         if self._database is not None and self.db_auto_write:
             try:
                 self.write_results_to_database(epoch_metrics)
-            except:
-                print('An unexpected error occurred while writing to the database.')
+            except Exception as e:
+                self.logger.log(f'An unexpected error occurred while writing to the database: {e}')
 
         return epoch_metrics
 
     def write_results_to_database(self, results_data):
-        print(f'Writing to Database...')
+        self.logger.log(f'Writing to Database...')
 
         # Check if database is present
         if self._database is None:
-            print(f"There is not database.")
+            self.logger.log(f"There is not database.")
             return
 
         # Connect to database
