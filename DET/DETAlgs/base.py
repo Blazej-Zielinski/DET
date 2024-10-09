@@ -129,12 +129,9 @@ class BaseAlg(ABC):
 
         avg_fitness = np.mean(best_fitness_values)
         std_fitness = np.std(best_fitness_values)
-
-        self.logger.log(f"Average Best Fitness: {avg_fitness}")
-        self.logger.log(f"Standard Deviation of Fitness: {std_fitness}")
-
         best_solution = self._pop.get_best_members(1)[0]
 
+        self.logger.log(f"Average Best Fitness: {avg_fitness}, Standard Deviation of Fitness: {std_fitness}")
         self.logger.log(f"Best Solution: {best_solution}")
 
         # Writing rest of the epochs
