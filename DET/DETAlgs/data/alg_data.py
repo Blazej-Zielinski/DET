@@ -8,17 +8,15 @@ from DET.models.enums.optimization import OptimizationType
 
 @dataclass
 class BaseData:
-    num_of_epochs: int
+    epoch: int
     population_size: int
-    nr_of_args: int
+    dimension: int
     interval_lower_bound: float
     interval_higher_bound: float
     mode: OptimizationType
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase
     log_population: bool
-    optimum: Optional[float] = field(init=False, default=None)
-    tolerance: Optional[float] = field(init=False, default=None)
     parallel_processing: Optional[list] = field(init=False, default=None)
 
 @dataclass
