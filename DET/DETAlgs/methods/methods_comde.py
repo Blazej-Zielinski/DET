@@ -28,7 +28,8 @@ def comde_mutation(population: Population):
         new_members.append(new_member)
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization

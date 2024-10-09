@@ -16,7 +16,8 @@ def ide_binomial_crossing(origin_population: Population, mutated_population: Pop
         new_members.append(new_member)
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization

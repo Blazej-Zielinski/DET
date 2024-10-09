@@ -1,10 +1,6 @@
-import numpy as np
-from math import floor
 import random
-import copy
 
 from DET.models.population import Population
-from DET.models.member import Member
 
 def issde_mutation(population: Population, eta: float, f: float) -> Population:
     pop_members_list = population.members.tolist()

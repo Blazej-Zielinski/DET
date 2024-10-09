@@ -15,7 +15,8 @@ def sade_mutation(population: Population, f_arr):
         new_members.append(new_member)
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
@@ -35,7 +36,8 @@ def sade_binomial_crossing(origin_population: Population, mutated_population: Po
         new_members.append(new_member)
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization
@@ -74,7 +76,8 @@ def sade_selection(origin_population: Population, modified_population: Populatio
                 cr_arr[i] = np.random.uniform() if np.random.uniform() < prob_cr else cr_arr[i]
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization
