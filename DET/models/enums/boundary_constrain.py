@@ -38,10 +38,10 @@ def boundary_clipping(member: Member):
     :param member: The member to be modified.
     """
     for chromosome in member.chromosomes:
-        if chromosome.real_value > chromosome.interval[1]:
-            chromosome.real_value = chromosome.interval[1]
-        elif chromosome.real_value < chromosome.interval[0]:
-            chromosome.real_value = chromosome.interval[0]
+        if chromosome.real_value > chromosome.ub:
+            chromosome.real_value = chromosome.ub
+        elif chromosome.real_value < chromosome.lb:
+            chromosome.real_value = chromosome.lb
 
 
 def boundary_reflection(member: Member):
@@ -51,10 +51,10 @@ def boundary_reflection(member: Member):
     :param member: The member to be modified.
     """
     for chromosome in member.chromosomes:
-        if chromosome.real_value > chromosome.interval[1]:
-            chromosome.real_value = 2 * chromosome.interval[1] - chromosome.real_value
-        elif chromosome.real_value < chromosome.interval[0]:
-            chromosome.real_value = 2 * chromosome.interval[0] - chromosome.real_value
+        if chromosome.real_value > chromosome.ub:
+            chromosome.real_value = 2 * chromosome.ub - chromosome.real_value
+        elif chromosome.real_value < chromosome.lb:
+            chromosome.real_value = 2 * chromosome.lb - chromosome.real_value
 
 
 def boundary_random(member: Member):
@@ -64,5 +64,5 @@ def boundary_random(member: Member):
     :param member: The member to be modified.
     """
     for chromosome in member.chromosomes:
-        if chromosome.real_value < chromosome.interval[0] or chromosome.real_value > chromosome.interval[1]:
-            chromosome.real_value = Chromosome(member.interval).real_value
+        if chromosome.real_value < chromosome.lb or chromosome.real_value > chromosome.ub:
+            chromosome.real_value = Chromosome(member.lb, member.ub).real_value

@@ -26,7 +26,8 @@ def mgde_mutation(population: Population, curr_generation: int, max_generation: 
                                                                 mutation_factor_f, mutation_factor_k))
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
@@ -61,7 +62,6 @@ def mgde_adapt_threshold(population: Population, threshold: float, mu: float, fu
             temp.calculate_fitness_fun(func)
             if temp < best_member:
                 sorted_members[0] = temp
-                print('Dziala')
 
 
 def mutation_curr_to_best_1_modified(base_member: Member, best_member: Member, members: list[Member], f: float,

@@ -1,8 +1,8 @@
 import random
 import numpy as np
 
-from src.models.population import Population
-from src.models.member import Member
+from DET.models.population import Population
+from DET.models.member import Member
 from DET.models.enums.mutation import mutation_curr_to_best_1
 
 
@@ -30,7 +30,8 @@ def degl_mutation(population: Population, radius: int, f: float, weight: float) 
         local_indices.remove(i)
         neighborhood_members = [pop_members_list[i] for i in local_indices]
         neighborhood = Population(
-            interval=population.interval,
+            lb=population.lb,
+            ub=population.ub,
             arg_num=population.arg_num,
             size=2 * radius,
             optimization=population.optimization
@@ -50,7 +51,8 @@ def degl_mutation(population: Population, radius: int, f: float, weight: float) 
         new_members.append(new_member)
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization

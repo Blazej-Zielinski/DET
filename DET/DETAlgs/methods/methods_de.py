@@ -24,7 +24,8 @@ def mutation(population: Population, f):
         new_members.append(new_member)
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
@@ -62,7 +63,8 @@ def binomial_crossing(origin_population: Population, mutated_population: Populat
         new_members.append(new_member)
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization
@@ -95,7 +97,8 @@ def selection(origin_population: Population, modified_population: Population):
                 new_members.append(copy.deepcopy(modified_population.members[i]))
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization

@@ -16,7 +16,8 @@ def aade_mutation(population: Population, mutation_factors: list[list[float, boo
                    for selected_members, (f, _) in zip(drew_members, mutation_factors)]
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
@@ -35,7 +36,8 @@ def aade_crossing(origin_population: Population, mutated_population: Population,
                    for i in range(origin_population.size)]
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization
@@ -88,7 +90,8 @@ def aade_selection(origin_population: Population, modified_population: Populatio
                 new_members.append(copy.deepcopy(modified_population.members[i]))
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization

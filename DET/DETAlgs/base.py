@@ -25,7 +25,8 @@ class BaseAlg(ABC):
         self.num_of_epochs = params.epoch
         self.population_size = params.population_size
         self.nr_of_args = params.dimension
-        self.interval = [params.interval_lower_bound, params.interval_higher_bound]
+        self.lb = params.lb
+        self.ub = params.ub
         self.mode = params.mode
         self.boundary_constraints_fun = params.boundary_constraints_fun
 
@@ -52,7 +53,8 @@ class BaseAlg(ABC):
             return
 
         population = Population(
-            interval=self.interval,
+            lb = self.lb,
+            ub = self.ub,
             arg_num=self.nr_of_args,
             size=self.population_size,
             optimization=self.mode
@@ -94,10 +96,6 @@ class BaseAlg(ABC):
             best_member = self._pop.get_best_members(1)[0]
             best_fitness_values.append(best_member.fitness_value)
 
-            if (self.optimum is not None and self.tolerance is not None) and abs(
-                    self.optimum - best_member.fitness_value) < self.tolerance:
-                break
-
             try:
                 self.next_epoch()
 
@@ -127,12 +125,9 @@ class BaseAlg(ABC):
 
         avg_fitness = np.mean(best_fitness_values)
         std_fitness = np.std(best_fitness_values)
-
-        self.logger.log(f"Average Best Fitness: {avg_fitness}")
-        self.logger.log(f"Standard Deviation of Fitness: {std_fitness}")
-
         best_solution = self._pop.get_best_members(1)[0]
 
+        self.logger.log(f"Average Best Fitness: {avg_fitness}, Standard Deviation of Fitness: {std_fitness}")
         self.logger.log(f"Best Solution: {best_solution}")
 
         # Writing rest of the epochs

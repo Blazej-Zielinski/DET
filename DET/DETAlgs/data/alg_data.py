@@ -11,8 +11,8 @@ class BaseData:
     epoch: int
     population_size: int
     dimension: int
-    interval_lower_bound: float
-    interval_higher_bound: float
+    lb: list
+    ub: list
     mode: OptimizationType
     boundary_constraints_fun: BoundaryFixing
     function: FitnessFunctionBase

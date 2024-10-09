@@ -17,7 +17,8 @@ def delb_mutation(population: Population):
                    for selected_members, f in zip(drew_members, drew_fs)]
 
     new_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
@@ -78,7 +79,8 @@ def delb_selection(origin_population: Population, modified_population: Populatio
                 new_members.append(copy.deepcopy(modified_population.members[i]))
 
     new_population = Population(
-        interval=origin_population.interval,
+        lb=origin_population.lb,
+        ub=origin_population.ub,
         arg_num=origin_population.arg_num,
         size=origin_population.size,
         optimization=origin_population.optimization

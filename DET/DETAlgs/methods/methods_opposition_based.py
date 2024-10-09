@@ -28,7 +28,8 @@ def calculate_opposite_pop(population: Population, is_initial_pop: bool) -> Popu
         opposite_members.append(opposite_member)
 
     opposite_population = Population(
-        interval=population.interval,
+        lb=population.lb,
+        ub=population.ub,
         arg_num=population.arg_num,
         size=population.size,
         optimization=population.optimization
