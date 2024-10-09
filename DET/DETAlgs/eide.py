@@ -5,6 +5,11 @@ from DET.DETAlgs.data.alg_data import EIDEData
 from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from DET.DETAlgs.methods.methods_eide import eide_adopt_parameters
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
+from DET.models.fitness_function import FitnessFunctionOpfunu
+from DET.models.enums.optimization import OptimizationType
+from DET.models.enums.boundary_constrain import BoundaryFixing
+
+import opfunu.cec_based.cec2014 as opf
 
 
 class EIDE(BaseAlg):
@@ -12,7 +17,27 @@ class EIDE(BaseAlg):
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6390324&tag=1
     """
 
-    def __init__(self, params: EIDEData, db_conn=None, db_auto_write=False):
+    def __init__(self, params: EIDEData = None, db_conn="Differential_evolution.db", db_auto_write=False):
+        fitness_fun_opf = FitnessFunctionOpfunu(
+            func_type=opf.F82014,
+            ndim=10
+        )
+
+        if params is None:
+            params = EIDEData(
+                epoch=100,
+                population_size=100,
+                dimension=10,
+                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
+                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                mode=OptimizationType.MINIMIZATION,
+                boundary_constraints_fun=BoundaryFixing.RANDOM,
+                function=fitness_fun_opf,
+                log_population=True,
+                crossover_rate_min=0.2,
+                crossover_rate_max=0.8
+            )
+
         super().__init__(EIDE.__name__, params, db_conn, db_auto_write)
 
         self.mutation_factor = random.uniform(0, 0.6)
