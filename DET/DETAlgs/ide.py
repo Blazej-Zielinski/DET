@@ -3,14 +3,36 @@ from DET.DETAlgs.data.alg_data import IDEData
 from DET.DETAlgs.methods.methods_de import selection, mutation
 from DET.DETAlgs.methods.methods_ide import ide_get_f, ide_get_cr, ide_binomial_crossing
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
+from DET.models.fitness_function import FitnessFunctionOpfunu
+from DET.models.enums.optimization import OptimizationType
+from DET.models.enums.boundary_constrain import BoundaryFixing
 
+import opfunu.cec_based.cec2014 as opf
 
 class IDE(BaseAlg):
     """
     Source: https://www.scirp.org/journal/paperinformation.aspx?paperid=96749
     """
 
-    def __init__(self, params: IDEData, db_conn=None, db_auto_write=False):
+    def __init__(self, params: IDEData = None, db_conn="Differential_evolution.db", db_auto_write=False):
+        fitness_fun_opf = FitnessFunctionOpfunu(
+            func_type=opf.F82014,
+            ndim=10
+        )
+
+        if params is None:
+            params = IDEData(
+                epoch=100,
+                population_size=100,
+                dimension=10,
+                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
+                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                mode=OptimizationType.MINIMIZATION,
+                boundary_constraints_fun=BoundaryFixing.RANDOM,
+                function=fitness_fun_opf,
+                log_population=True
+            )
+
         super().__init__(IDE.__name__, params, db_conn, db_auto_write)
 
     def next_epoch(self):

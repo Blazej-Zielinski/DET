@@ -11,50 +11,35 @@ def example_function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
 
 
 if __name__ == "__main__":
-    num_of_epochs = 100
-
-    fitness_fun = DET.FitnessFunction(
-        func=example_function
-    )
-
-    fitness_fun_opf = DET.FitnessFunctionOpfunu(
-        func_type=opf.F82014,
-        ndim=10
-    )
-
-    func = opf.F82014(ndim=10)
-    print(func.f_global)
-    print(func.x_global)
-
-    params = DET.DEData(
-        epoch=num_of_epochs,
-        population_size=100,
-        dimension=10,
-        lb=[-5,-100,-100,-100,-100,-100,-100,-100,-100,-100],
-        ub=[5,100,100,100,100,100,100,100,100,100],
-        mode=DET.OptimizationType.MINIMIZATION,
-        boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
-        function=fitness_fun_opf,
-        mutation_factor=0.5,
-        crossover_rate=0.8,
-        log_population=True
-    )
-    params.parallel_processing = ['thread', 5]
-
-    # default = DET.Default(params, db_conn="Differential_evolution.db", db_auto_write=True)
-    # default.initialize()
-    # default.run()
-
-    default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
+    default2 = DET.DE()
     default2.initialize()
     results = default2.run()
     default2.write_results_to_database(results)
 
-
-
-
-
-
+    # num_of_epochs = 100
+    # fitness_fun_opf = DET.FitnessFunctionOpfunu(
+    #     func_type=opf.F82014,
+    #     ndim=10
+    # )
+    # func = opf.F82014(ndim=10)
+    # params = DET.DEData(
+    #     epoch=num_of_epochs,
+    #     population_size=100,
+    #     dimension=10,
+    #     lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
+    #     ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+    #     mode=DET.OptimizationType.MINIMIZATION,
+    #     boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
+    #     function=fitness_fun_opf,
+    #     mutation_factor=0.5,
+    #     crossover_rate=0.8,
+    #     log_population=True
+    # )
+    # params.parallel_processing = ['thread', 5]
+    # default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
+    # default2.initialize()
+    # results = default2.run()
+    # default2.write_results_to_database(results)
 
 
 
