@@ -96,10 +96,6 @@ class BaseAlg(ABC):
             best_member = self._pop.get_best_members(1)[0]
             best_fitness_values.append(best_member.fitness_value)
 
-            if (self.optimum is not None and self.tolerance is not None) and abs(
-                    self.optimum - best_member.fitness_value) < self.tolerance:
-                break
-
             try:
                 self.next_epoch()
 
