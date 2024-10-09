@@ -2,6 +2,7 @@ import copy
 import time
 from abc import ABC, abstractmethod
 from tqdm import tqdm
+import numpy as np
 
 from DET.database.database_connector import SQLiteConnector
 from DET.DETAlgs.data.alg_data import BaseData
@@ -9,10 +10,11 @@ from DET.helpers.database_helper import get_table_name, format_individuals
 from DET.helpers.metric_helper import MetricHelper
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
+from DET.DETAlgs.logger import Logger
 
 
 class BaseAlg(ABC):
-    def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False):
+    def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False, verbose=True):
         self.name = name
         self._epoch_number = 0
         self._is_initialized = False
@@ -37,13 +39,17 @@ class BaseAlg(ABC):
         self.database_table_name = None
         self.db_writing_interval = 50
 
+
+        # Use Logger for output control
+        self.logger = Logger(verbose)
+
     @abstractmethod
     def next_epoch(self):
         pass
 
     def initialize(self):
         if self._is_initialized:
-            print(f"{self.name} diff evo already initialized.")
+            self.logger.log(f"{self.name} diff evo already initialized.")
             return
 
         population = Population(
@@ -77,20 +83,30 @@ class BaseAlg(ABC):
             print(f"{self.name} diff evo not initialized.")
             return
 
-        # Calculate metrics
         epoch_metrics = []
+        best_fitness_values = []
+
+        # Calculate metrics
         epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
         end_index = 0
         for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
+            best_member = self._pop.get_best_members(1)[0]
+            best_fitness_values.append(best_member.fitness_value)
+
+            if (self.optimum is not None and self.tolerance is not None) and abs(
+                    self.optimum - best_member.fitness_value) < self.tolerance:
+                break
+
             try:
                 self.next_epoch()
 
                 # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
+                self.logger.log(f"Epoch {epoch + 1}/{self.num_of_epochs}, Best Fitness: {best_member.fitness_value}")
 
                 # Saving after each 50 epochs
                 if epoch > 0 and epoch % self.db_writing_interval == 0:
@@ -100,31 +116,48 @@ class BaseAlg(ABC):
                         try:
                             self.write_results_to_database(epoch_metrics[start_index:end_index])
                         except:
-                            print('An unexpected error occurred while writing to the database.')
+                            self.logger.log('An unexpected error occurred while writing to the database.')
 
-            except Exception as ex :
-                print(ex)
-                print('An unexpected error occurred during calculation.')
+            except Exception as e:
+                self.logger.log(f'An unexpected error occurred during calculation: {e}')
                 return epoch_metrics
 
         end_time = time.time()
         execution_time = end_time - start_time
-        print(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-              f' Execution time: {execution_time} seconds')
+        self.logger.log(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
+                        f' Execution time: {round(execution_time, 2)} seconds')
+
+        avg_fitness = np.mean(best_fitness_values)
+        std_fitness = np.std(best_fitness_values)
+
+        self.logger.log(f"Average Best Fitness: {avg_fitness}")
+        self.logger.log(f"Standard Deviation of Fitness: {std_fitness}")
+
+        best_solution = self._pop.get_best_members(1)[0]
+
+        self.logger.log(f"Best Solution: {best_solution}")
 
         # Writing rest of the epochs
         if self._database is not None and self.db_auto_write:
             try:
                 self.write_results_to_database(epoch_metrics[end_index:])
-            except:
-                print('An unexpected error occurred while writing to the database.')
+            except Exception as e:
+                self.logger.log(f'An unexpected error occurred while writing to the database: {e}')
 
-        return epoch_metrics
+        result = {
+            "epoch_metrics": epoch_metrics,
+            "avg_fitness": avg_fitness,
+            "std_fitness": std_fitness,
+            "best_solution": best_solution
+        }
+        return result
 
     def write_results_to_database(self, results_data):
+        self.logger.log(f'Writing to Database...')
+
         # Check if database is present
         if self._database is None or self.database_table_name is None:
-            print(f"There is no database.")
+            self.logger.log(f"There is no database.")
             return
 
         # Connect to database
