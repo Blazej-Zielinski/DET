@@ -3,38 +3,14 @@ from DET.DETAlgs.data.alg_data import DEGLData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_degl import degl_mutation, degl_adapt_weight
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.models.fitness_function import FitnessFunctionOpfunu
-from DET.models.enums.optimization import OptimizationType
-from DET.models.enums.boundary_constrain import BoundaryFixing
 
-import opfunu.cec_based.cec2014 as opf
 
 class DEGL(BaseAlg):
     """
         Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5089881
     """
 
-    def __init__(self, params: DEGLData = None, db_conn="Differential_evolution.db", db_auto_write=False):
-        fitness_fun_opf = FitnessFunctionOpfunu(
-            func_type=opf.F82014,
-            ndim=10
-        )
-
-        if params is None:
-            params = DEGLData(
-                epoch=100,
-                population_size=100,
-                dimension=10,
-                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
-                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                mode=OptimizationType.MINIMIZATION,
-                boundary_constraints_fun=BoundaryFixing.RANDOM,
-                function=fitness_fun_opf,
-                log_population=True,
-                mutation_factor=0.5,
-                crossover_rate=0.5
-            )
-
+    def __init__(self, params: DEGLData, db_conn=None, db_auto_write=False):
         super().__init__(DEGL.__name__, params, db_conn, db_auto_write)
 
         self.mutation_factor = params.mutation_factor  # F

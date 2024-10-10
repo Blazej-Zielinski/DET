@@ -3,37 +3,14 @@ from DET.DETAlgs.data.alg_data import EMDEData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_emde import em_mutation
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.models.fitness_function import FitnessFunctionOpfunu
-from DET.models.enums.optimization import OptimizationType
-from DET.models.enums.boundary_constrain import BoundaryFixing
 
-import opfunu.cec_based.cec2014 as opf
 
 class EMDE(BaseAlg):
     """
     Source: https://link.springer.com/article/10.1007/s13042-015-0479-6#Sec8
     """
 
-    def __init__(self, params: EMDEData = None, db_conn="Differential_evolution.db", db_auto_write=False):
-        fitness_fun_opf = FitnessFunctionOpfunu(
-            func_type=opf.F82014,
-            ndim=10
-        )
-
-        if params is None:
-            params = EMDEData(
-                epoch=100,
-                population_size=100,
-                dimension=10,
-                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
-                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                mode=OptimizationType.MINIMIZATION,
-                boundary_constraints_fun=BoundaryFixing.RANDOM,
-                function=fitness_fun_opf,
-                log_population=True,
-                crossover_rate=0.5
-            )
-
+    def __init__(self, params: EMDEData, db_conn=None, db_auto_write=False):
         super().__init__(EMDE.__name__, params, db_conn, db_auto_write)
 
         self.crossover_rate = params.crossover_rate  # Cr
