@@ -22,9 +22,11 @@ def plot_fitness_convergence(fitness_results, algorithm_names, num_of_epochs):
 
     plt.xlabel('Epoch')
     plt.ylabel('Best Fitness Value')
-    plt.title('Fitness Convergence Across Algorithms')
+    plt.title('Fitness Convergence Algorithms')
     plt.legend()
     plt.show()
+
+
 if __name__ == "__main__":
     num_of_epochs = 100
     function_loader = FunctionLoader()
