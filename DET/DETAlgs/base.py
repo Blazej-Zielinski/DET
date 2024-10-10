@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from statistics import mean, stdev
 from tqdm import tqdm
 import numpy as np
+import matplotlib.pyplot as plt
 import DET
 from DET.database.database_connector import SQLiteConnector
 from DET.DETAlgs.data.alg_data import BaseData
@@ -13,10 +14,45 @@ from DET.helpers.metric_helper import MetricHelper
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
 from DET.DETAlgs.logger import Logger
+from main import example_function
 
+class AlgorithmResult:
+    def __init__(self, epoch_metrics, avg_fitness, std_fitness, best_solution):
+        self.epoch_metrics = epoch_metrics
+        self.avg_fitness = avg_fitness
+        self.std_fitness = std_fitness
+        self.best_solution = best_solution
 
-def example_function(x1, x2):
-    return x1**2 + x2**2
+    def __repr__(self):
+        return (f"AlgorithmResult(avg_fitness={self.avg_fitness}, std_fitness={self.std_fitness}, "
+                f"best_solution={self.best_solution})")
+
+    def plot_results(self, best_fitness_values, avg_fitness_values, std_fitness_values, num_of_epochs):
+        epochs = range(1, num_of_epochs + 1)
+
+        plt.figure()
+        plt.plot(epochs, best_fitness_values, label="Best Fitness")
+        plt.xlabel('Epoch')
+        plt.ylabel('Best Fitness Value')
+        plt.title('Best Fitness per Epoch')
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.plot(epochs, avg_fitness_values, label="Average Fitness", color="orange")
+        plt.xlabel('Epoch')
+        plt.ylabel('Average Fitness Value')
+        plt.title('Average Fitness per Epoch')
+        plt.legend()
+        plt.show()
+
+        plt.figure()
+        plt.plot(epochs, std_fitness_values, label="Standard Deviation of Fitness", color="green")
+        plt.xlabel('Epoch')
+        plt.ylabel('Standard Deviation')
+        plt.title('Standard Deviation of Fitness per Epoch')
+        plt.legend()
+        plt.show()
 
 
 class BaseAlg(ABC):
@@ -57,8 +93,8 @@ class BaseAlg(ABC):
 
     def _initialize(self):
         population = Population(
-            lb = self.lb,
-            ub = self.ub,
+            lb=self.lb,
+            ub=self.ub,
             arg_num=self.nr_of_args,
             size=self.population_size,
             optimization=self.mode
@@ -83,6 +119,8 @@ class BaseAlg(ABC):
     def run(self):
         epoch_metrics = []
         best_fitness_values = []
+        avg_fitness_values = []
+        std_fitness_values = []
 
         # Calculate metrics
         epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
@@ -100,8 +138,13 @@ class BaseAlg(ABC):
                 # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
+
                 avg_fitness = mean(member.fitness_value for member in self._pop.members)
+                avg_fitness_values.append(avg_fitness)
+
                 std_fitness = stdev(member.fitness_value for member in self._pop.members)
+                std_fitness_values.append(std_fitness)
+
                 self.logger.log(f"Epoch {epoch + 1}/{self.num_of_epochs}, Best Fitness: {best_member.fitness_value}, "
                                 f"Best Individual: {[member.real_value for member in best_member.chromosomes]}, "
                                 f"Avg: {avg_fitness}, Std: {std_fitness}")
@@ -139,12 +182,15 @@ class BaseAlg(ABC):
             except Exception as e:
                 self.logger.log(f'An unexpected error occurred while writing to the database: {e}')
 
-        result = {
-            "epoch_metrics": epoch_metrics,
-            "avg_fitness": avg_fitness,
-            "std_fitness": std_fitness,
-            "best_solution": best_solution
-        }
+        result = AlgorithmResult(
+            epoch_metrics=epoch_metrics,
+            avg_fitness=avg_fitness,
+            std_fitness=std_fitness,
+            best_solution=best_solution
+        )
+
+        result.plot_results(best_fitness_values, avg_fitness_values, std_fitness_values, self.num_of_epochs)
+
         return result
 
     def write_results_to_database(self, results_data):
