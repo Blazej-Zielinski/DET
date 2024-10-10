@@ -27,14 +27,14 @@ class AlgorithmResult:
         return (f"AlgorithmResult(avg_fitness={self.avg_fitness}, std_fitness={self.std_fitness}, "
                 f"best_solution={self.best_solution})")
 
-    def plot_results(self, best_fitness_values, avg_fitness_values, std_fitness_values, num_of_epochs):
+    def plot_results(self, best_fitness_values, avg_fitness_values, std_fitness_values, num_of_epochs, method_name="Method"):
         epochs = range(1, num_of_epochs + 1)
 
         plt.figure()
         plt.plot(epochs, best_fitness_values, label="Best Fitness")
         plt.xlabel('Epoch')
         plt.ylabel('Best Fitness Value')
-        plt.title('Best Fitness per Epoch')
+        plt.title(f'Best Fitness per Epoch - {method_name}')
         plt.legend()
         plt.show()
 
@@ -42,7 +42,7 @@ class AlgorithmResult:
         plt.plot(epochs, avg_fitness_values, label="Average Fitness", color="orange")
         plt.xlabel('Epoch')
         plt.ylabel('Average Fitness Value')
-        plt.title('Average Fitness per Epoch')
+        plt.title(f'Average Fitness per Epoch - {method_name}')
         plt.legend()
         plt.show()
 
@@ -50,10 +50,9 @@ class AlgorithmResult:
         plt.plot(epochs, std_fitness_values, label="Standard Deviation of Fitness", color="green")
         plt.xlabel('Epoch')
         plt.ylabel('Standard Deviation')
-        plt.title('Standard Deviation of Fitness per Epoch')
+        plt.title(f'Standard Deviation of Fitness per Epoch - {method_name}')
         plt.legend()
         plt.show()
-
 
 class BaseAlg(ABC):
     def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False, verbose=True):
@@ -191,7 +190,8 @@ class BaseAlg(ABC):
             best_solution=best_solution
         )
 
-        result.plot_results(best_fitness_values, avg_fitness_values, std_fitness_values, self.num_of_epochs)
+        result.plot_results(best_fitness_values, avg_fitness_values, std_fitness_values, self.num_of_epochs,
+                            method_name=self.name)
 
         return result
 
