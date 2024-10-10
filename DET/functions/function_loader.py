@@ -7,8 +7,9 @@ from scipy.stats import multivariate_normal
 class Ackley:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name="Ackley"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Ackley function requires {self.n_dimensions} variables, but {len(x)} were given.")
         a = 20
@@ -21,8 +22,9 @@ class Ackley:
 class Rastrigin:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Rastrigin"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Rastrigin function requires {self.n_dimensions} variables, but {len(x)} were given.")
         A = 10
@@ -31,8 +33,9 @@ class Rastrigin:
 class Rosenbrock:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Rosenbrock"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Rosenbrock function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([100 * (x[i + 1] - x[i] ** 2) ** 2 + (1 - x[i]) ** 2 for i in range(self.n_dimensions - 1)])
@@ -40,8 +43,9 @@ class Rosenbrock:
 class Sphere:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Sphere"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Sphere function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([xi ** 2 for xi in x])
@@ -49,8 +53,9 @@ class Sphere:
 class Griewank:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Griewank"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Griewank function requires {self.n_dimensions} variables, but {len(x)} were given.")
         sum_part = sum([xi ** 2 / 4000 for xi in x])
@@ -60,8 +65,9 @@ class Griewank:
 class Schwefel:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Schwefel"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Schwefel function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return 418.9829 * self.n_dimensions - sum([xi * np.sin(np.sqrt(abs(xi))) for xi in x])
@@ -70,8 +76,9 @@ class Michalewicz:
     def __init__(self, n_dimensions, m=10):
         self.n_dimensions = n_dimensions
         self.m = m
+        self.name = "Michalewicz"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Michalewicz function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return -sum([math.sin(xi) * (math.sin((i + 1) * xi ** 2 / math.pi) ** (2 * self.m)) for i, xi in enumerate(x)])
@@ -79,8 +86,9 @@ class Michalewicz:
 class Easom:
     def __init__(self):
         self.n_dimensions = 2
+        self.name = "Easom"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Easom function requires 2 variables, but {len(x)} were given.")
         return -math.cos(x[0]) * math.cos(x[1]) * math.exp(-((x[0] - math.pi) ** 2 + (x[1] - math.pi) ** 2))
@@ -88,8 +96,9 @@ class Easom:
 class Himmelblau:
     def __init__(self):
         self.n_dimensions = 2
+        self.name = "Himmelblau"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Himmelblau function requires 2 variables, but {len(x)} were given.")
         return (x[0] ** 2 + x[1] - 11) ** 2 + (x[0] + x[1] ** 2 - 7) ** 2
@@ -97,8 +106,9 @@ class Himmelblau:
 class Keane:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Keane"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Keane function requires {self.n_dimensions} variables, but {len(x)} were given.")
         part0 = np.prod([np.cos(xi) ** 2 for xi in x])
@@ -109,8 +119,9 @@ class Keane:
 class Rana:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Rana"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Rana function requires {self.n_dimensions} variables, but {len(x)} were given.")
         s = 0.0
@@ -124,11 +135,12 @@ class PitsAndHoles:
         self.mu = [[0, 0], [20, 0], [0, 20], [-20, 0], [0, -20], [10, 10], [-10, -10], [-10, 10], [10, -10]]
         self.c = [10.5, 14.0, 16.0, 12.0, 9.0, 0.1, 0.2, 0.25, 0.17]
         self.v = [2.0, 2.5, 2.7, 2.5, 2.3, 0.05, 0.3, 0.24, 0.23]
+        self.name = "PitsAndHoles"
 
     def _get_covariance_matrix(self, idx):
         return [[self.c[idx], 0], [0, self.c[idx]]]
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Pits and Holes function requires 2 variables, but {len(x)} were given.")
         v = 0
@@ -139,8 +151,9 @@ class PitsAndHoles:
 class Hypersphere:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Hypersphere"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Hypersphere function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([xi ** 2 for xi in x])
@@ -148,8 +161,9 @@ class Hypersphere:
 class Hyperellipsoid:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "Hyperellipsoid"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Hyperellipsoid function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([sum([xj ** 2 for xj in x[:i + 1]]) for i in range(self.n_dimensions)])
@@ -157,8 +171,9 @@ class Hyperellipsoid:
 class EggHolder:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "EggHolder"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Egg Holder function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([(x[i + 1] + 47) * math.sin(math.sqrt(abs(x[i + 1] + 47 + x[i] / 2))) + x[i] * math.sin(math.sqrt(abs(x[i] - (x[i + 1] + 47)))) for i in range(self.n_dimensions - 1)])
@@ -166,8 +181,9 @@ class EggHolder:
 class StyblinskiTang:
     def __init__(self, n_dimensions):
         self.n_dimensions = n_dimensions
+        self.name = "StyblinskiTang"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Styblinski-Tang function requires {self.n_dimensions} variables, but {len(x)} were given.")
         return sum([xi ** 4 - 16 * xi ** 2 + 5 * xi for xi in x]) / 2
@@ -175,8 +191,9 @@ class StyblinskiTang:
 class GoldsteinAndPrice:
     def __init__(self):
         self.n_dimensions = 2
+        self.name = "GoldsteinAndPrice"
 
-    def _evaluate_func(self, x):
+    def evaluate_func(self, x):
         if len(x) != self.n_dimensions:
             raise ValueError(f"Goldstein and Price function requires 2 variables, but {len(x)} were given.")
         part1 = (1 + (x[0] + x[1] + 1) ** 2 * (19 - 14 * x[0] + 3 * x[0] ** 2 - 14 * x[1] + 6 * x[0] * x[1] + 3 * x[1] ** 2))
@@ -209,14 +226,14 @@ class FunctionLoader:
 
     def load_all_functions(self):
         functions = {}
-        for file_name in os.listdir(self.folder_path):
+        for file_name in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), self.folder_path)):
             if file_name.endswith('.json'):
                 function_name = file_name.replace('.json', '')
                 functions[function_name] = self.load_function_from_json(file_name)
         return functions
 
     def load_function_from_json(self, file_name):
-        file_path = os.path.join(self.folder_path, file_name)
+        file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), self.folder_path, file_name)
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"File '{file_path}' does not exist.")
         with open(file_path, 'r') as file:
@@ -235,4 +252,4 @@ class FunctionLoader:
         function_instance = self.get_function(function_name, n_dimensions)
         if len(variables) != n_dimensions:
             raise ValueError(f"Function '{function_name}' requires {n_dimensions} variables, but {len(variables)} were given.")
-        return function_instance._evaluate_func(variables)
+        return function_instance.evaluate_func(variables)

@@ -27,8 +27,8 @@ if __name__ == "__main__":
     print(func.x_global)
 
     params = DET.DEData(
-        epoch=num_of_epochs,
-        population_size=100,
+        epoch=10,
+        population_size=10,
         dimension=10,
         lb=[-5,-100,-100,-100,-100,-100,-100,-100,-100,-100],
         ub=[5,100,100,100,100,100,100,100,100,100],
@@ -46,9 +46,9 @@ if __name__ == "__main__":
     # default.run()
 
     default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
-    default2.initialize()
+    # default2.initialize()
     results = default2.run()
-    default2.write_results_to_database(results)
+    # default2.write_results_to_database(results)
 
 
 

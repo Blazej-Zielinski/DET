@@ -4,12 +4,20 @@ from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_emde import em_mutation
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
+"""
+    EMDE
+
+    Links:
+    https://link.springer.com/article/10.1007/s13042-015-0479-6
+
+    References:
+    Mohamed, A.W. An efficient modified differential evolution algorithm for solving constrained non-linear 
+    integer and mixed-integer global optimization problems. 
+    Int. J. Mach. Learn. & Cyber. 8, 989–1007 (2017). https://doi.org/10.1007/s13042-015-0479-6
+"""
+
 
 class EMDE(BaseAlg):
-    """
-    Source: https://link.springer.com/article/10.1007/s13042-015-0479-6#Sec8
-    """
-
     def __init__(self, params: EMDEData, db_conn=None, db_auto_write=False):
         super().__init__(EMDE.__name__, params, db_conn, db_auto_write)
 

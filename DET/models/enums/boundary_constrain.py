@@ -1,6 +1,5 @@
 from enum import Enum
-
-from DET.models.chromosome import Chromosome
+import numpy as np
 from DET.models.member import Member
 from DET.models.population import Population
 
@@ -65,4 +64,4 @@ def boundary_random(member: Member):
     """
     for chromosome in member.chromosomes:
         if chromosome.real_value < chromosome.lb or chromosome.real_value > chromosome.ub:
-            chromosome.real_value = Chromosome(member.lb, member.ub).real_value
+            chromosome.real_value = np.random.uniform(chromosome.lb, chromosome.ub)

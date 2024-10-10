@@ -4,12 +4,21 @@ from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_degl import degl_mutation, degl_adapt_weight
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
+"""
+    DEGL
+
+    Links:
+    https://ieeexplore.ieee.org/document/5089881/
+
+    References:
+    S. Das, A. Abraham, U. K. Chakraborty and A. Konar, 
+    "Differential Evolution Using a Neighborhood-Based Mutation Operator," 
+    in IEEE Transactions on Evolutionary Computation, vol. 13, no. 3, pp. 526-553, June 2009, 
+    doi: 10.1109/TEVC.2008.2009457. 
+"""
+
 
 class DEGL(BaseAlg):
-    """
-        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=5089881
-    """
-
     def __init__(self, params: DEGLData, db_conn=None, db_auto_write=False):
         super().__init__(DEGL.__name__, params, db_conn, db_auto_write)
 

@@ -30,3 +30,13 @@ class FitnessFunctionOpfunu(FitnessFunctionBase):
 
     def eval(self, params):
         return self.function.evaluate(params)
+
+
+class BenchmarkFitnessFunction(FitnessFunctionBase):
+    def __init__(self, function):
+        super().__init__()
+        self.instance = function
+        self.name = function.name
+
+    def eval(self, params):
+        return self.instance.evaluate_func(params)

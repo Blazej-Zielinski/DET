@@ -12,12 +12,19 @@ from DET.models.population import Population
 from DET.helpers.metric_helper import MetricHelper
 from DET.helpers.database_helper import get_table_name, format_individuals
 
+"""
+    OppBasedDE
+
+    Links:
+    https://ieeexplore.ieee.org/document/4358759
+
+    References:
+    S. Rahnamayan, H. R. Tizhoosh and M. M. A. Salama, "Opposition-Based Differential Evolution," 
+    in IEEE Transactions on Evolutionary Computation, vol. 12, no. 1, pp. 64-79, Feb. 2008, 
+    doi: 10.1109/TEVC.2007.894200.
+"""
 
 class OppBasedDE(BaseAlg):
-    """
-        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4358759
-    """
-
     def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
         super().__init__(OppBasedDE.__name__, params, db_conn, db_auto_write)
 
@@ -54,13 +61,8 @@ class OppBasedDE(BaseAlg):
         self._epoch_number += 1
 
     def initialize(self):
-        if self._is_initialized:
-            print(f"{self.name} diff evo already initialized.")
-            return
-
         #  Generate initial population
         population = Population(
-            interval=self.interval,
             arg_num=self.nr_of_args,
             size=self.population_size,
             optimization=self.mode
@@ -72,15 +74,9 @@ class OppBasedDE(BaseAlg):
 
         self._origin_pop = population
         self._pop = copy.deepcopy(population)
-
-        self._is_initialized = True
         self.nfc = 2 * self.population_size
 
     def run(self):
-        if not self._is_initialized:
-            print(f"{self.name} diff evo not initialized.")
-            return
-
         # Calculate metrics
         epoch_metrics = []
         epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, -1, self.log_population)

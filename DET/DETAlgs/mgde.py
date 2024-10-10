@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import time
-
 from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import MGDEData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
@@ -8,6 +7,17 @@ from DET.DETAlgs.methods.methods_mgde import mgde_mutation, mgde_adapt_threshold
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 from DET.helpers.metric_helper import MetricHelper
 from DET.helpers.database_helper import get_table_name, format_individuals
+
+"""
+    MGDE
+
+    Links:
+    https://link.springer.com/article/10.1007/s10479-022-04641-3
+
+    References:
+    Zouache, D., Ben Abdelaziz, F. MGDE: a many-objective guided differential evolution with strengthened dominance 
+    relation and bi-goal evolution. Ann Oper Res (2022). https://doi.org/10.1007/s10479-022-04641-3 
+"""
 
 
 class MGDE(BaseAlg):
@@ -23,7 +33,8 @@ class MGDE(BaseAlg):
 
     def next_epoch(self):
         # New population after mutation
-        v_pop = mgde_mutation(self._pop, self.generation, self.num_of_epochs, self.mutation_factor_f, self.mutation_factor_k)
+        v_pop = mgde_mutation(self._pop, self.generation, self.num_of_epochs, self.mutation_factor_f,
+                              self.mutation_factor_k)
 
         # Apply boundary constrains on population in place
         fix_boundary_constraints(v_pop, self.boundary_constraints_fun)
@@ -45,10 +56,6 @@ class MGDE(BaseAlg):
         self._epoch_number += 1
 
     def run(self):
-        if not self._is_initialized:
-            print(f"{self.name} diff evo not initialized.")
-            return
-
         # Calculate metrics
         epoch_metrics = []
         epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, -1, self.log_population)
@@ -66,7 +73,7 @@ class MGDE(BaseAlg):
         end_time = time.time()
         execution_time = end_time - start_time
         print(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-              f' Execution time: {round(execution_time,2)} seconds')
+              f' Execution time: {round(execution_time, 2)} seconds')
 
         if self._database is not None and self.db_auto_write:
             self.write_results_to_database(epoch_metrics)

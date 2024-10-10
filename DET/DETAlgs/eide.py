@@ -1,17 +1,23 @@
 import random
-
 from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import EIDEData
 from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from DET.DETAlgs.methods.methods_eide import eide_adopt_parameters
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 
+"""
+    EIDE
+
+    Links:
+    https://ieeexplore.ieee.org/document/6390324
+
+    References:
+    Z. Dexuan and G. Liqun, "An efficient improved differential evolution algorithm," 
+    Proceedings of the 31st Chinese Control Conference, Hefei, China, 2012, pp. 2385-2390.
+"""
+
 
 class EIDE(BaseAlg):
-    """
-        Source: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=6390324&tag=1
-    """
-
     def __init__(self, params: EIDEData, db_conn=None, db_auto_write=False):
         super().__init__(EIDE.__name__, params, db_conn, db_auto_write)
 

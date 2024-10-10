@@ -1,9 +1,11 @@
 import copy
 import time
+import traceback
 from abc import ABC, abstractmethod
+from statistics import mean, stdev
 from tqdm import tqdm
 import numpy as np
-
+import DET
 from DET.database.database_connector import SQLiteConnector
 from DET.DETAlgs.data.alg_data import BaseData
 from DET.helpers.database_helper import get_table_name, format_individuals
@@ -13,11 +15,14 @@ from DET.models.population import Population
 from DET.DETAlgs.logger import Logger
 
 
+def example_function(x1, x2):
+    return x1**2 + x2**2
+
+
 class BaseAlg(ABC):
     def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False, verbose=True):
         self.name = name
         self._epoch_number = 0
-        self._is_initialized = False
 
         self._origin_pop = None
         self._pop = None
@@ -30,7 +35,10 @@ class BaseAlg(ABC):
         self.mode = params.mode
         self.boundary_constraints_fun = params.boundary_constraints_fun
 
-        self._function: FitnessFunctionBase = params.function
+        if params.function is None:
+            self._function = DET.FitnessFunction(func=example_function)
+        else:
+            self._function: FitnessFunctionBase = params.function
 
         self._database = SQLiteConnector(db_conn) if db_conn is not None else None
         self.db_auto_write = db_auto_write
@@ -39,19 +47,15 @@ class BaseAlg(ABC):
         self.database_table_name = None
         self.db_writing_interval = 50
 
-
         # Use Logger for output control
         self.logger = Logger(verbose)
+        self._initialize()
 
     @abstractmethod
     def next_epoch(self):
         pass
 
-    def initialize(self):
-        if self._is_initialized:
-            self.logger.log(f"{self.name} diff evo already initialized.")
-            return
-
+    def _initialize(self):
         population = Population(
             lb = self.lb,
             ub = self.ub,
@@ -68,7 +72,7 @@ class BaseAlg(ABC):
         # Creating table
         self._database.connect()
         table_name = get_table_name(
-            func_name=self._function.name,
+            func_name="aa",
             alg_name=self.name,
             nr_of_args=self.nr_of_args,
             pop_size=self.population_size
@@ -76,13 +80,7 @@ class BaseAlg(ABC):
         self.database_table_name = self._database.create_table(table_name)
         self._database.close()
 
-        self._is_initialized = True
-
     def run(self):
-        if not self._is_initialized:
-            print(f"{self.name} diff evo not initialized.")
-            return
-
         epoch_metrics = []
         best_fitness_values = []
 
@@ -102,7 +100,11 @@ class BaseAlg(ABC):
                 # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)
-                self.logger.log(f"Epoch {epoch + 1}/{self.num_of_epochs}, Best Fitness: {best_member.fitness_value}")
+                avg_fitness = mean(member.fitness_value for member in self._pop.members)
+                std_fitness = stdev(member.fitness_value for member in self._pop.members)
+                self.logger.log(f"Epoch {epoch + 1}/{self.num_of_epochs}, Best Fitness: {best_member.fitness_value}, "
+                                f"Best Individual: {[member.real_value for member in best_member.chromosomes]}, "
+                                f"Avg: {avg_fitness}, Std: {std_fitness}")
 
                 # Saving after each 50 epochs
                 if epoch > 0 and epoch % self.db_writing_interval == 0:
@@ -113,8 +115,8 @@ class BaseAlg(ABC):
                             self.write_results_to_database(epoch_metrics[start_index:end_index])
                         except:
                             self.logger.log('An unexpected error occurred while writing to the database.')
-
             except Exception as e:
+                traceback.print_exc()
                 self.logger.log(f'An unexpected error occurred during calculation: {e}')
                 return epoch_metrics
 

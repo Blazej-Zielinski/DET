@@ -1,9 +1,20 @@
 import numpy as np
-
 from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import SADEData
 from DET.DETAlgs.methods.methods_sade import sade_mutation, sade_binomial_crossing, sade_selection
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
+
+"""
+    SADE
+
+    Links:
+    https://ieeexplore.ieee.org/abstract/document/4730987
+
+    References:
+    Wu Zhi-Feng, Huang Hou-Kuan, Yang Bei and Zhang Ying, "A modified differential evolution algorithm with 
+    self-adaptive control parameters," 2008 3rd International Conference on Intelligent System and Knowledge Engineering
+    , Xiamen, 2008, pp. 524-527, doi: 10.1109/ISKE.2008.4730987.
+"""
 
 
 class SADE(BaseAlg):
