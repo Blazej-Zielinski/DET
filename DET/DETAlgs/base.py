@@ -128,7 +128,9 @@ class BaseAlg(ABC):
 
         start_time = time.time()
         end_index = 0
-        for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
+        bar_format = '{l_bar}{bar}{r_bar}\n'
+
+        for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch", bar_format=bar_format):
             best_member = self._pop.get_best_members(1)[0]
             best_fitness_values.append(best_member.fitness_value)
 
