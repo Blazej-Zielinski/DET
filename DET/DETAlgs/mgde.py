@@ -8,37 +8,10 @@ from DET.DETAlgs.methods.methods_mgde import mgde_mutation, mgde_adapt_threshold
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
 from DET.helpers.metric_helper import MetricHelper
 from DET.helpers.database_helper import get_table_name, format_individuals
-from DET.models.fitness_function import FitnessFunctionOpfunu
-from DET.models.enums.optimization import OptimizationType
-from DET.models.enums.boundary_constrain import BoundaryFixing
 
-import opfunu.cec_based.cec2014 as opf
 
 class MGDE(BaseAlg):
-    def __init__(self, params: MGDEData = None, db_conn="Differential_evolution.db", db_auto_write=False):
-        fitness_fun_opf = FitnessFunctionOpfunu(
-            func_type=opf.F82014,
-            ndim=10
-        )
-
-        if params is None:
-            params = MGDEData(
-                epoch=100,
-                population_size=100,
-                dimension=10,
-                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
-                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                mode=OptimizationType.MINIMIZATION,
-                boundary_constraints_fun=BoundaryFixing.RANDOM,
-                function=fitness_fun_opf,
-                log_population=True,
-                crossover_rate=0.5,
-                mu=1,
-                mutation_factor_f=5,
-                mutation_factor_k=2,
-                threshold=1
-            )
-
+    def __init__(self, params: MGDEData, db_conn=None, db_auto_write=False):
         super().__init__(MGDE.__name__, params, db_conn, db_auto_write)
 
         self.mutation_factor_f = params.mutation_factor_f

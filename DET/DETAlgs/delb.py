@@ -3,11 +3,6 @@ from DET.DETAlgs.data.alg_data import DELBData
 from DET.DETAlgs.methods.methods_delb import delb_mutation, delb_selection
 from DET.DETAlgs.methods.methods_de import binomial_crossing
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.models.fitness_function import FitnessFunctionOpfunu
-from DET.models.enums.optimization import OptimizationType
-from DET.models.enums.boundary_constrain import BoundaryFixing
-
-import opfunu.cec_based.cec2014 as opf
 
 
 class DELB(BaseAlg):
@@ -15,27 +10,7 @@ class DELB(BaseAlg):
         Source: https://www.sciencedirect.com/science/article/pii/S037722170500281X#aep-section-id9
     """
 
-    def __init__(self, params: DELBData = None, db_conn="Differential_evolution.db", db_auto_write=False):
-        fitness_fun_opf = FitnessFunctionOpfunu(
-            func_type=opf.F82014,
-            ndim=10
-        )
-
-        if params is None:
-            params = DELBData(
-                epoch=100,
-                population_size=100,
-                dimension=10,
-                lb=[-5, -100, -100, -100, -100, -100, -100, -100, -100, -100],
-                ub=[5, 100, 100, 100, 100, 100, 100, 100, 100, 100],
-                mode=OptimizationType.MINIMIZATION,
-                boundary_constraints_fun=BoundaryFixing.RANDOM,
-                function=fitness_fun_opf,
-                log_population=True,
-                crossover_rate=0.5,
-                w_factor=2
-            )
-
+    def __init__(self, params: DELBData, db_conn=None, db_auto_write=False):
         super().__init__(DELB.__name__, params, db_conn, db_auto_write)
 
         self.crossover_rate = params.crossover_rate  # Cr
