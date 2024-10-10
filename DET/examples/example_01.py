@@ -266,4 +266,4 @@ params = SADEData(
 
 default2 = SADE(params, db_conn="Differential_evolution.db", db_auto_write=False)
 results = default2.run()
-default2.write_results_to_database(results)
+default2.write_results_to_database(results.epoch_metrics)
