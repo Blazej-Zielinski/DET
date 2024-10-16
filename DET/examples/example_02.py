@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
-from DET import COMDE, SADE, DET
+from DET import COMDE, SADE
 from DET.DETAlgs.data.alg_data import AADEData, COMDEData, SADEData
 from DET.functions import FunctionLoader
 from DET.models.fitness_function import BenchmarkFitnessFunction
-
+from DET.models.enums import optimization, boundary_constrain
 def extract_best_fitness(epoch_metrics):
     return [epoch.best_individual.fitness_value for epoch in epoch_metrics]
 
@@ -41,8 +41,8 @@ if __name__ == "__main__":
         'dimension': 2,
         'lb': [-32.768, -32.768],
         'ub': [32.768, 32.768],
-        'mode': DET.OptimizationType.MINIMIZATION,
-        'boundary_constraints_fun': DET.BoundaryFixing.RANDOM,
+        'mode': optimization.OptimizationType.MINIMIZATION,
+        'boundary_constraints_fun': boundary_constrain.BoundaryFixing.RANDOM,
         'log_population': True,
         'parallel_processing': ['thread', 5]
     }
