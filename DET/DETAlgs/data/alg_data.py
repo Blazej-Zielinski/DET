@@ -118,3 +118,9 @@ class FiADEData(BaseData):
     mutation_factor: float = 0.5
     crossover_rate: float = 0.5
     adaptive: bool = True
+
+
+@dataclass
+class ImprovedDEData(BaseData):
+    mutation_factor: float = 0.5
+    crossover_rate: float = 0.8

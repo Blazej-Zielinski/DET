@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-from DET import COMDE, DE, SADE, FiADE
-from DET.DETAlgs.data.alg_data import COMDEData, DEData, SADEData, FiADEData
+from DET import COMDE, DE, SADE, FiADE, ImprovedDE
+from DET.DETAlgs.data.alg_data import COMDEData, DEData, SADEData, FiADEData, ImprovedDEData
 from DET.functions import FunctionLoader
 from DET.models.fitness_function import BenchmarkFitnessFunction
 from DET.models.enums import optimization, boundary_constrain
@@ -49,13 +49,16 @@ if __name__ == "__main__":
     params_comde = COMDEData(**params_common)
     params_de = DEData(**params_common)
     params_fiade = FiADEData(**params_common)
-
+    params_improved_de = ImprovedDEData(**params_common)
+    #
     fitness_sade = run_algorithm(SADE, params_sade)
     fitness_comde = run_algorithm(COMDE, params_comde)
     fitness_de = run_algorithm(DE, params_de)
     fitness_fiade = run_algorithm(FiADE, params_fiade)
+    fitness_improved_de = run_algorithm(ImprovedDE, params_improved_de)
 
-    fitness_results = [fitness_sade, fitness_comde, fitness_de, fitness_fiade]
-    algorithm_names = ['SADE', 'COMDE', 'DE', 'FiADE']
+    fitness_results = [fitness_sade, fitness_comde, fitness_de, fitness_fiade, fitness_improved_de]
+
+    algorithm_names = ['SADE', 'COMDE', 'DE', 'FiADE', 'ImprovedDE']
 
     plot_fitness_convergence(fitness_results, algorithm_names, num_of_epochs)
