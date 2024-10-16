@@ -241,7 +241,9 @@ class FunctionLoader:
         return function_data
 
     def get_function(self, function_name, n_dimensions):
-        if function_name in self.function_classes:
+        if function_name in ["himmelblau", "easom", "pits_and_holes", "goldstein_and_price"]:
+            return self.function_classes[function_name]()
+        elif function_name in self.function_classes:
             return self.function_classes[function_name](n_dimensions)
         else:
             raise ValueError(f"Function '{function_name}' not found.")

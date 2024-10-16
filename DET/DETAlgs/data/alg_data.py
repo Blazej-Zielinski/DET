@@ -112,3 +112,9 @@ class MGDEData(BaseData):
     mutation_factor_k: float = 0.1
     threshold: float = 0.1
     mu: float = 0.1
+
+
+class FiADEData(BaseData):
+    mutation_factor: float = 0.5
+    crossover_rate: float = 0.5
+    adaptive: bool = True

@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
-from DET import COMDE, SADE, DET
-from DET.DETAlgs.data.alg_data import AADEData, COMDEData, DEGLData, DELBData, DERLData, EIDEData, EMDEData, IDEData, \
-    JADEData, MGDEData, NMDEData, OppBasedData, SADEData
+from DET import COMDE, DE, SADE, FiADE
+from DET.DETAlgs.data.alg_data import COMDEData, DEData, SADEData, FiADEData
 from DET.functions import FunctionLoader
 from DET.models.fitness_function import BenchmarkFitnessFunction
-
+from DET.models.enums import optimization, boundary_constrain
 def extract_best_fitness(epoch_metrics):
     return [epoch.best_individual.fitness_value for epoch in epoch_metrics]
 
@@ -39,8 +38,8 @@ if __name__ == "__main__":
         'dimension': 2,
         'lb': [-32.768, -32.768],
         'ub': [32.768, 32.768],
-        'mode': DET.OptimizationType.MINIMIZATION,
-        'boundary_constraints_fun': DET.BoundaryFixing.RANDOM,
+        'mode': optimization.OptimizationType.MINIMIZATION,
+        'boundary_constraints_fun': boundary_constrain.BoundaryFixing.RANDOM,
         'function': fitness_fun,
         'log_population': True,
         'parallel_processing': ['thread', 5]
@@ -48,11 +47,15 @@ if __name__ == "__main__":
 
     params_sade = SADEData(**params_common)
     params_comde = COMDEData(**params_common)
+    params_de = DEData(**params_common)
+    params_fiade = FiADEData(**params_common)
 
     fitness_sade = run_algorithm(SADE, params_sade)
     fitness_comde = run_algorithm(COMDE, params_comde)
+    fitness_de = run_algorithm(DE, params_de)
+    fitness_fiade = run_algorithm(FiADE, params_fiade)
 
-    fitness_results = [fitness_sade, fitness_comde]
-    algorithm_names = ['SADE', 'COMDE']
+    fitness_results = [fitness_sade, fitness_comde, fitness_de, fitness_fiade]
+    algorithm_names = ['SADE', 'COMDE', 'DE', 'FiADE']
 
     plot_fitness_convergence(fitness_results, algorithm_names, num_of_epochs)
