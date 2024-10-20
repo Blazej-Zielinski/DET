@@ -26,7 +26,7 @@ class Population:
         member = self.members[index]
         member.fitness_value = self.calculate_fitness(member, fitness_fun)
 
-    def update_fitness_values(self, fitness_fun, parallel_processing):
+    def update_fitness_values(self, fitness_fun, parallel_processing=None):
         if parallel_processing is None:
             executor_class = concurrent.futures.ThreadPoolExecutor
             worker = 1

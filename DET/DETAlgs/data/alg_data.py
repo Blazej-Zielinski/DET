@@ -4,6 +4,7 @@ from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.enums.boundary_constrain import BoundaryFixing
 from DET.models.enums.optimization import OptimizationType
 
+
 @dataclass
 class BaseData:
     epoch: int = 100
@@ -16,6 +17,7 @@ class BaseData:
     function: FitnessFunctionBase = None
     log_population: bool = False
     parallel_processing: Optional[list] = None
+
 
 @dataclass
 class DEData(BaseData):
@@ -39,7 +41,7 @@ class DERLData(BaseData):
 class NMDEData(BaseData):
     delta_f: float = 0.1
     delta_cr: float = 0.1
-    sp: int =10
+    sp: int = 10
 
 
 @dataclass
@@ -61,7 +63,7 @@ class IDEData(BaseData):
 @dataclass
 class DELBData(BaseData):
     crossover_rate: float = 0.1
-    w_factor: float = 0.1 # control frequency of local exploration around trial and best vectors
+    w_factor: float = 0.1  # control frequency of local exploration around trial and best vectors
 
 
 @dataclass
@@ -76,8 +78,8 @@ class OppBasedData(BaseData):
 class DEGLData(BaseData):
     mutation_factor: float = 0.1
     crossover_rate: float = 0.1
-    radius: int = 10 # neighborhood size, 2k + 1 <= NP, at least k=2
-    weight: float  = 0.1 # controls the balance between the exploration and exploitation
+    radius: int = 10  # neighborhood size, 2k + 1 <= NP, at least k=2
+    weight: float = 0.1  # controls the balance between the exploration and exploitation
 
 
 @dataclass
@@ -89,7 +91,7 @@ class JADEData(BaseData):
     crossover_rate_std: float = 0.1
     crossover_rate_low: float = 0.1
     crossover_rate_high: float = 0.1
-    c: float = 0.1 # describes the rate of parameter adaptation
+    c: float = 0.1  # describes the rate of parameter adaptation
     p: float = 0.1  # describes the greediness of the mutation strategy
 
 
@@ -112,3 +114,16 @@ class MGDEData(BaseData):
     mutation_factor_k: float = 0.1
     threshold: float = 0.1
     mu: float = 0.1
+
+
+@dataclass
+class FiADEData(BaseData):
+    mutation_factor: float = 0.5
+    crossover_rate: float = 0.5
+    adaptive: bool = True
+
+
+@dataclass
+class ImprovedDEData(BaseData):
+    mutation_factor: float = 0.5
+    crossover_rate: float = 0.8
