@@ -29,7 +29,7 @@ class MGDE(BaseAlg):
         self.crossover_rate = params.crossover_rate
         self.threshold = params.threshold
         self.mu = params.mu
-        self.generation = None
+        self.generation = 1
 
     def next_epoch(self):
         # New population after mutation
@@ -54,57 +54,3 @@ class MGDE(BaseAlg):
         self._pop = new_pop
 
         self._epoch_number += 1
-
-    def run(self):
-        # Calculate metrics
-        epoch_metrics = []
-        epoch_metric = MetricHelper.calculate_metrics(self._pop, 0.0, -1, self.log_population)
-        epoch_metrics.append(epoch_metric)
-
-        start_time = time.time()
-        for epoch in tqdm(range(self.num_of_epochs), desc=f"{self.name}", unit="epoch"):
-            self.generation = epoch
-            self.next_epoch()
-
-            # Calculate metrics
-            epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
-            epoch_metrics.append(epoch_metric)
-
-        end_time = time.time()
-        execution_time = end_time - start_time
-        print(f'Function: {self._function.name}, Dimension: {self.nr_of_args},'
-              f' Execution time: {round(execution_time, 2)} seconds')
-
-        if self._database is not None and self.db_auto_write:
-            self.write_results_to_database(epoch_metrics)
-
-        return epoch_metrics
-
-    def write_results_to_database(self, results_data):
-        """
-            TO REFACTOR LIKE IN BASE ALG -> NEED SAVING AFTER EACH 50 EPOCHS
-        """
-        print(f'Writing to Database...')
-
-        # Check if database is present
-        if self._database is None:
-            print(f"There is not database.")
-            return
-
-        # Connect to database
-        self._database.connect()
-
-        # Creating table
-        table_name = get_table_name(
-            func_name=self._function.name,
-            alg_name=self.name,
-            nr_of_args=self.nr_of_args,
-            pop_size=self.population_size
-        )
-        table_name = self._database.create_table(table_name)
-
-        # Inserting data into database
-        formatted_best_individuals = format_individuals(results_data)
-        self._database.insert_multiple_best_individuals(table_name, formatted_best_individuals)
-
-        self._database.close()
