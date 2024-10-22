@@ -18,6 +18,8 @@ from DET.DETAlgs.methods.methods_improved_de import mutation, binomial_crossing,
     https://doi.org/10.1007/s00500-023-09080-1
 
 """
+
+
 class ImprovedDE(BaseAlg):
     def __init__(self, params: ImprovedDEData, db_conn=None, db_auto_write=False):
         super().__init__(ImprovedDE.__name__, params, db_conn, db_auto_write)

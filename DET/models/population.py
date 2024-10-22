@@ -3,6 +3,7 @@ import numpy as np
 from DET.models.enums.optimization import OptimizationType
 from DET.models.member import Member
 
+
 class Population:
     def __init__(self, lb, ub, arg_num, size, optimization: OptimizationType):
         self.size = size

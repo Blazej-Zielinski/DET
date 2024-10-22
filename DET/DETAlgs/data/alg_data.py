@@ -125,5 +125,5 @@ class FiADEData(BaseData):
 
 @dataclass
 class ImprovedDEData(BaseData):
-    mutation_factor: float = 0.5
-    crossover_rate: float = 0.8
+    mutation_factor: float = 0.1
+    crossover_rate: float = 0.5

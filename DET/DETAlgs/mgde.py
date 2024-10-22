@@ -1,12 +1,8 @@
-from tqdm import tqdm
-import time
 from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import MGDEData
 from DET.DETAlgs.methods.methods_de import binomial_crossing, selection
 from DET.DETAlgs.methods.methods_mgde import mgde_mutation, mgde_adapt_threshold
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.helpers.metric_helper import MetricHelper
-from DET.helpers.database_helper import get_table_name, format_individuals
 
 """
     MGDE

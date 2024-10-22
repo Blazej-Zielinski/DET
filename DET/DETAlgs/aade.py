@@ -41,6 +41,7 @@ class AADE(BaseAlg):
         new_pop = aade_selection(self._pop, u_pop, self.mutation_factors, self.crossover_rates)
 
         aade_adapat_parameters(self._pop, self.mutation_factors, self.crossover_rates)
+
         # Override data
         self._pop = new_pop
 

@@ -5,54 +5,17 @@ from abc import ABC, abstractmethod
 from statistics import mean, stdev
 from tqdm import tqdm
 import numpy as np
-import matplotlib.pyplot as plt
 import DET
 from DET.database.database_connector import SQLiteConnector
 from DET.DETAlgs.data.alg_data import BaseData
 from DET.helpers.database_helper import get_table_name, format_individuals
 from DET.helpers.metric_helper import MetricHelper
+from DET.models.algorithm_result import AlgorithmResult
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
-from DET.DETAlgs.logger import Logger
+from DET.helpers.logger import Logger
 from main import example_function
 
-class AlgorithmResult:
-    def __init__(self, epoch_metrics, avg_fitness, std_fitness, best_solution):
-        self.epoch_metrics = epoch_metrics
-        self.avg_fitness = avg_fitness
-        self.std_fitness = std_fitness
-        self.best_solution = best_solution
-
-    def __repr__(self):
-        return (f"AlgorithmResult(avg_fitness={self.avg_fitness}, std_fitness={self.std_fitness}, "
-                f"best_solution={self.best_solution})")
-
-    def plot_results(self, best_fitness_values, avg_fitness_values, std_fitness_values, num_of_epochs, method_name="Method"):
-        epochs = range(1, num_of_epochs + 1)
-
-        plt.figure()
-        plt.plot(epochs, best_fitness_values, label="Best Fitness")
-        plt.xlabel('Epoch')
-        plt.ylabel('Best Fitness Value')
-        plt.title(f'Best Fitness per Epoch - {method_name}')
-        plt.legend()
-        plt.show()
-
-        plt.figure()
-        plt.plot(epochs, avg_fitness_values, label="Average Fitness", color="orange")
-        plt.xlabel('Epoch')
-        plt.ylabel('Average Fitness Value')
-        plt.title(f'Average Fitness per Epoch - {method_name}')
-        plt.legend()
-        plt.show()
-
-        plt.figure()
-        plt.plot(epochs, std_fitness_values, label="Standard Deviation of Fitness", color="green")
-        plt.xlabel('Epoch')
-        plt.ylabel('Standard Deviation')
-        plt.title(f'Standard Deviation of Fitness per Epoch - {method_name}')
-        plt.legend()
-        plt.show()
 
 class BaseAlg(ABC):
     def __init__(self, name, params: BaseData, db_conn=None, db_auto_write=False, verbose=True):
@@ -176,8 +139,13 @@ class BaseAlg(ABC):
         self.logger.log(f"Average Best Fitness: {avg_fitness}, Standard Deviation of Fitness: {std_fitness}")
         self.logger.log(f"Best Solution: {best_solution}")
 
-        # Writing rest of the epochs
-        if self._database is not None and self.db_auto_write:
+        # Writing to database
+        if self._database is not None and not self.db_auto_write:
+            try:
+                self.write_results_to_database(epoch_metrics)
+            except Exception as e:
+                self.logger.log(f'An unexpected error occurred while writing to the database: {e}')
+        elif self._database is not None and self.db_auto_write:
             try:
                 self.write_results_to_database(epoch_metrics[end_index:])
             except Exception as e:

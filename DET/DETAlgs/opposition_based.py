@@ -1,16 +1,8 @@
-import copy
-import time
-from tqdm import tqdm
-
 from DET.DETAlgs.base import BaseAlg
 from DET.DETAlgs.data.alg_data import OppBasedData
-from DET.DETAlgs.methods.methods_opposition_based import opp_based_keep_best_individuals, \
-    opp_based_generation_jumping
+from DET.DETAlgs.methods.methods_opposition_based import opp_based_generation_jumping
 from DET.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from DET.models.enums.boundary_constrain import fix_boundary_constraints
-from DET.models.population import Population
-from DET.helpers.metric_helper import MetricHelper
-from DET.helpers.database_helper import get_table_name, format_individuals
 
 """
     OppBasedDE
@@ -23,6 +15,7 @@ from DET.helpers.database_helper import get_table_name, format_individuals
     in IEEE Transactions on Evolutionary Computation, vol. 12, no. 1, pp. 64-79, Feb. 2008, 
     doi: 10.1109/TEVC.2007.894200.
 """
+
 
 class OppBasedDE(BaseAlg):
     def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
@@ -59,4 +52,3 @@ class OppBasedDE(BaseAlg):
         self._pop = new_pop
 
         self._epoch_number += 1
-
