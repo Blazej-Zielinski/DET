@@ -4,6 +4,8 @@ from DET.DETAlgs.data.alg_data import AADEData, COMDEData, SADEData
 from DET.functions import FunctionLoader
 from DET.models.fitness_function import BenchmarkFitnessFunction
 from DET.models.enums import optimization, boundary_constrain
+
+
 def extract_best_fitness(epoch_metrics):
     return [epoch.best_individual.fitness_value for epoch in epoch_metrics]
 
@@ -53,7 +55,8 @@ if __name__ == "__main__":
     algorithm_names = ['SADE']
 
     for function_name in test_functions:
-        fitness_fun = BenchmarkFitnessFunction(function_loader.get_function(function_name=function_name, n_dimensions=2))
+        fitness_fun = BenchmarkFitnessFunction(
+            function_loader.get_function(function_name=function_name, n_dimensions=2))
         params_common['function'] = fitness_fun
 
         fitness_results = []

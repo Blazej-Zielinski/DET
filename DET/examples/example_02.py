@@ -11,8 +11,10 @@ from DET.functions import FunctionLoader
 from DET.models.fitness_function import BenchmarkFitnessFunction
 from DET.models.enums import optimization, boundary_constrain
 
+
 def extract_best_fitness(epoch_metrics):
     return [epoch.best_individual.fitness_value for epoch in epoch_metrics]
+
 
 def run_algorithm(algorithm_class, params, db_conn="Differential_evolution.db", db_auto_write=False):
     algorithm = algorithm_class(params, db_conn=db_conn, db_auto_write=db_auto_write)
@@ -85,9 +87,12 @@ if __name__ == "__main__":
     fitness_opposition_based = run_algorithm(OppBasedDE, params_opposition_based)
     fitness_sade = run_algorithm(SADE, params_sade)
 
-    fitness_results = [fitness_aade, fitness_comde, fitness_de, fitness_degl, fitness_delb, fitness_derl, fitness_eide, fitness_emde, fitness_fiade,
-                       fitness_ide, fitness_improved_de, fitness_jade, fitness_mgde, fitness_ndme, fitness_opposition_based , fitness_sade]
+    fitness_results = [fitness_aade, fitness_comde, fitness_de, fitness_degl, fitness_delb, fitness_derl, fitness_eide,
+                       fitness_emde, fitness_fiade,
+                       fitness_ide, fitness_improved_de, fitness_jade, fitness_mgde, fitness_ndme,
+                       fitness_opposition_based, fitness_sade]
 
-    algorithm_names = ['AADE', 'COMDE', 'DE', 'DEGL', 'DELB','DERL','EIDE','EMDE','FiADE','IDE','ImprovedDE','JADE','MGDE','NMDE', 'OppBasedDE', 'SADE']
+    algorithm_names = ['AADE', 'COMDE', 'DE', 'DEGL', 'DELB', 'DERL', 'EIDE', 'EMDE', 'FiADE', 'IDE', 'ImprovedDE',
+                       'JADE', 'MGDE', 'NMDE', 'OppBasedDE', 'SADE']
 
     plot_fitness_convergence(fitness_results, algorithm_names, num_of_epochs)
