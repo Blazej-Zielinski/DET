@@ -1,4 +1,4 @@
-import DET
+import detpy
 import opfunu.cec_based.cec2014 as opf
 
 
@@ -10,11 +10,11 @@ def example_function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
 if __name__ == "__main__":
     num_of_epochs = 100
 
-    fitness_fun = DET.FitnessFunction(
+    fitness_fun = detpy.FitnessFunction(
         func=example_function
     )
 
-    fitness_fun_opf = DET.FitnessFunctionOpfunu(
+    fitness_fun_opf = detpy.FitnessFunctionOpfunu(
         func_type=opf.F82014,
         ndim=10
     )
@@ -23,21 +23,21 @@ if __name__ == "__main__":
     print(func.f_global)
     print(func.x_global)
 
-    params = DET.DEData(
+    params = detpy.DEData(
         epoch=10,
         population_size=10,
         dimension=10,
         lb=[-5,-100,-100,-100,-100,-100,-100,-100,-100,-100],
         ub=[5,100,100,100,100,100,100,100,100,100],
-        mode=DET.OptimizationType.MINIMIZATION,
-        boundary_constraints_fun=DET.BoundaryFixing.RANDOM,
+        mode=detpy.OptimizationType.MINIMIZATION,
+        boundary_constraints_fun=detpy.BoundaryFixing.RANDOM,
         function=fitness_fun_opf,
         mutation_factor=0.5,
         crossover_rate=0.8,
         log_population=True
     )
     params.parallel_processing = ['thread', 5]
-    default2 = DET.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
+    default2 = detpy.DE(params, db_conn="Differential_evolution.db", db_auto_write=False)
     results = default2.run()
 
 
