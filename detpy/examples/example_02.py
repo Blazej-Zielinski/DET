@@ -1,12 +1,22 @@
 import matplotlib.pyplot as plt
-from detpy import COMDE, DE, SADE, FiADE, ImprovedDE, DERL, EMDE, IDE, MGDE, NMDE, OppBasedDE
 from detpy.DETAlgs.aade import AADE
+from detpy.DETAlgs.comde import COMDE
 from detpy.DETAlgs.data.alg_data import COMDEData, DEData, SADEData, FiADEData, ImprovedDEData, AADEData, DEGLData, \
     DELBData, DERLData, EIDEData, EMDEData, IDEData, JADEData, MGDEData, NMDEData, OppBasedData
+from detpy.DETAlgs.de import DE
 from detpy.DETAlgs.degl import DEGL
 from detpy.DETAlgs.delb import DELB
+from detpy.DETAlgs.derl import DERL
 from detpy.DETAlgs.eide import EIDE
+from detpy.DETAlgs.emde import EMDE
+from detpy.DETAlgs.fiade import FiADE
+from detpy.DETAlgs.ide import IDE
+from detpy.DETAlgs.improved_de import ImprovedDE
 from detpy.DETAlgs.jade import JADE
+from detpy.DETAlgs.mgde import MGDE
+from detpy.DETAlgs.nmde import NMDE
+from detpy.DETAlgs.opposition_based import OppBasedDE
+from detpy.DETAlgs.sade import SADE
 from detpy.functions import FunctionLoader
 from detpy.models.fitness_function import BenchmarkFitnessFunction
 from detpy.models.enums import optimization, boundary_constrain

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-from detpy import COMDE, SADE
-from detpy.DETAlgs.data.alg_data import AADEData, COMDEData, SADEData
+from detpy.DETAlgs.data.alg_data import SADEData
+from detpy.DETAlgs.sade import SADE
 from detpy.functions import FunctionLoader
 from detpy.models.fitness_function import BenchmarkFitnessFunction
 from detpy.models.enums import optimization, boundary_constrain
