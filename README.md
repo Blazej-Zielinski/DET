@@ -5,7 +5,24 @@ The DetPy library contains implementations of the differential evolution algorit
 algorithm. It can be used to solve advanced optimization problems.
 The following variants have been implemented:
 
-
+| No. | Algorithm                                                                                     | Year |
+|-----|-----------------------------------------------------------------------------------------------|------|
+| 1   | DE (Differential evolution) [1]                                                               | 1997 |
+| 2   | COMDE (Constrained optimization-based differential evolution) [2]                             | 2012 |
+| 3   | DERL (Differential evolution random locations) [3]                                            | 2006 |
+| 4   | NMDE (Novel modified differential evolution algorithm) [4]                                    | 2011 |
+| 5   | FIADE (Fitness-Adaptive DE) [5]                                                               | 2011 |
+| 6   | EMDE (Efficient modified differential evolution) [6]                                          | 2015 |
+| 7   | IDE (Improved differential evolution) [7]                                                     | 2019 |
+| 8   | SADE (Self-adaptive differential evolution) [8]                                               | 2008 |
+| 9   | JADE (Adaptive differential evolution with optional external archive) [9]                     | 2009 |
+| 10  | OppBasedDE (Opposition-based differential evolution) [10]                                     | 2010 |
+| 11  | AADE (Auto adaptive differential evolution algorithm) [11]                                    | 2019 |
+| 12  | DEGL (Differential evolution with neighborhood-based mutation) [12]                           | 2009 |
+| 13  | DELB (Differential evolution with localization using the best vector) [3]                     | 2006 |
+| 14  | EIDE (An efficient improved differential evolution algorithm) [13]                            | 2012 |
+| 15  | MGDE (A many-objective guided differential evolution) [14]                                    | 2022 |
+| 16  | ImprovedDE (DE with dynamic mutation parameters) [15]                                         | 2023 |
 
 # Installation
 ```
@@ -54,3 +71,19 @@ Available functions:
 Test functions prepared based on https://gitlab.com/luca.baronti/python_benchmark_functions
 
 # References
+
+1. Storn, Rainer and Price, Kenneth. *Differential Evolution - A Simple and Efficient Heuristic for Global Optimization over Continuous Spaces*. Journal of Global Optimization, vol. 11, no. 4, 1997.
+2. Mohamed, Ali Wagdy and Sabry, Hegazy Zaher. *Constrained optimization based on modified differential evolution algorithm*. Information Sciences, vol. 194, 2012.
+3. Kaelo, Paul and Ali, Mohamed M. *A numerical study of some modified differential evolution algorithms*. European Journal of Operational Research, vol. 169, no. 3, 2006.
+4. Zou, Dexuan, Liu, Haikuan, Gao, Liqun, Li, Steven. *A novel modified differential evolution algorithm for constrained optimization problems*. Computers & Mathematics with Applications, vol. 61, no. 6, 2011.
+5. Ghosh, Arnob, Das, Swagatam, Chowdhury, Aritra, Giri, Ritwik. *An improved differential evolution algorithm with fitness-based adaptation of the control parameters*. Information Sciences, vol. 181, no. 18, 2011.
+6. Mohamed, Ali Wagdy. *An efficient modified differential evolution algorithm for solving constrained non-linear integer and mixed-integer global optimization problems*. International Journal of Machine Learning and Cybernetics, vol. 8, no. 3, 2015.
+7. Ma, Jian and Li, Haiming. *Research on Rosenbrock Function Optimization Problem Based on Improved Differential Evolution Algorithm*. Journal of Computer and Communications, vol. 7, no. 11, 2019.
+8. Wu Zhi-Feng, Huang Hou-Kuan, Yang Bei, Zhang Ying. *A modified differential evolution algorithm with self-adaptive control parameters*. 2008 3rd International Conference on Intelligent System and Knowledge Engineering, IEEE, 2008.
+9. Zhang, Jingqiao and Sanderson, A.C. *JADE: Adaptive Differential Evolution With Optional External Archive*. IEEE Transactions on Evolutionary Computation, vol. 13, no. 5, 2009.
+10. Rahnamayan, Shahryar, Tizhoosh, Hamid R., Salama, Magdy M. A. *Opposition-Based Differential Evolution*. Studies in Computational Intelligence, Springer, Berlin, Heidelberg.
+11. Sharma, Vivek, Agarwal, Shalini, Verma, Pawan Kumar. *Auto Adaptive Differential Evolution Algorithm*. 2019 3rd International Conference on Computing Methodologies and Communication (ICCMC), IEEE, 2019.
+12. Das, Swagatam, Abraham, Ajith, Chakraborty, Uday K., Konar, Amit. *Differential Evolution Using a Neighborhood-Based Mutation Operator*. IEEE Transactions on Evolutionary Computation, vol. 13, no. 3, 2009.
+13. Zou, Dexuan and Gao, Liqun. *An efficient improved differential evolution algorithm*. Proceedings of the 31st Chinese Control Conference, 2012.
+14. Zouache, Djaafar, Abdelaziz, Fouad Ben. *MGDE: a many-objective guided differential evolution with strengthened dominance relation and bi-goal evolution*. Annals of Operations Research, Springer, 2022.
+15. Lin, Yifeng, Yang, Yuer, Zhang, Yinyan. *Improved differential evolution with dynamic mutation parameters*. Soft Computing, Springer, 2023.
