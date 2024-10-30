@@ -14,7 +14,11 @@ from DET.models.algorithm_result import AlgorithmResult
 from DET.models.fitness_function import FitnessFunctionBase
 from DET.models.population import Population
 from DET.helpers.logger import Logger
-from main import example_function
+
+
+def example_function(x1, x2, x3, x4, x5, x6, x7, x8, x9, x10):
+    return (x1 - 1) ** 2 + (x2 - 2) ** 2 + (x3 - 3) ** 2 + (x4 - 4) ** 2 + (x5 - 5) ** 2 + \
+           (x6 - 6) ** 2 + (x7 - 7) ** 2 + (x8 - 8) ** 2 + (x9 - 9) ** 2 + (x10 - 10) ** 2
 
 
 class BaseAlg(ABC):
