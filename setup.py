@@ -10,7 +10,7 @@ with io.open(f"{current_path}/README.md", mode="r", encoding="utf-8") as fh:
 setuptools.setup(
     name="detpy",
     packages=["detpy"],
-    version="1.0.1",
+    version="1.0.2",
     author="Szymon Ściegienny, Błażej Zieliński, Hubert Orlicki, Wojciech Książek",
     author_email="wojciech.ksiazek@pk.edu.pl",
     description="DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems "
