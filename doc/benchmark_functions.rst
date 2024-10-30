@@ -1,7 +1,7 @@
 Optimization of common benchmark functions
 #####
 
-.. literalinclude:: ../DET/examples/example_03.py
+.. literalinclude:: ../detpy/examples/example_03.py
    :language: python
    :linenos:
 

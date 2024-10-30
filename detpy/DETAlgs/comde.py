@@ -4,20 +4,20 @@ from detpy.DETAlgs.methods.methods_comde import calculate_cr, comde_mutation
 from detpy.DETAlgs.methods.methods_de import binomial_crossing, selection
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    COMDE
-
-    Links:
-    https://www.sciencedirect.com/science/article/pii/S0020025512000278
-
-    References:
-    Mohamed, A. W., & Sabry, H. Z. (2012). Constrained optimization based on modified differential evolution algorithm. 
-    In Information Sciences (Vol. 194, pp. 171–208). Elsevier BV. https://doi.org/10.1016/j.ins.2012.01.008
-
-"""
-
 
 class COMDE(BaseAlg):
+    """
+        COMDE
+
+        Links:
+        https://www.sciencedirect.com/science/article/pii/S0020025512000278
+
+        References:
+        Mohamed, A. W., & Sabry, H. Z. (2012). Constrained optimization based on modified differential evolution algorithm.
+        In Information Sciences (Vol. 194, pp. 171–208). Elsevier BV. https://doi.org/10.1016/j.ins.2012.01.008
+
+    """
+
     def __init__(self, params: COMDEData, db_conn=None, db_auto_write=False):
         super().__init__(COMDE.__name__, params, db_conn, db_auto_write)
 

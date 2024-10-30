@@ -9,7 +9,7 @@ JADE (Adaptive differential evolution with optional external archive)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.JADEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.JADEData
    :members:
    :undoc-members:
    :inherited-members:

@@ -5,20 +5,20 @@ from detpy.DETAlgs.methods.methods_nmde import nmde_mutation, nmde_selection, nm
     nmde_binomial_crossing, nmde_update_f_cr
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    NMDE
-
-    Links:
-    https://www.sciencedirect.com/science/article/pii/S0898122111000460
-
-    References:
-    Dexuan Zou, Haikuan Liu, Liqun Gao, and Steven Li. 2011. A novel modified differential evolution algorithm for 
-    constrained optimization problems. Comput. Math. Appl. 61, 6 (March, 2011), 1608–1623. 
-    https://doi.org/10.1016/j.camwa.2011.01.029
-"""
-
 
 class NMDE(BaseAlg):
+    """
+        NMDE
+
+        Links:
+        https://www.sciencedirect.com/science/article/pii/S0898122111000460
+
+        References:
+        Dexuan Zou, Haikuan Liu, Liqun Gao, and Steven Li. 2011. A novel modified differential evolution algorithm for
+        constrained optimization problems. Comput. Math. Appl. 61, 6 (March, 2011), 1608–1623.
+        https://doi.org/10.1016/j.camwa.2011.01.029
+    """
+
     def __init__(self, params: NMDEData, db_conn=None, db_auto_write=False):
         super().__init__(NMDE.__name__, params, db_conn, db_auto_write)
 

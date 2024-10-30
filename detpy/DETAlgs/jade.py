@@ -5,20 +5,20 @@ from detpy.DETAlgs.methods.methods_jade import jade_adapt_mutation_factors, jade
     draw_cauchy_dist_within_bounds
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    JADE
-
-    Links:
-    https://ieeexplore.ieee.org/document/5208221
-
-    References:
-    J. Zhang and A. C. Sanderson, "JADE: Adaptive Differential Evolution With Optional External Archive," 
-    in IEEE Transactions on Evolutionary Computation, vol. 13, no. 5, pp. 945-958, Oct. 2009, 
-    doi: 10.1109/TEVC.2009.2014613. 
-"""
-
 
 class JADE(BaseAlg):
+    """
+        JADE
+
+        Links:
+        https://ieeexplore.ieee.org/document/5208221
+
+        References:
+        J. Zhang and A. C. Sanderson, "JADE: Adaptive Differential Evolution With Optional External Archive,"
+        in IEEE Transactions on Evolutionary Computation, vol. 13, no. 5, pp. 945-958, Oct. 2009,
+        doi: 10.1109/TEVC.2009.2014613.
+    """
+
     def __init__(self, params: JADEData, db_conn=None, db_auto_write=False):
         super().__init__(JADE.__name__, params, db_conn, db_auto_write)
 

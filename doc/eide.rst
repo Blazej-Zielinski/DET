@@ -9,7 +9,7 @@ EIDE (An efficient improved differential evolution algorithm)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.EIDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.EIDEData
    :members:
    :undoc-members:
    :inherited-members:

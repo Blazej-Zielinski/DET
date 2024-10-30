@@ -3,20 +3,21 @@ from detpy.DETAlgs.methods.methods_fiade import mutation, crossing, selection, a
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 from detpy.DETAlgs.data.alg_data import FiADEData
 
-"""
-    FiADE
-
-    Links:
-    https://www.sciencedirect.com/science/article/abs/pii/S0020025511001381
-
-    References:
-    Arnob Ghosh , Swagatam Das , Aritra Chowdhury , Ritwik Giri (2011)
-    An Improved Differential Evolution Algorithm with Fitness-Based Adaptation of the Control Parameters. 
-    Volume 181, Issue 18, 15 September 2011, Pages 3749-3765
-    doi: 10.1016/j.ins.2011.03.010
-"""
 
 class FiADE(BaseAlg):
+    """
+        FiADE
+
+        Links:
+        https://www.sciencedirect.com/science/article/abs/pii/S0020025511001381
+
+        References:
+        Arnob Ghosh , Swagatam Das , Aritra Chowdhury , Ritwik Giri (2011)
+        An Improved Differential Evolution Algorithm with Fitness-Based Adaptation of the Control Parameters.
+        Volume 181, Issue 18, 15 September 2011, Pages 3749-3765
+        doi: 10.1016/j.ins.2011.03.010
+    """
+
     def __init__(self, params: FiADEData, db_conn=None, db_auto_write=False):
         super().__init__(FiADE.__name__, params, db_conn, db_auto_write)
 

@@ -4,20 +4,20 @@ from detpy.DETAlgs.methods.methods_opposition_based import opp_based_generation_
 from detpy.DETAlgs.methods.methods_de import mutation, binomial_crossing, selection
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    OppBasedDE
-
-    Links:
-    https://ieeexplore.ieee.org/document/4358759
-
-    References:
-    S. Rahnamayan, H. R. Tizhoosh and M. M. A. Salama, "Opposition-Based Differential Evolution," 
-    in IEEE Transactions on Evolutionary Computation, vol. 12, no. 1, pp. 64-79, Feb. 2008, 
-    doi: 10.1109/TEVC.2007.894200.
-"""
-
 
 class OppBasedDE(BaseAlg):
+    """
+        OppBasedDE
+
+        Links:
+        https://ieeexplore.ieee.org/document/4358759
+
+        References:
+        S. Rahnamayan, H. R. Tizhoosh and M. M. A. Salama, "Opposition-Based Differential Evolution,"
+        in IEEE Transactions on Evolutionary Computation, vol. 12, no. 1, pp. 64-79, Feb. 2008,
+        doi: 10.1109/TEVC.2007.894200.
+    """
+
     def __init__(self, params: OppBasedData, db_conn=None, db_auto_write=False):
         super().__init__(OppBasedDE.__name__, params, db_conn, db_auto_write)
 

@@ -4,20 +4,20 @@ from detpy.DETAlgs.methods.methods_aade import aade_mutation, aade_crossing, aad
     aade_adapat_parameters
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    AADE
-
-    Links:
-    https://ieeexplore.ieee.org/document/8819749
-
-    References:
-    V. Sharma, S. Agarwal and P. K. Verma, "Auto Adaptive Differential Evolution Algorithm," 
-    2019 3rd International Conference on Computing Methodologies and Communication (ICCMC), 
-    Erode, India, 2019, pp. 958-963, doi: 10.1109/ICCMC.2019.8819749.
-"""
-
 
 class AADE(BaseAlg):
+    """
+        AADE
+
+        Links:
+        https://ieeexplore.ieee.org/document/8819749
+
+        References:
+        V. Sharma, S. Agarwal and P. K. Verma, "Auto Adaptive Differential Evolution Algorithm,"
+        2019 3rd International Conference on Computing Methodologies and Communication (ICCMC),
+        Erode, India, 2019, pp. 958-963, doi: 10.1109/ICCMC.2019.8819749.
+    """
+
     def __init__(self, params: AADEData, db_conn=None, db_auto_write=False):
         super().__init__(AADE.__name__, params, db_conn, db_auto_write)
 

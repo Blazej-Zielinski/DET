@@ -4,19 +4,19 @@ from detpy.DETAlgs.methods.methods_delb import delb_mutation, delb_selection
 from detpy.DETAlgs.methods.methods_de import binomial_crossing
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
+
+class DELB(BaseAlg):
+    """
     DELB
 
     Links:
     https://www.sciencedirect.com/science/article/pii/S037722170500281X
 
     References:
-    Kaelo, P. & Ali, Montaz. (2006). A numerical study of some modified differential evolution algorithms. 
-    European Journal of Operational Research. 169. 1176-1184. 10.1016/j.ejor.2004.08.047. 
-"""
+    Kaelo, P. & Ali, Montaz. (2006). A numerical study of some modified differential evolution algorithms.
+    European Journal of Operational Research. 169. 1176-1184. 10.1016/j.ejor.2004.08.047.
+    """
 
-
-class DELB(BaseAlg):
     def __init__(self, params: DELBData, db_conn=None, db_auto_write=False):
         super().__init__(DELB.__name__, params, db_conn, db_auto_write)
 

@@ -8,7 +8,7 @@ DELB (Differential evolution with localization using the best vector)
    :undoc-members:
    :inherited-members:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.DELBData
+.. autoclass:: detpy.DETAlgs.data.alg_data.DELBData
    :members:
    :undoc-members:
    :inherited-members:

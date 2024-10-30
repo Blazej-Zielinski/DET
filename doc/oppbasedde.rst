@@ -8,7 +8,7 @@ OppBasedDE (Opposition-based differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.OppBasedData
+.. autoclass:: detpy.DETAlgs.data.alg_data.OppBasedData
    :members:
    :undoc-members:
    :inherited-members:

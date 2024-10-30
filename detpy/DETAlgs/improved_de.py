@@ -1,26 +1,25 @@
 import math
-
 from detpy.DETAlgs.base import BaseAlg
 from detpy.DETAlgs.data.alg_data import ImprovedDEData
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 from detpy.DETAlgs.methods.methods_improved_de import mutation, binomial_crossing, selection
 
-"""
-    ImprovedDE
-
-    Links:
-    https://link.springer.com/article/10.1007/s00500-023-09080-1
-
-    References:
-    Yifeng Lin · Yuer Yang · Yinyan Zhang
-    Improved differential evolution with dynamic mutation parameters
-    Soft Computing Optimization Published: 17 August 2023 Volume 27, pages 17923–17941, (2023)
-    https://doi.org/10.1007/s00500-023-09080-1
-
-"""
-
 
 class ImprovedDE(BaseAlg):
+    """
+        ImprovedDE
+
+        Links:
+        https://link.springer.com/article/10.1007/s00500-023-09080-1
+
+        References:
+        Yifeng Lin · Yuer Yang · Yinyan Zhang
+        Improved differential evolution with dynamic mutation parameters
+        Soft Computing Optimization Published: 17 August 2023 Volume 27, pages 17923–17941, (2023)
+        https://doi.org/10.1007/s00500-023-09080-1
+
+    """
+
     def __init__(self, params: ImprovedDEData, db_conn=None, db_auto_write=False):
         super().__init__(ImprovedDE.__name__, params, db_conn, db_auto_write)
         self.initial_mutation_factor = params.mutation_factor  # Initial F value

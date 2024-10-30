@@ -9,7 +9,7 @@ NMDE (Novel modified differential evolution algorithm)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.NMDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.NMDEData
    :members:
    :undoc-members:
    :inherited-members:

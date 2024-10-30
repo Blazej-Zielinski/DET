@@ -4,19 +4,19 @@ from detpy.DETAlgs.methods.methods_de import binomial_crossing, selection
 from detpy.DETAlgs.methods.methods_derl import derl_mutation
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    DERL
-
-    Links:
-    https://www.sciencedirect.com/science/article/pii/S037722170500281X
-
-    References:
-    Kaelo, P. & Ali, Montaz. (2006). A numerical study of some modified differential evolution algorithms. 
-    European Journal of Operational Research. 169. 1176-1184. 10.1016/j.ejor.2004.08.047. 
-"""
-
 
 class DERL(BaseAlg):
+    """
+        DERL
+
+        Links:
+        https://www.sciencedirect.com/science/article/pii/S037722170500281X
+
+        References:
+        Kaelo, P. & Ali, Montaz. (2006). A numerical study of some modified differential evolution algorithms.
+        European Journal of Operational Research. 169. 1176-1184. 10.1016/j.ejor.2004.08.047.
+    """
+
     def __init__(self, params: DERLData, db_conn=None, db_auto_write=False):
         super().__init__(DERL.__name__, params, db_conn, db_auto_write)
 

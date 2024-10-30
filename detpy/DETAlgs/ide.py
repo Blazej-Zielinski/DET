@@ -4,20 +4,20 @@ from detpy.DETAlgs.methods.methods_de import selection, mutation
 from detpy.DETAlgs.methods.methods_ide import ide_get_f, ide_get_cr, ide_binomial_crossing
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    IDE
-
-    Links:
-    https://www.scirp.org/journal/paperinformation?paperid=96749
-
-    References:
-    Ma, J. and Li, H. (2019) Research on Rosenbrock Function Optimization Problem Based on Improved Differential 
-    Evolution Algorithm. 
-    Journal of Computer and Communications, 7, 107-120. doi: 10.4236/jcc.2019.711008. 
-"""
-
 
 class IDE(BaseAlg):
+    """
+        IDE
+
+        Links:
+        https://www.scirp.org/journal/paperinformation?paperid=96749
+
+        References:
+        Ma, J. and Li, H. (2019) Research on Rosenbrock Function Optimization Problem Based on Improved Differential
+        Evolution Algorithm.
+        Journal of Computer and Communications, 7, 107-120. doi: 10.4236/jcc.2019.711008.
+    """
+
     def __init__(self, params: IDEData, db_conn=None, db_auto_write=False):
         super().__init__(IDE.__name__, params, db_conn, db_auto_write)
 

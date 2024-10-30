@@ -4,22 +4,18 @@ from detpy.DETAlgs.data.alg_data import SADEData
 from detpy.DETAlgs.methods.methods_sade import sade_mutation, sade_binomial_crossing, sade_selection
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    SADE
-
-    Links:
-    https://ieeexplore.ieee.org/abstract/document/4730987
-
-    References:
-    Wu Zhi-Feng, Huang Hou-Kuan, Yang Bei and Zhang Ying, "A modified differential evolution algorithm with 
-    self-adaptive control parameters," 2008 3rd International Conference on Intelligent System and Knowledge Engineering
-    , Xiamen, 2008, pp. 524-527, doi: 10.1109/ISKE.2008.4730987.
-"""
-
 
 class SADE(BaseAlg):
     """
-    Source: https://ieeexplore.ieee.org/abstract/document/4730987
+        SADE
+
+        Links:
+        https://ieeexplore.ieee.org/abstract/document/4730987
+
+        References:
+        Wu Zhi-Feng, Huang Hou-Kuan, Yang Bei and Zhang Ying, "A modified differential evolution algorithm with
+        self-adaptive control parameters," 2008 3rd International Conference on Intelligent System and Knowledge Engineering
+        , Xiamen, 2008, pp. 524-527, doi: 10.1109/ISKE.2008.4730987.
     """
 
     def __init__(self, params: SADEData, db_conn=None, db_auto_write=False):

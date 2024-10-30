@@ -9,7 +9,7 @@ EMDE (Efficient modified differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.EMDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.EMDEData
    :members:
    :undoc-members:
    :inherited-members:

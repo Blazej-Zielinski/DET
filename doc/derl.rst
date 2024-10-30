@@ -9,7 +9,7 @@ DERL (Differential evolution random locations)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.DERLData
+.. autoclass:: detpy.DETAlgs.data.alg_data.DERLData
    :members:
    :undoc-members:
    :inherited-members:

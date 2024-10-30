@@ -9,7 +9,7 @@ COMDE (Constrained optimization based differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.COMDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.COMDEData
    :members:
    :undoc-members:
    :inherited-members:

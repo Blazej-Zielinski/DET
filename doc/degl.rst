@@ -9,7 +9,7 @@ DEGL (Differential evolution with neighborhood-based mutation)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.DEGLData
+.. autoclass:: detpy.DETAlgs.data.alg_data.DEGLData
    :members:
    :undoc-members:
    :inherited-members:

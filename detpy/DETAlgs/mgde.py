@@ -4,19 +4,19 @@ from detpy.DETAlgs.methods.methods_de import binomial_crossing, selection
 from detpy.DETAlgs.methods.methods_mgde import mgde_mutation, mgde_adapt_threshold
 from detpy.models.enums.boundary_constrain import fix_boundary_constraints
 
-"""
-    MGDE
-
-    Links:
-    https://link.springer.com/article/10.1007/s10479-022-04641-3
-
-    References:
-    Zouache, D., Ben Abdelaziz, F. MGDE: a many-objective guided differential evolution with strengthened dominance 
-    relation and bi-goal evolution. Ann Oper Res (2022). https://doi.org/10.1007/s10479-022-04641-3 
-"""
-
 
 class MGDE(BaseAlg):
+    """
+        MGDE
+
+        Links:
+        https://link.springer.com/article/10.1007/s10479-022-04641-3
+
+        References:
+        Zouache, D., Ben Abdelaziz, F. MGDE: a many-objective guided differential evolution with strengthened dominance
+        relation and bi-goal evolution. Ann Oper Res (2022). https://doi.org/10.1007/s10479-022-04641-3
+    """
+
     def __init__(self, params: MGDEData, db_conn=None, db_auto_write=False):
         super().__init__(MGDE.__name__, params, db_conn, db_auto_write)
 

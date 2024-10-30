@@ -9,7 +9,7 @@ SADE (Self-adaptive differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.SADEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.SADEData
    :members:
    :undoc-members:
    :inherited-members:

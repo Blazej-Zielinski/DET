@@ -9,7 +9,7 @@ IDE (Improved differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.IDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.IDEData
    :members:
    :undoc-members:
    :inherited-members:

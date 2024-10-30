@@ -9,7 +9,7 @@ FIADE (Fitness-Adaptive DE) [
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.FiADEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.FiADEData
    :members:
    :undoc-members:
    :inherited-members:

@@ -9,7 +9,7 @@ MGDE (A many-objective guided differential evolution)
    :inherited-members:
    :show-inheritance:
 
-.. autoclass:: DET.DETAlgs.data.alg_data.MGDEData
+.. autoclass:: detpy.DETAlgs.data.alg_data.MGDEData
    :members:
    :undoc-members:
    :inherited-members:
