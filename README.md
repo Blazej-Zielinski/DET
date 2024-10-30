@@ -1,4 +1,4 @@
-# DiffEvoKit
+# DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems using differential evolution
 
 Package to install
 
