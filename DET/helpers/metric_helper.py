@@ -24,7 +24,7 @@ class MetricHelper:
             worst_individual=worst_inv,
             population_mean=pop_mean,
             population_std=pop_std,
-            execution_time=0.0
+            execution_time=1.0
         )
         if log_population:
             metric.population = population.members

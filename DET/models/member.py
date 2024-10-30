@@ -4,6 +4,14 @@ from DET.models.chromosome import Chromosome
 
 class Member:
     def __init__(self, lb, ub, args_num):
+
+        if len(lb) < args_num or len(ub) < args_num:
+            raise ValueError(
+                f"Insufficient bounds for {args_num} dimensions: "
+                f"received {len(lb)} lower bounds and {len(ub)} upper bounds. "
+                "Ensure lb and ub lists match the dimension count."
+            )
+
         self.chromosomes = np.array([Chromosome(lb[i], ub[i]) for i in range(args_num)])
         self.fitness_value = None
         self.lb = lb
