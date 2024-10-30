@@ -35,6 +35,8 @@ The current source code is available at: https://github.com/Blazej-Zielinski/det
    eide
    mgde
    improvedde
+   fiade
+   oppbasedde
 
 .. toctree::
    :maxdepth: 1
