@@ -139,3 +139,7 @@ Test functions prepared based on https://gitlab.com/luca.baronti/python_benchmar
 13. Zou, Dexuan and Gao, Liqun. *An efficient improved differential evolution algorithm*. Proceedings of the 31st Chinese Control Conference, 2012.
 14. Zouache, Djaafar, Abdelaziz, Fouad Ben. *MGDE: a many-objective guided differential evolution with strengthened dominance relation and bi-goal evolution*. Annals of Operations Research, Springer, 2022.
 15. Lin, Yifeng, Yang, Yuer, Zhang, Yinyan. *Improved differential evolution with dynamic mutation parameters*. Soft Computing, Springer, 2023.
+
+# Documentation
+Full documentation is available: https://blazej-zielinski.github.io/detpy/
+
