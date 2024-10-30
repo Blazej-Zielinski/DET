@@ -1,9 +1,16 @@
 # DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems using differential evolution
 
-Package to install
+# Introduction
+The DetPy library contains implementations of the differential evolution algorithm and 15 modifications of this 
+algorithm. It can be used to solve advanced optimization problems.
+The following variants have been implemented:
 
-- numpy
-- opfunu
+
+
+# Installation
+```
+pip install detpy
+```
 
 # Using FunctionLoader
 
@@ -43,3 +50,7 @@ Available functions:
             "goldstein_and_price": GoldsteinAndPrice
         }
 ```
+
+Test functions prepared based on https://gitlab.com/luca.baronti/python_benchmark_functions
+
+# References

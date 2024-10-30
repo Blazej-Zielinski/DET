@@ -1,9 +1,16 @@
-from setuptools import setup
+import setuptools
+import os
+import io
 
-setup(
+current_path = os.path.dirname(os.path.realpath(__file__))
+
+with io.open(f"{current_path}/README.md", mode="r", encoding="utf-8") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
     name="detpy",
     packages=["detpy"],
-    version="1.0",
+    version="1.0.1",
     author="Szymon Ściegienny, Błażej Zieliński, Hubert Orlicki, Wojciech Książek",
     author_email="wojciech.ksiazek@pk.edu.pl",
     description="DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems "
@@ -11,6 +18,8 @@ setup(
     keywords=["optimization", "metaheuristics", "nature-inspired algorithms",
               "evolutionary computation", "population-based algorithms",
               "Stochastic optimization", "different evolution"],
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url="https://github.com/Blazej-Zielinski/detpy",
     include_package_data=True,
     license="GPLv3",
