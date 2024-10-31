@@ -1,13 +1,13 @@
-import opfunu.cec_based.cec2014 as opf
 from detpy.DETAlgs.data.alg_data import MGDEData
 from detpy.DETAlgs.mgde import MGDE
 from detpy.models.enums.boundary_constrain import BoundaryFixing
 from detpy.models.enums.optimization import OptimizationType
 from detpy.models.fitness_function import FitnessFunctionOpfunu
+from opfunu.cec_based import F82014
 
 if __name__ == "__main__":
     fitness_fun_opf = FitnessFunctionOpfunu(
-        func_type=opf.F82014,
+        func_type=F82014,
         ndim=10
     )
 
