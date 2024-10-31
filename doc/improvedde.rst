@@ -3,7 +3,7 @@ ImprovedDE
 
 ImprovedDE (DE with dynamic mutation parameters) 
 
-.. autoclass:: DETAlgs.improvedde.ImprovedDE
+.. autoclass:: DETAlgs.improved_de.ImprovedDE
    :members:
    :undoc-members:
    :inherited-members:
