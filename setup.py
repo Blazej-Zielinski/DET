@@ -9,8 +9,11 @@ with io.open(f"{current_path}/README.md", mode="r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="detpy",
-    packages=["detpy"],
-    version="1.0.2",
+    packages=setuptools.find_packages(),
+    package_data={
+        "detpy": ["functions/functions_info/*.json"],
+    },
+    version="1.0.7",
     author="Szymon Ściegienny, Błażej Zieliński, Hubert Orlicki, Wojciech Książek",
     author_email="wojciech.ksiazek@pk.edu.pl",
     description="DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems "
@@ -48,6 +51,6 @@ setuptools.setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Utilities",
     ],
-    install_requires=["numpy", "opfunu", "matplotlib"],
+    install_requires=["numpy", "opfunu", "matplotlib", "tqdm","scipy"],
     python_requires='>=3.7',
 )
