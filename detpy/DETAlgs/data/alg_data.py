@@ -9,9 +9,9 @@ from detpy.models.enums.optimization import OptimizationType
 class BaseData:
     epoch: int = 100
     population_size: int = 100
-    dimension: int = 2
-    lb: list = field(default_factory=lambda: [-100, 100])
-    ub: list = field(default_factory=lambda: [100, 100])
+    dimension: int = 10
+    lb: list = field(default_factory=lambda: [-100, -100, -100, -100, -100, -100, -100, -100, -100, -100])
+    ub: list = field(default_factory=lambda: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100])
     mode: OptimizationType = OptimizationType.MINIMIZATION
     boundary_constraints_fun: BoundaryFixing = BoundaryFixing.RANDOM
     function: FitnessFunctionBase = None
