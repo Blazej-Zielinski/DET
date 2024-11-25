@@ -17,6 +17,8 @@ class AlgorithmResult:
 
         plt.figure()
         plt.plot(epochs, best_fitness_values, label="Best Fitness")
+        plt.grid(True)
+
         plt.xlabel('Epoch')
         plt.ylabel('Best Fitness Value')
         plt.title(f'Best Fitness per Epoch - {method_name}')
@@ -25,6 +27,8 @@ class AlgorithmResult:
 
         plt.figure()
         plt.plot(epochs, avg_fitness_values, label="Average Fitness", color="orange")
+        plt.grid(True)
+
         plt.xlabel('Epoch')
         plt.ylabel('Average Fitness Value')
         plt.title(f'Average Fitness per Epoch - {method_name}')
@@ -33,6 +37,7 @@ class AlgorithmResult:
 
         plt.figure()
         plt.plot(epochs, std_fitness_values, label="Standard Deviation of Fitness", color="green")
+        plt.grid(True)
         plt.xlabel('Epoch')
         plt.ylabel('Standard Deviation')
         plt.title(f'Standard Deviation of Fitness per Epoch - {method_name}')

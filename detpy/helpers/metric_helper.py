@@ -9,7 +9,7 @@ from detpy.models.population import Population
 class MetricHelper:
 
     @staticmethod
-    def calculate_start_metrics(population: Population, log_population: bool = False):
+    def calculate_start_metrics(population: Population, end_init_time, log_population: bool = False):
         sorted_members = population.get_best_members(population.size)
         best_inv = sorted_members[0]
         worst_inv = sorted_members[-1]
@@ -24,7 +24,7 @@ class MetricHelper:
             worst_individual=worst_inv,
             population_mean=pop_mean,
             population_std=pop_std,
-            execution_time=1.0
+            execution_time=end_init_time
         )
         if log_population:
             metric.population = population.members

@@ -13,7 +13,7 @@ setuptools.setup(
     package_data={
         "detpy": ["functions/functions_info/*.json"],
     },
-    version="1.0.10",
+    version="1.0.11",
     author="Szymon Ściegienny, Błażej Zieliński, Hubert Orlicki, Wojciech Książek",
     author_email="wojciech.ksiazek@pk.edu.pl",
     description="DetPy (Differential Evolution Tools): A Python toolbox for solving optimization problems "

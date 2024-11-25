@@ -28,6 +28,7 @@ class BaseAlg(ABC):
 
         self._origin_pop = None
         self._pop = None
+        self._total_init_time = None
 
         self.num_of_epochs = params.epoch
         self.population_size = params.population_size
@@ -58,6 +59,7 @@ class BaseAlg(ABC):
         pass
 
     def _initialize(self):
+        init_time = time.time()
         population = Population(
             lb=self.lb,
             ub=self.ub,
@@ -67,6 +69,7 @@ class BaseAlg(ABC):
         )
         population.generate_population()
         population.update_fitness_values(self._function.eval, self.parallel_processing)
+        end_init_time = time.time()
 
         self._origin_pop = population
         self._pop = copy.deepcopy(population)
@@ -81,6 +84,7 @@ class BaseAlg(ABC):
         )
         self.database_table_name = self._database.create_table(table_name)
         self._database.close()
+        self._total_init_time = end_init_time - init_time
 
     def run(self):
         epoch_metrics = []
@@ -89,7 +93,7 @@ class BaseAlg(ABC):
         std_fitness_values = []
 
         # Calculate metrics
-        epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self.log_population)
+        epoch_metric = MetricHelper.calculate_start_metrics(self._pop, self._total_init_time, self.log_population)
         epoch_metrics.append(epoch_metric)
 
         start_time = time.time()
@@ -101,8 +105,8 @@ class BaseAlg(ABC):
             best_fitness_values.append(best_member.fitness_value)
 
             try:
+                start_time = time.time()
                 self.next_epoch()
-
                 # Calculate metrics
                 epoch_metric = MetricHelper.calculate_metrics(self._pop, start_time, epoch, self.log_population)
                 epoch_metrics.append(epoch_metric)

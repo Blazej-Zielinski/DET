@@ -38,10 +38,12 @@ def plot_fitness_convergence(fitness_results, algorithm_names, num_of_epochs):
         fitness_values = fitness_values[:num_of_epochs]
         plt.plot(epochs, fitness_values, label=name)
 
+    plt.grid(True)
     plt.xlabel('Epoch')
     plt.ylabel('Best Fitness Value')
     plt.title('Fitness Convergence Algorithms')
-    plt.legend()
+    plt.subplots_adjust(right=0.8)
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderpad=1.5, handlelength=2)
     plt.show()
 
 
