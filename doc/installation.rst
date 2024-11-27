@@ -16,11 +16,12 @@ Introduction
 DetPy (Differential Evolution Tools) is a library designed to help scientists and engineers solve complex optimization problems using the differential evolution algorithm along with numerous variants.
 
 **Key Features**
+
 - Implementations of popular and state-of-the-art differential evolution methods.
 - Flexibility to configure algorithm parameters.
 - Visualization tools to monitor results.
 - Support for benchmarking against standard optimization functions.
-- Option to storing results in SQLite database.
+- Option to store results in an SQLite database.
 
 User Guide
 ============================
@@ -79,9 +80,10 @@ Examples
 ============================
 
 To make the library more accessible, the documentation includes various examples covering:
-- Optimization of the Ackley function based SADE,
-- Optimization of the Ackley function with all DE variants,
-- Optimization of common benchmark functions,
+
+- Optimization of the Ackley function based on SADE.
+- Optimization of the Ackley function with all DE variants.
+- Optimization of common benchmark functions.
 - Optimization of functions from Opfunu.
 
 Check out the `Examples Section <https://github.com/Blazej-Zielinski/detpy/tree/main/examples>`_ for more details.
